@@ -1,0 +1,23 @@
+﻿<Properties StartupConfiguration="{4A8B01F0-1058-49C1-A254-C56AA4187CCA}|Default">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit/MainPage.xaml">
+    <Files>
+      <File FileName="ProtoRabbit/MainPage.xaml" Line="25" Column="46" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="ProtoRabbit" expanded="True">
+            <Node name="ProtoRabbit" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.ProtoRabbit PreferredExecutionTarget="MyAppleMacCatalystID" />
+</Properties>
