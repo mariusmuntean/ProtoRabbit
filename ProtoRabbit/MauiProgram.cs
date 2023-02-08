@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using ProtoRabbit.ViewModels;
 
 namespace ProtoRabbit;
 
@@ -19,6 +20,9 @@ public static class MauiProgram
         builder.Logging.AddDebug();
 #endif
 
+        builder.Services.AddSingleton<MainPage>();
+        builder.Services.AddSingleton<MainPageViewModel>();
+        
         return builder.Build();
     }
 }

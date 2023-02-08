@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:ProtoRabbit.ViewModels"
+             x:DataType="viewmodel:MainPageViewModel"
              x:Class="ProtoRabbit.MainPage">
 
     <ScrollView>
@@ -10,16 +12,23 @@
             VerticalOptions="Center">
 
             <HorizontalStackLayout Spacing="25" Padding="30"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Center">
-                <Image Source="protobuf.png" HeightRequest="100" WidthRequest="250"
+                                   VerticalOptions="CenterAndExpand"
+                                   HorizontalOptions="Center"
+                                   HeightRequest="150"                                   MaximumHeightRequest="110">
+                <Image Source="protobuf.png" HeightRequest="60" WidthRequest="250"
                        BackgroundColor="AliceBlue"/>
-                <Image Source="rabbitmq.png" HeightRequest="100" WidthRequest="250"
+                <Image Source="rabbitmq.png" HeightRequest="60" WidthRequest="250"
                        BackgroundColor="AliceBlue"/>
             </HorizontalStackLayout>
+            <Entry Text="{Binding RabbitMqUrl}" 
+                   Placeholder="RabbitMQ URL"></Entry>
+            <Entry Text="{Binding RabbitMqUsername}" 
+                   Placeholder="Username"></Entry>
+            <Entry Text="{Binding RabbitMqPassword}" 
+                   Placeholder="Password"></Entry>
 
             <Label
-                Text="Hello, World!"
+                Text="Hello, World!!"
                 SemanticProperties.HeadingLevel="Level1"
                 FontSize="32"
                 HorizontalOptions="Center" />
