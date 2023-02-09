@@ -2,8 +2,15 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:ProtoRabbit.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewmodel:MainPageViewModel"
              x:Class="ProtoRabbit.MainPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ScrollView>
         <VerticalStackLayout
@@ -20,20 +27,33 @@
                 <Image Source="rabbitmq.png" HeightRequest="60" WidthRequest="250"
                        BackgroundColor="AliceBlue"/>
             </HorizontalStackLayout>
-            <Entry Text="{Binding RabbitMqUrl}" 
+            <Entry Text="{Binding Host}" 
                    Placeholder="RabbitMQ URL"></Entry>
-            <Entry Text="{Binding RabbitMqUsername}" 
+            <Entry Text="{Binding Port}" 
+                   Placeholder="RabbitMQ URL"></Entry>
+            <Entry Text="{Binding Username}" 
                    Placeholder="Username"></Entry>
-            <Entry Text="{Binding RabbitMqPassword}" 
+            <Entry Text="{Binding Password}" 
                    Placeholder="Password"></Entry>
 
-          
 
-            <Button
-                x:Name="CounterBtn"
-                Text="Test Publish"
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="25">
+                <Button 
+                Text="Connect"
                 Command="{Binding ConnectCommand}"
-                HorizontalOptions="Center" />
+                HorizontalOptions="Center"
+                IsEnabled="{Binding Connected, Converter={StaticResource InvertedBoolConverter}}"
+                IsVisible="{Binding Connected, Converter={StaticResource InvertedBoolConverter}}"
+                />
+
+                <Button
+                Text="Disconnect"
+                Command="{Binding DisconnectCommand}"
+                HorizontalOptions="Center"
+                IsEnabled="{Binding Connected}"
+                IsVisible="{Binding Connected}"
+                />
+            </HorizontalStackLayout>
 
         </VerticalStackLayout>
     </ScrollView>
