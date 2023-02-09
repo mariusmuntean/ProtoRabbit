@@ -68,12 +68,18 @@ public partial class MainPageViewModel : ObservableObject
     [RelayCommand]
     public void Send()
     {
-        if(_rabbitClient == null || _rabbitClient.IsClosed)
+        if (_rabbitClient == null || _rabbitClient.IsClosed)
         {
             return;
         }
 
-        JsonMessage = JsonMessage.Replace("”", "\""); // why is this necessary Microsoft?
+        JsonMessage = JsonMessage
+            .Replace("”", "\"") // why is this necessary Microsoft?
+            .Replace("“", "\"") // why is this necessary Microsoft?
+            .Replace("\r", "")
+            .Replace("\n", "")
+            ;
+        Debug.WriteLine(JsonMessage);
         var msgObj = System.Text.Json.JsonSerializer.Deserialize(JsonMessage, typeof(object));
         var msg = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(msgObj);
         _rabbitClient.Send(Exchange, RoutingKey, msg);
