@@ -1,23 +1,30 @@
 ﻿<Properties StartupConfiguration="{4A8B01F0-1058-49C1-A254-C56AA4187CCA}|Default">
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit/MainPage.xaml">
     <Files>
-      <File FileName="ProtoRabbit/MainPage.xaml" Line="25" Column="46" />
+      <File FileName="ProtoRabbit/ViewModels/MainPageViewModel.cs" />
+      <File FileName="ProtoRabbit/MainPage.xaml" Line="87" Column="43" />
+      <File FileName="ProtoRabbit/MauiProgram.cs" />
+      <File FileName="ProtoRabbit/Services/RabbitClientFactory.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="ProtoRabbit" expanded="True">
-            <Node name="ProtoRabbit" expanded="True" />
+            <Node name="ProtoRabbit" expanded="True">
+              <Node name="Services" expanded="True" />
+              <Node name="ViewModels" expanded="True" />
+              <Node name="MainPage.xaml" expanded="True" />
+            </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.ProtoRabbit PreferredExecutionTarget="MyAppleMacCatalystID" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.ProtoRabbit PreferredExecutionTarget="MyAppleMacCatalystID" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

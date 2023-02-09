@@ -5,12 +5,12 @@ namespace ProtoRabbit.Services;
 
 public class RabbitClientFactory
 {
-    Dictionary<(string host, string username, string password, int port), RabbitClient> _serverToClientMap = new Dictionary<(string host, string username, string password, int port), RabbitClient>();
+    Dictionary<(string host, string username, string password, int port), IConnection> _serverToConnectionMap = new Dictionary<(string host, string username, string password, int port), IConnection>();
 
     public RabbitClient GetClientForServer(string host, string username, string password, int port)
     {
         (string host, string username, string password, int port) server = (host, username, password, port);
-        if (!_serverToClientMap.ContainsKey(server))
+        if (!_serverToConnectionMap.ContainsKey(server))
         {
             var connectionFactory = new ConnectionFactory();
             connectionFactory.HostName = host;
@@ -18,12 +18,13 @@ public class RabbitClientFactory
             connectionFactory.Password = password;
             connectionFactory.Port = port;
 
-            var connection = connectionFactory.CreateConnection("ProtoRabbit");
-            var channel = connection.CreateModel();
-            _serverToClientMap[server] = new RabbitClient(channel);
+            var newConnection = connectionFactory.CreateConnection("ProtoRabbit");
+            _serverToConnectionMap[server] = newConnection;
         }
 
-        return _serverToClientMap[server];
+        var connection = _serverToConnectionMap[server];
+        var channel = connection.CreateModel();
+        return new RabbitClient(channel);
     }
 }
 
@@ -31,7 +32,7 @@ public class RabbitClientFactory
 public class RabbitClient
 {
     private readonly IModel _channel;
-    private WeakReference<Action> _onShutdown;
+    private Action _onShutdown;
 
     public RabbitClient(IModel channel)
     {
@@ -44,7 +45,7 @@ public class RabbitClient
     /// </summary>
     public Action OnShutdown
     {
-        set => _onShutdown = new WeakReference<Action>(value);
+        set => _onShutdown = value;
     }
 
     public void Send(string exchange, string routingKey, byte[] @event)
@@ -64,9 +65,7 @@ public class RabbitClient
 
     private void OnModelShutdown(object sender, ShutdownEventArgs e)
     {
-        if (_onShutdown.TryGetTarget(out var action))
-        {
-            action();
-        }
+        _onShutdown?.Invoke();
+        _onShutdown = null;
     }
 }

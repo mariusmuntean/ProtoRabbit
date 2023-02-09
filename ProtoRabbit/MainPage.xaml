@@ -27,14 +27,30 @@
                 <Image Source="rabbitmq.png" HeightRequest="60" WidthRequest="250"
                        BackgroundColor="AliceBlue"/>
             </HorizontalStackLayout>
-            <Entry Text="{Binding Host}" 
-                   Placeholder="RabbitMQ URL"></Entry>
-            <Entry Text="{Binding Port}" 
-                   Placeholder="RabbitMQ URL"></Entry>
-            <Entry Text="{Binding Username}" 
-                   Placeholder="Username"></Entry>
-            <Entry Text="{Binding Password}" 
-                   Placeholder="Password"></Entry>
+
+            <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
+            <Label Text="Server" HorizontalOptions="Start"/>
+            <!-- host and port -->
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                <Entry Text="{Binding Host}" 
+                   Placeholder="RabbitMQ URL"
+                   WidthRequest="350"></Entry>
+                <Entry Text="{Binding Port}"
+                   Placeholder="RabbitMQ URL"
+                   WidthRequest="350"></Entry>
+            </HorizontalStackLayout>
+
+            <!-- username and pasword -->
+            <HorizontalStackLayout Spacing="10"
+                                   HorizontalOptions="Fill">
+                <Entry Text="{Binding Username}"
+                   Placeholder="Username"
+                   WidthRequest="350"></Entry>
+                <Entry Text="{Binding Password}" 
+                   Placeholder="Password"
+                   HorizontalOptions="Fill"
+                   WidthRequest="350"></Entry>
+            </HorizontalStackLayout>
 
 
             <HorizontalStackLayout HorizontalOptions="Center" Spacing="25">
@@ -46,18 +62,55 @@
                 />
 
                 <Button
-                Text="Send"
-                Command="{Binding SendCommand}"
-                HorizontalOptions="Center"
-                IsVisible="{Binding Connected}"
-                />
-                <Button
                 Text="Disconnect"
                 Command="{Binding DisconnectCommand}"
                 HorizontalOptions="Center"
                 IsVisible="{Binding Connected}"
                 />
             </HorizontalStackLayout>
+
+            <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
+            <Label Text="Send" HorizontalOptions="Start"/>
+            <Entry Placeholder="Exchange"
+                   ToolTipProperties.Text="Exchange"
+                   IsVisible="{Binding Connected}"/>
+            <Entry Placeholder="Routing Key"
+                   ToolTipProperties.Text="Routing Key"
+                   IsVisible="{Binding Connected}"/>
+            <Grid IsVisible="{Binding Connected}" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Editor Grid.Column="0"
+                        Placeholder="JSON Message"
+                        BackgroundColor="#44FFFFFF"
+                        ToolTipProperties.Text="JSON Message"
+                        HeightRequest="150"
+                        WidthRequest="250"
+                        Text="{Binding JsonMessage, Mode=TwoWay}"
+                        />
+                <Editor Grid.Column="1"
+                        Placeholder="Proto File"
+                        BackgroundColor="#44FFFFFF"
+                        ToolTipProperties.Text="Proto File"
+                        HeightRequest="150"
+                        WidthRequest="250"
+                        />
+            </Grid>
+
+            <Button Text="Send" HorizontalOptions="Center"
+                    ToolTipProperties.Text="Click to send"
+                    Command="{Binding SendCommand}"
+                    IsVisible="{Binding Connected}"/>
+            <Label Text="Disconnected"
+                   HorizontalOptions="CenterAndExpand"
+                   BackgroundColor="Gray"
+                   IsVisible="{Binding Connected, Converter={StaticResource InvertedBoolConverter}}"/>
+
+            <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
+            <Label Text="Receive" HorizontalOptions="Start"/>
+
 
         </VerticalStackLayout>
     </ScrollView>

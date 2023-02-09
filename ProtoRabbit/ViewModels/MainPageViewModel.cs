@@ -25,6 +25,9 @@ public partial class MainPageViewModel : ObservableObject
     [ObservableProperty]
     private bool connected = false;
 
+    [ObservableProperty]
+    private string jsonMessage = "{ \"message\": \"Hello\"}";
+
     private readonly RabbitClientFactory _rabbitClientFactory;
     private RabbitClient _rabbitClient;
 
@@ -37,7 +40,7 @@ public partial class MainPageViewModel : ObservableObject
     public async Task Connect()
     {
         _rabbitClient = _rabbitClientFactory.GetClientForServer(host, username, password, port);
-        _rabbitClient.OnShutdown = new Action(ConnectionShutDown);
+        _rabbitClient.OnShutdown = ConnectionShutDown;
         Connected = true;
         Debug.WriteLine("Connected");
     }
@@ -49,20 +52,21 @@ public partial class MainPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task Disconnect()
+    public void Disconnect()
     {
         _rabbitClient.Close();
     }
 
     [RelayCommand]
-    public async Task Send()
+    public void Send()
     {
         if(_rabbitClient == null || _rabbitClient.IsClosed)
         {
             return;
         }
 
-        var msg = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(new { Message = "Hi" });
+        var msgObj = System.Text.Json.JsonSerializer.Deserialize(JsonMessage, typeof(object));
+        var msg = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(msgObj);
         _rabbitClient.Send("proto.data", "c", msg);
     }
 }
