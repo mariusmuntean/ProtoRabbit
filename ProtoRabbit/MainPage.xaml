@@ -42,15 +42,19 @@
                 Text="Connect"
                 Command="{Binding ConnectCommand}"
                 HorizontalOptions="Center"
-                IsEnabled="{Binding Connected, Converter={StaticResource InvertedBoolConverter}}"
                 IsVisible="{Binding Connected, Converter={StaticResource InvertedBoolConverter}}"
                 />
 
                 <Button
+                Text="Send"
+                Command="{Binding SendCommand}"
+                HorizontalOptions="Center"
+                IsVisible="{Binding Connected}"
+                />
+                <Button
                 Text="Disconnect"
                 Command="{Binding DisconnectCommand}"
                 HorizontalOptions="Center"
-                IsEnabled="{Binding Connected}"
                 IsVisible="{Binding Connected}"
                 />
             </HorizontalStackLayout>

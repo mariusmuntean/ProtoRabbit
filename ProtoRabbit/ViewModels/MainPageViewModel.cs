@@ -2,13 +2,13 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using ProtoRabbit.Services;
 using RabbitMQ.Client;
 
 namespace ProtoRabbit.ViewModels;
 
 public partial class MainPageViewModel : ObservableObject
 {
-    IConnection connection = null;
 
     [ObservableProperty]
     private string host = "localhost";
@@ -25,50 +25,44 @@ public partial class MainPageViewModel : ObservableObject
     [ObservableProperty]
     private bool connected = false;
 
+    private readonly RabbitClientFactory _rabbitClientFactory;
+    private RabbitClient _rabbitClient;
+
+    public MainPageViewModel(RabbitClientFactory rabbitClientFactory)
+    {
+        _rabbitClientFactory = rabbitClientFactory;
+    }
+
     [RelayCommand]
     public async Task Connect()
     {
-        var connectionFactory = new ConnectionFactory();
-        connectionFactory.HostName = Host;
-        connectionFactory.Port = Port;
-        connectionFactory.UserName = Username;
-        connectionFactory.Password = Password;
-
-        connection?.Abort();
-        connection = connectionFactory.CreateConnection();
-        connection.ConnectionShutdown += ConnectionShutDown;
+        _rabbitClient = _rabbitClientFactory.GetClientForServer(host, username, password, port);
+        _rabbitClient.OnShutdown = new Action(ConnectionShutDown);
         Connected = true;
         Debug.WriteLine("Connected");
     }
 
-    private void ConnectionShutDown(object sender, ShutdownEventArgs e)
+    private void ConnectionShutDown()
     {
         Connected = false;
-        connection.ConnectionShutdown -= ConnectionShutDown;
-        connection = null;
-        Debug.WriteLine("Disconnected");
+        Debug.WriteLine($"Disconnected.");
     }
 
     [RelayCommand]
     public async Task Disconnect()
     {
-        connection?.Abort();
+        _rabbitClient.Close();
     }
 
     [RelayCommand]
     public async Task Send()
     {
-        var connectionFactory = new ConnectionFactory();
-        connectionFactory.HostName = Host;
-        connectionFactory.Port = Port;
-        connectionFactory.UserName = Username;
-        connectionFactory.Password = Password;
-
-        var connection = connectionFactory.CreateConnection();
-        var channel = connection.CreateModel();
+        if(_rabbitClient == null || _rabbitClient.IsClosed)
+        {
+            return;
+        }
 
         var msg = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(new { Message = "Hi" });
-
-        channel.BasicPublish("proto.data", "c", null, msg);
+        _rabbitClient.Send("proto.data", "c", msg);
     }
 }
