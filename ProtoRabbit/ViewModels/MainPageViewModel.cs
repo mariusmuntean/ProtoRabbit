@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ProtoRabbit.Services;
@@ -26,7 +27,14 @@ public partial class MainPageViewModel : ObservableObject
     private bool connected = false;
 
     [ObservableProperty]
-    private string jsonMessage = "{ \"message\": \"Hello\"}";
+    private string exchange = "proto.data";
+
+    [ObservableProperty]
+    private string routingKey = "c";
+
+    [ObservableProperty]
+    private string jsonMessage = @"{ ""message"": ""Hello""}";
+
 
     private readonly RabbitClientFactory _rabbitClientFactory;
     private RabbitClient _rabbitClient;
@@ -65,8 +73,12 @@ public partial class MainPageViewModel : ObservableObject
             return;
         }
 
+        JsonMessage = JsonMessage.Replace("”", "\""); // why is this necessary Microsoft?
         var msgObj = System.Text.Json.JsonSerializer.Deserialize(JsonMessage, typeof(object));
         var msg = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(msgObj);
-        _rabbitClient.Send("proto.data", "c", msg);
+        _rabbitClient.Send(Exchange, RoutingKey, msg);
+
+        var t = Toast.Make($"Sent {JsonMessage}", CommunityToolkit.Maui.Core.ToastDuration.Long);
+        t.Show();
     }
 }

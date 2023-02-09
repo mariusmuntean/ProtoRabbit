@@ -73,9 +73,11 @@
             <Label Text="Send" HorizontalOptions="Start"/>
             <Entry Placeholder="Exchange"
                    ToolTipProperties.Text="Exchange"
+                   Text="{Binding Exchange}"
                    IsVisible="{Binding Connected}"/>
             <Entry Placeholder="Routing Key"
                    ToolTipProperties.Text="Routing Key"
+                   Text="{Binding RoutingKey}"
                    IsVisible="{Binding Connected}"/>
             <Grid IsVisible="{Binding Connected}" >
                 <Grid.ColumnDefinitions>
