@@ -9,6 +9,22 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="25" />
+            </Style>
+            <Style TargetType="Editor">
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+            <Style TargetType="Entry">
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+            <Style x:Key="SectionLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="Large" />
+                <Setter Property="TextColor" Value="LightGrey" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -21,7 +37,8 @@
             <HorizontalStackLayout Spacing="25" Padding="30"
                                    VerticalOptions="CenterAndExpand"
                                    HorizontalOptions="Center"
-                                   HeightRequest="150"                                   MaximumHeightRequest="110">
+                                   HeightRequest="150"
+                                   MaximumHeightRequest="110">
                 <Image Source="protobuf.png" HeightRequest="60" WidthRequest="250"
                        BackgroundColor="AliceBlue"/>
                 <Image Source="rabbitmq.png" HeightRequest="60" WidthRequest="250"
@@ -29,9 +46,10 @@
             </HorizontalStackLayout>
 
             <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
-            <Label Text="Server" HorizontalOptions="Start"/>
+            <Label Text="Server" HorizontalOptions="Start" Style="{StaticResource SectionLabelStyle}"/>
             <!-- host and port -->
-            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+            <HorizontalStackLayout Spacing="10"
+                                   HorizontalOptions="Center">
                 <Entry Text="{Binding Host}" 
                    Placeholder="RabbitMQ URL"
                    WidthRequest="350"></Entry>
@@ -42,7 +60,7 @@
 
             <!-- username and pasword -->
             <HorizontalStackLayout Spacing="10"
-                                   HorizontalOptions="Fill">
+                                   HorizontalOptions="Center">
                 <Entry Text="{Binding Username}"
                    Placeholder="Username"
                    WidthRequest="350"></Entry>
@@ -70,7 +88,7 @@
             </HorizontalStackLayout>
 
             <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
-            <Label Text="Send" HorizontalOptions="Start"/>
+            <Label Text="Send" HorizontalOptions="Start" Style="{StaticResource SectionLabelStyle}"/>
             <Entry Placeholder="Exchange"
                    ToolTipProperties.Text="Exchange"
                    Text="{Binding Exchange}"
@@ -79,26 +97,40 @@
                    ToolTipProperties.Text="Routing Key"
                    Text="{Binding RoutingKey}"
                    IsVisible="{Binding Connected}"/>
-            <Grid IsVisible="{Binding Connected}" >
+
+            <Grid IsVisible="{Binding Connected}"
+                  MaximumWidthRequest="300"
+                  ColumnSpacing="8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Editor Grid.Column="0"
+
+                <VerticalStackLayout Grid.Column="0" Spacing="5">
+                    <Border >
+                        <Editor 
                         Placeholder="JSON Message"
-                        BackgroundColor="#44FFFFFF"
                         ToolTipProperties.Text="JSON Message"
                         HeightRequest="150"
-                        WidthRequest="250"
+                        HorizontalOptions="Fill"
                         Text="{Binding JsonMessage, Mode=TwoWay}"
                         />
-                <Editor Grid.Column="1"
+                    </Border>
+                    <Button Text="Prettify"
+                            FontSize="Default"
+                            HorizontalOptions="Center"
+                            Command="{Binding PrettifyMessageCommand}" />
+                </VerticalStackLayout>
+
+                <Border Grid.Column="1">
+                    <Editor 
                         Placeholder="Proto File"
                         BackgroundColor="#44FFFFFF"
                         ToolTipProperties.Text="Proto File"
                         HeightRequest="150"
                         WidthRequest="250"
                         />
+                </Border>
             </Grid>
 
             <Button Text="Send" HorizontalOptions="Center"
@@ -111,7 +143,7 @@
                    IsVisible="{Binding Connected, Converter={StaticResource InvertedBoolConverter}}"/>
 
             <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
-            <Label Text="Receive" HorizontalOptions="Start"/>
+            <Label Text="Receive" HorizontalOptions="Start" Style="{StaticResource SectionLabelStyle}"/>
 
 
         </VerticalStackLayout>

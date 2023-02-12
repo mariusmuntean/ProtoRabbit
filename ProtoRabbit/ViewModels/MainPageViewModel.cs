@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ProtoRabbit.Services;
 using RabbitMQ.Client;
+using System.Text.Json;
 
 namespace ProtoRabbit.ViewModels;
 
@@ -73,12 +74,6 @@ public partial class MainPageViewModel : ObservableObject
             return;
         }
 
-        JsonMessage = JsonMessage
-            .Replace("”", "\"") // why is this necessary Microsoft?
-            .Replace("“", "\"") // why is this necessary Microsoft?
-            .Replace("\r", "")
-            .Replace("\n", "")
-            ;
         Debug.WriteLine(JsonMessage);
         var msgObj = System.Text.Json.JsonSerializer.Deserialize(JsonMessage, typeof(object));
         var msg = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(msgObj);
@@ -86,5 +81,19 @@ public partial class MainPageViewModel : ObservableObject
 
         var t = Toast.Make($"Sent {JsonMessage}", CommunityToolkit.Maui.Core.ToastDuration.Long);
         t.Show();
+    }
+
+    [RelayCommand]
+    public void PrettifyMessage()
+    {
+        try
+        {
+            JsonMessage = JsonSerializer.Serialize(JsonSerializer.Deserialize(JsonMessage, typeof(object)), typeof(object), new JsonSerializerOptions { WriteIndented = true });
+        }
+        catch (Exception ex)
+        {
+
+            Toast.Make($"Prettify Failed {ex.ToString()}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+        }
     }
 }
