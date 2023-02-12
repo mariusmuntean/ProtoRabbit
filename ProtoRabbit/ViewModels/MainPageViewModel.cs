@@ -1,40 +1,35 @@
 using System.Diagnostics;
-using System.Threading.Tasks;
+using System.Text.Json;
 using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using ProtoRabbit.Messages;
 using ProtoRabbit.Services;
-using RabbitMQ.Client;
-using System.Text.Json;
 
 namespace ProtoRabbit.ViewModels;
 
 public partial class MainPageViewModel : ObservableObject
 {
+    [ObservableProperty] private string host = "localhost";
 
-    [ObservableProperty]
-    private string host = "localhost";
+    [ObservableProperty] private string username = "guest";
 
-    [ObservableProperty]
-    private string username = "guest";
+    [ObservableProperty] private string password = "guest";
 
-    [ObservableProperty]
-    private string password = "guest";
+    [ObservableProperty] private int port = 5672;
 
-    [ObservableProperty]
-    private int port = 5672;
+    [ObservableProperty] private bool connected = false;
 
-    [ObservableProperty]
-    private bool connected = false;
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SendCommand))] private string exchange = null;
 
-    [ObservableProperty]
-    private string exchange = "proto.data";
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SendCommand))] private string routingKey = null;
 
-    [ObservableProperty]
-    private string routingKey = "c";
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SendCommand))] private string jsonMessage = null;
+    [ObservableProperty ] private string protoFile = null;
 
-    [ObservableProperty]
-    private string jsonMessage = @"{ ""message"": ""Hello""}";
+    [ObservableProperty] private List<SendableMessageBase> sendableMessages;
+    [ObservableProperty] private SendableMessageBase sendableMessage;
 
 
     private readonly RabbitClientFactory _rabbitClientFactory;
@@ -43,6 +38,9 @@ public partial class MainPageViewModel : ObservableObject
     public MainPageViewModel(RabbitClientFactory rabbitClientFactory)
     {
         _rabbitClientFactory = rabbitClientFactory;
+
+        sendableMessages = new List<SendableMessageBase> { new CreateSendableMessage(), new DeleteSendableMessage() }; // ToDo use reflection to load all subclasses
+        sendableMessage = sendableMessages.Last();
     }
 
     [RelayCommand]
@@ -66,7 +64,7 @@ public partial class MainPageViewModel : ObservableObject
         _rabbitClient.Close();
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanSend))]
     public void Send()
     {
         if (_rabbitClient == null || _rabbitClient.IsClosed)
@@ -75,13 +73,15 @@ public partial class MainPageViewModel : ObservableObject
         }
 
         Debug.WriteLine(JsonMessage);
-        var msgObj = System.Text.Json.JsonSerializer.Deserialize(JsonMessage, typeof(object));
-        var msg = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(msgObj);
+        var msgObj = JsonSerializer.Deserialize(JsonMessage, typeof(object));
+        var msg = JsonSerializer.SerializeToUtf8Bytes(msgObj);
         _rabbitClient.Send(Exchange, RoutingKey, msg);
 
-        var t = Toast.Make($"Sent {JsonMessage}", CommunityToolkit.Maui.Core.ToastDuration.Long);
+        var t = Toast.Make($"Sent {JsonMessage}", ToastDuration.Long);
         t.Show();
     }
+
+    public bool CanSend() => !string.IsNullOrWhiteSpace(Exchange) && !string.IsNullOrWhiteSpace(RoutingKey) && !string.IsNullOrWhiteSpace(JsonMessage);
 
     [RelayCommand]
     public void PrettifyMessage()
@@ -92,8 +92,17 @@ public partial class MainPageViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-
-            Toast.Make($"Prettify Failed {ex.ToString()}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+            Toast.Make($"Prettify Failed {ex.ToString()}", ToastDuration.Long).Show();
         }
+    }
+
+    [RelayCommand]
+    public void SendableMessageIndexChanged()
+    {
+        var sendableMessage = SendableMessage;
+        Exchange = sendableMessage.PreferredExchangeName;
+        RoutingKey = sendableMessage.PreferredRoutingKey;
+        JsonMessage = sendableMessage.SampleJsonMessage;
+        ProtoFile = sendableMessage.ProtoSchema;
     }
 }

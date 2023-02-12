@@ -1,10 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:ProtoRabbit.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              x:DataType="viewmodel:MainPageViewModel"
-             x:Class="ProtoRabbit.MainPage">
+             x:Class="ProtoRabbit.MainPage"
+             Title="">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -25,6 +28,17 @@
                 <Setter Property="FontSize" Value="Large" />
                 <Setter Property="TextColor" Value="LightGrey" />
             </Style>
+            <Style x:Key="JsonMessageStyle" TargetType="Entry" >
+                <Setter Property="FontFamily" Value="CascadiaMono" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontAutoScalingEnabled" Value="True" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="StartAndExpand" />
+            </Style>
+            <Style x:Key="ParameterEntryStyle" TargetType="Entry" >
+                <Setter Property="FontFamily" Value="CascadiaMono" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -40,110 +54,147 @@
                                    HeightRequest="150"
                                    MaximumHeightRequest="110">
                 <Image Source="protobuf.png" HeightRequest="60" WidthRequest="250"
-                       BackgroundColor="AliceBlue"/>
+                       BackgroundColor="AliceBlue" />
                 <Image Source="rabbitmq.png" HeightRequest="60" WidthRequest="250"
-                       BackgroundColor="AliceBlue"/>
+                       BackgroundColor="AliceBlue" />
             </HorizontalStackLayout>
 
             <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
-            <Label Text="Server" HorizontalOptions="Start" Style="{StaticResource SectionLabelStyle}"/>
+
+            <!-- SERVER -->
+            <Label Text="Server" HorizontalOptions="Start" Style="{StaticResource SectionLabelStyle}" />
             <!-- host and port -->
             <HorizontalStackLayout Spacing="10"
                                    HorizontalOptions="Center">
-                <Entry Text="{Binding Host}" 
-                   Placeholder="RabbitMQ URL"
-                   WidthRequest="350"></Entry>
+                <Entry Text="{Binding Host}"
+                       Placeholder="RabbitMQ URL"
+                       WidthRequest="350"
+                       Style="{StaticResource ParameterEntryStyle}">
+                </Entry>
                 <Entry Text="{Binding Port}"
-                   Placeholder="RabbitMQ URL"
-                   WidthRequest="350"></Entry>
+                       Placeholder="RabbitMQ URL"
+                       WidthRequest="350"
+                       Style="{StaticResource ParameterEntryStyle}">
+                </Entry>
             </HorizontalStackLayout>
 
             <!-- username and pasword -->
             <HorizontalStackLayout Spacing="10"
                                    HorizontalOptions="Center">
                 <Entry Text="{Binding Username}"
-                   Placeholder="Username"
-                   WidthRequest="350"></Entry>
-                <Entry Text="{Binding Password}" 
-                   Placeholder="Password"
-                   HorizontalOptions="Fill"
-                   WidthRequest="350"></Entry>
+                       Placeholder="Username"
+                       WidthRequest="350"
+                       Style="{StaticResource ParameterEntryStyle}">
+                </Entry>
+                <Entry Text="{Binding Password}"
+                       Placeholder="Password"
+                       HorizontalOptions="Fill"
+                       WidthRequest="350"
+                       Style="{StaticResource ParameterEntryStyle}">
+                </Entry>
             </HorizontalStackLayout>
 
 
             <HorizontalStackLayout HorizontalOptions="Center" Spacing="25">
-                <Button 
-                Text="Connect"
-                Command="{Binding ConnectCommand}"
-                HorizontalOptions="Center"
-                IsVisible="{Binding Connected, Converter={StaticResource InvertedBoolConverter}}"
-                />
+                <Button
+                    Text="Connect"
+                    Command="{Binding ConnectCommand}"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding Connected, Converter={StaticResource InvertedBoolConverter}}" />
 
                 <Button
-                Text="Disconnect"
-                Command="{Binding DisconnectCommand}"
-                HorizontalOptions="Center"
-                IsVisible="{Binding Connected}"
-                />
+                    Text="Disconnect"
+                    Command="{Binding DisconnectCommand}"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding Connected}" />
             </HorizontalStackLayout>
 
-            <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
-            <Label Text="Send" HorizontalOptions="Start" Style="{StaticResource SectionLabelStyle}"/>
-            <Entry Placeholder="Exchange"
-                   ToolTipProperties.Text="Exchange"
-                   Text="{Binding Exchange}"
-                   IsVisible="{Binding Connected}"/>
-            <Entry Placeholder="Routing Key"
-                   ToolTipProperties.Text="Routing Key"
-                   Text="{Binding RoutingKey}"
-                   IsVisible="{Binding Connected}"/>
+            <!-- SEND -->
+            <VerticalStackLayout
+                Spacing="25"
+                Padding="30,0"
+                IsVisible="{Binding Connected}"
+                HeightRequest="650">
+                <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
+                <Label Text="Send" HorizontalOptions="Start" Style="{StaticResource SectionLabelStyle}" />
 
-            <Grid IsVisible="{Binding Connected}"
-                  MaximumWidthRequest="300"
-                  ColumnSpacing="8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
+                <Picker Title="Select a sendable message"
+                        x:Name="SelectableMessagePicker"
+                        ItemsSource="{Binding SendableMessages}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding SendableMessage, Mode=TwoWay}"
+                        HorizontalOptions="Center"
+                        WidthRequest="300">
+                    <Picker.Behaviors>
+                        <toolkit:EventToCommandBehavior
+                            EventName="SelectedIndexChanged"
+                            Command="{Binding SendableMessageIndexChangedCommand}"
+                            />
+                    </Picker.Behaviors>
+                </Picker>
 
-                <VerticalStackLayout Grid.Column="0" Spacing="5">
-                    <Border >
-                        <Editor 
-                        Placeholder="JSON Message"
-                        ToolTipProperties.Text="JSON Message"
-                        HeightRequest="150"
-                        HorizontalOptions="Fill"
-                        Text="{Binding JsonMessage, Mode=TwoWay}"
-                        />
+                <Entry Placeholder="Exchange"
+                       ToolTipProperties.Text="Exchange"
+                       Text="{Binding Exchange}"
+                       Style="{StaticResource ParameterEntryStyle}"/>
+                <Entry Placeholder="Routing Key"
+                       ToolTipProperties.Text="Routing Key"
+                       Text="{Binding RoutingKey}"
+                       Style="{StaticResource ParameterEntryStyle}"/>
+
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" HorizontalOptions="FillAndExpand"
+                                VerticalOptions="StartAndExpand">
+                        <Grid Padding="0,0,5,5">
+                            <Editor 
+                                Placeholder="JSON Message"
+                                ToolTipProperties.Text="JSON Message"
+                                AutoSize="TextChanges"
+                                Style="{StaticResource JsonMessageStyle}"
+                                Text="{Binding JsonMessage, Mode=TwoWay}" />
+                            <ImageButton Source="shine.png"
+                                         ToolTipProperties.Text="Prettify"
+                                Padding="2"
+                                HeightRequest="10"
+                                WidthRequest="10"
+                                BackgroundColor="{StaticResource Secondary}"
+                                CornerRadius="5"
+                                HorizontalOptions="End"
+                                VerticalOptions="End"
+                                Command="{Binding PrettifyMessageCommand}" />
+                        </Grid>
                     </Border>
-                    <Button Text="Prettify"
-                            FontSize="Default"
-                            HorizontalOptions="Center"
-                            Command="{Binding PrettifyMessageCommand}" />
-                </VerticalStackLayout>
 
-                <Border Grid.Column="1">
-                    <Editor 
-                        Placeholder="Proto File"
-                        BackgroundColor="#44FFFFFF"
-                        ToolTipProperties.Text="Proto File"
-                        HeightRequest="150"
-                        WidthRequest="250"
-                        />
-                </Border>
-            </Grid>
 
-            <Button Text="Send" HorizontalOptions="Center"
-                    ToolTipProperties.Text="Click to send"
-                    Command="{Binding SendCommand}"
-                    IsVisible="{Binding Connected}"/>
-            <Label Text="Disconnected"
-                   HorizontalOptions="CenterAndExpand"
-                   BackgroundColor="Gray"
-                   IsVisible="{Binding Connected, Converter={StaticResource InvertedBoolConverter}}"/>
+                    <Border Grid.Column="1">
+                        <Editor Placeholder="Proto file"
+                                ToolTipProperties.Text="Proto File"
+                                Style="{StaticResource JsonMessageStyle}"                                
+                                AutoSize="TextChanges"
+                                Text="{Binding ProtoFile}"/>
+                    </Border>
 
-            <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
-            <Label Text="Receive" HorizontalOptions="Start" Style="{StaticResource SectionLabelStyle}"/>
+                </Grid>
+
+                <Button Text="Send" HorizontalOptions="Center"
+                        ToolTipProperties.Text="Click to send"
+                        Command="{Binding SendCommand}" />
+            </VerticalStackLayout>
+
+            <!-- RECEIVE -->
+            <VerticalStackLayout
+                Spacing="25"
+                Padding="30,0"
+                VerticalOptions="Center"
+                IsVisible="{Binding Connected}">
+                <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
+                <Label Text="Receive" HorizontalOptions="Start" Style="{StaticResource SectionLabelStyle}" />
+            </VerticalStackLayout>
 
 
         </VerticalStackLayout>
