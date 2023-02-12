@@ -1,7 +1,6 @@
-﻿using ObjCRuntime;
-using UIKit;
+﻿using UIKit;
 
-namespace ProtoRabbit;
+namespace ProtoRabbit.Platforms.MacCatalyst;
 
 public class Program
 {

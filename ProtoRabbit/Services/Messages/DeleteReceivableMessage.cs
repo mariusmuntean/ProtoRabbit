@@ -1,4 +1,4 @@
-namespace ProtoRabbit.Messages;
+namespace ProtoRabbit.Services.Messages;
 
 public class DeleteReceivableMessage : ReceivableMessageBase
 {

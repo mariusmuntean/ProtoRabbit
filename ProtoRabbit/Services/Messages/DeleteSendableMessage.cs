@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace ProtoRabbit.Messages;
+namespace ProtoRabbit.Services.Messages;
 
 public class DeleteSendableMessage : SendableMessageBase
 {

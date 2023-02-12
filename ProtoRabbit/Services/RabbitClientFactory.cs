@@ -1,33 +1,23 @@
-﻿using System;
-using RabbitMQ.Client;
+﻿using RabbitMQ.Client;
 
 namespace ProtoRabbit.Services;
 
 public class RabbitClientFactory
 {
-    Dictionary<(string host, string username, string password, int port), IConnection> _serverToConnectionMap = new Dictionary<(string host, string username, string password, int port), IConnection>();
+    private readonly CachingConnectionFactory _cachingConnectionFactory;
+
+    public RabbitClientFactory(CachingConnectionFactory cachingConnectionFactory)
+    {
+        _cachingConnectionFactory = cachingConnectionFactory;
+    }
 
     public RabbitClient GetClientForServer(string host, string username, string password, int port)
     {
-        (string host, string username, string password, int port) server = (host, username, password, port);
-        if (!_serverToConnectionMap.ContainsKey(server))
-        {
-            var connectionFactory = new ConnectionFactory();
-            connectionFactory.HostName = host;
-            connectionFactory.UserName = username;
-            connectionFactory.Password = password;
-            connectionFactory.Port = port;
-
-            var newConnection = connectionFactory.CreateConnection("ProtoRabbit");
-            _serverToConnectionMap[server] = newConnection;
-        }
-
-        var connection = _serverToConnectionMap[server];
+        var connection = _cachingConnectionFactory.GetConnectionForServer(host, username, password, port);
         var channel = connection.CreateModel();
         return new RabbitClient(channel);
     }
 }
-
 
 public class RabbitClient
 {

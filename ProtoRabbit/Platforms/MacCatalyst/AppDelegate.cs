@@ -1,8 +1,6 @@
 ﻿using Foundation;
-using Microsoft.Maui;
-using Microsoft.Maui.Hosting;
 
-namespace ProtoRabbit;
+namespace ProtoRabbit.Platforms.MacCatalyst;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

@@ -3,7 +3,7 @@ using ProtoBuf;
 namespace ProtoRabbit.Messages;
 
 [ProtoContract]
-public class Create:IFoo
+public class Create
 {
     [ProtoMember(1)] public string Prop1 { get; set; }
 

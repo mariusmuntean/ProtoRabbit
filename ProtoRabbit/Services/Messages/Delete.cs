@@ -1,14 +1,9 @@
 using ProtoBuf;
 
-namespace ProtoRabbit.Messages;
+namespace ProtoRabbit.Services.Messages;
 
 [ProtoContract]
-public class Delete:IFoo
+public class Delete
 {
     [ProtoMember(1)] public string Id { get; set; }
-}
-
-public interface IFoo
-{
-    
 }

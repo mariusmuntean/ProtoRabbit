@@ -1,10 +1,9 @@
 using ProtoBuf;
 using ProtoBuf.Meta;
 
-namespace ProtoRabbit.Messages;
+namespace ProtoRabbit.Services.Messages;
 
-// ToDo: maybe a dynamic version as well?
-public abstract class SendableMessageBase
+public abstract class ReceivableMessageBase
 {
     public abstract string PreferredExchangeName { get; }
     public abstract string PreferredRoutingKey { get; }
@@ -19,10 +18,5 @@ public abstract class SendableMessageBase
         get => Serializer.GetProto(new SchemaGenerationOptions {Types = {MessageType}});
     }
 
-    public virtual string Name
-    {
-        get => MessageType.Name;
-    }
-
-    public virtual string SampleJsonMessage { get; set; }
+    public string TargetQueueName => $"{PreferredExchangeName}.{PreferredRoutingKey}";
 }

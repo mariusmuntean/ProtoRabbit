@@ -5,6 +5,7 @@ using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
 using ProtoRabbit.Services;
 using ProtoRabbit.ViewModels;
+using RabbitMQ.Client;
 
 namespace ProtoRabbit;
 
@@ -27,6 +28,9 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
+        
+        builder.Services.AddSingleton<ConnectionFactory>(); // RabbitMQ connection factory
+        builder.Services.AddSingleton<CachingConnectionFactory>(); // ProtoRabbit connection factory
         builder.Services.AddSingleton<RabbitClientFactory>();
 
         builder.Services.AddSingleton<MainPage>();
