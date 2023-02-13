@@ -1,7 +1,7 @@
 ﻿using Microsoft.Maui.Controls;
 using ProtoRabbit.ViewModels;
 
-namespace ProtoRabbit;
+namespace ProtoRabbit.Pages;
 
 public partial class MainPage : ContentPage
 {

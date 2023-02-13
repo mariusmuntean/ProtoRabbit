@@ -58,6 +58,7 @@
 
     <ItemGroup>
       <Folder Include="Services\" />
+      <Folder Include="Pages\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -65,9 +66,18 @@
       <None Remove="protobuf-net" />
       <None Remove="Resources\Fonts\CascadiaMono.ttf" />
       <None Remove="Resources\Images\hot-svgrepo-com.svg" />
+      <None Remove="Pages\" />
     </ItemGroup>
     <ItemGroup>
       <BundleResource Include="Resources\Fonts\CascadiaMono.ttf" />
       <BundleResource Include="Resources\Images\shine.svg" />
+    </ItemGroup>
+    <ItemGroup>
+      <MauiXaml Update="Pages\SubscriptionEditorPage.xaml">
+        <SubType></SubType>
+      </MauiXaml>
+      <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\MainPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
     </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 using ProtoBuf;
 
-namespace ProtoRabbit.Messages;
+namespace ProtoRabbit.Services.Messages;
 
 [ProtoContract]
 public class Create

@@ -7,7 +7,7 @@
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              xmlns:services="clr-namespace:ProtoRabbit.Services"
              x:DataType="viewmodel:MainPageViewModel"
-             x:Class="ProtoRabbit.MainPage"
+             x:Class="ProtoRabbit.Pages.MainPage"
              Title="">
 
     <ContentPage.Resources>
@@ -195,6 +195,10 @@
                 IsVisible="{Binding Connected}">
                 <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
                 <Label Text="Receive" HorizontalOptions="Start" Style="{StaticResource SectionLabelStyle}" />
+
+                <Button Text="New Sub"
+                        HorizontalOptions="Start"
+                        Command="{Binding OpenSubscriptionEditorCommand}"></Button>
 
                 <Grid>
                     <Grid.ColumnDefinitions>

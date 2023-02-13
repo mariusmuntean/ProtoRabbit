@@ -1,8 +1,9 @@
+using System;
 using System.Text.Json;
 
-namespace ProtoRabbit.Messages;
+namespace ProtoRabbit.Services.Messages;
 
-public class CreateSendableMessage : Services.Messages.SendableMessageBase
+public class CreateSendableMessage : SendableMessageBase
 {
     public override string PreferredExchangeName => "proto.data";
     public override string PreferredRoutingKey => "create";

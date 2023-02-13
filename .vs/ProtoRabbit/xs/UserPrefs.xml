@@ -1,37 +1,44 @@
 ﻿<Properties StartupConfiguration="{4A8B01F0-1058-49C1-A254-C56AA4187CCA}|Default">
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit/MainPage.xaml">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.ProtoRabbit PreferredExecutionTarget="MyAppleMacCatalystID" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit/AppShell.xaml">
     <Files>
-      <File FileName="ProtoRabbit/ViewModels/MainPageViewModel.cs" Line="91" Column="10" />
-      <File FileName="ProtoRabbit/App.xaml.cs" Line="14" Column="91" />
-      <File FileName="ProtoRabbit/MainPage.xaml.cs" Line="14" Column="6" />
-      <File FileName="ProtoRabbit/Messages/Create.cs" Line="13" Column="2" />
-      <File FileName="ProtoRabbit/Messages/SendableMessageBase.cs" Line="27" Column="44" />
-      <File FileName="ProtoRabbit/Messages/CreateSendableMessage.cs" Line="11" Column="1" />
-      <File FileName="ProtoRabbit/Messages/DeleteSendableMessage.cs" Line="15" Column="2" />
-      <File FileName="ProtoRabbit/Messages/ReceivableMessageBase.cs" Line="22" Column="2" />
-      <File FileName="ProtoRabbit/MainPage.xaml" Line="183" Column="35" />
+      <File FileName="ProtoRabbit/Pages/SubscriptionEditorPage.xaml" Line="17" Column="19" />
+      <File FileName="ProtoRabbit/ViewModels/MainPageViewModel.cs" Line="139" Column="63" />
+      <File FileName="ProtoRabbit/MauiProgram.cs" Line="1" Column="1" />
+      <File FileName="ProtoRabbit/App.xaml.cs" Line="1" Column="1" />
+      <File FileName="ProtoRabbit/AppShell.xaml.cs" Line="11" Column="43" />
+      <File FileName="ProtoRabbit/MainPage.xaml" Line="13" Column="28" />
+      <File FileName="ProtoRabbit/Pages/MainPage.xaml.cs" Line="15" Column="2" />
+      <File FileName="ProtoRabbit/Pages/SubscriptionEditorPage.xaml.cs" Line="1" Column="1" />
+      <File FileName="ProtoRabbit/AppShell.xaml" Line="15" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="ProtoRabbit" expanded="True">
             <Node name="ProtoRabbit" expanded="True">
-              <Node name="Messages" expanded="True" />
-              <Node name="Services" expanded="True" />
+              <Node name="Pages" expanded="True">
+                <Node name="MainPage.xaml" expanded="True" selected="True" />
+                <Node name="SubscriptionEditorPage.xaml" expanded="True" />
+              </Node>
+              <Node name="Services" expanded="True">
+                <Node name="Messages" expanded="True" />
+              </Node>
               <Node name="ViewModels" expanded="True" />
               <Node name="App.xaml" expanded="True" />
-              <Node name="MainPage.xaml" expanded="True" selected="True" />
+              <Node name="AppShell.xaml" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.ProtoRabbit PreferredExecutionTarget="MyAppleMacCatalystID" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/marius/Projects/ProtoRabbit/ProtoRabbit/ViewModels/MainPageViewModel.cs" relfile="ProtoRabbit/ViewModels/MainPageViewModel.cs" line="93" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>

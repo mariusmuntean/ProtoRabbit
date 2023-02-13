@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:services="clr-namespace:ProtoRabbit.Services"
+             xmlns:viewmodel="clr-namespace:ProtoRabbit.ViewModels"
+             x:DataType="viewmodel:SubscriptionEditorViewModel"
+
+             x:Class="ProtoRabbit.Pages.SubscriptionEditorPage"
+             Shell.PresentationMode="Animated"
+             Title="XXX">
+    <VerticalStackLayout
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        Spacing="5">
+        <Picker Title="Select a receivable message"
+                        x:Name="ReceivableMessagePicker"
+                        ToolTipProperties.Text="Select a template"
+                        ItemsSource="{Binding ReceivableMessages}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding ReceivableMessage, Mode=TwoWay}"
+                        HorizontalOptions="Center"
+                        WidthRequest="150">
+            <Picker.Behaviors>
+                <toolkit:EventToCommandBehavior
+                            EventName="SelectedIndexChanged"
+                            Command="{Binding ReceivableMessageChangedCommand}"
+                            />
+            </Picker.Behaviors>
+        </Picker>
+        <Entry Placeholder="Exchange"
+               WidthRequest="350"
+               Text="{Binding Exchange, Mode=TwoWay}"></Entry>
+        <Entry Placeholder="Routing key"
+               WidthRequest="350"
+               Text="{Binding RoutingKey, Mode=TwoWay}"></Entry>
+        <Entry Placeholder="Queue"
+               WidthRequest="350"
+               Text="{Binding QueueName, Mode=TwoWay}"></Entry>
+        <Entry Placeholder="Subscription Name"
+               WidthRequest="350"
+               Text="{Binding SubscriptionName, Mode=TwoWay}"></Entry>
+
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+        <Button Text="Create" Command="{Binding CreateCommand}" />
+        <Button Text="Cancel" TextColor="OrangeRed" Command="{Binding CancelCommand}" />
+        </HorizontalStackLayout>
+
+    </VerticalStackLayout>
+</ContentPage>

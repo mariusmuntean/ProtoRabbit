@@ -18,5 +18,10 @@ public abstract class ReceivableMessageBase
         get => Serializer.GetProto(new SchemaGenerationOptions {Types = {MessageType}});
     }
 
+    public virtual string Name
+    {
+        get => MessageType.Name;
+    }
+
     public string TargetQueueName => $"{PreferredExchangeName}.{PreferredRoutingKey}";
 }

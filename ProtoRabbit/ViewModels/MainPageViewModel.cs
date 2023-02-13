@@ -6,13 +6,13 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ProtoBuf;
+using ProtoRabbit.Pages;
 using ProtoRabbit.Services;
 using ProtoRabbit.Services.Messages;
-using RabbitMQ.Client;
 
 namespace ProtoRabbit.ViewModels;
 
-public partial class MainPageViewModel : ObservableObject
+public partial class MainPageViewModel : ObservableObject, IQueryAttributable
 {
     [ObservableProperty] private string host = "localhost";
 
@@ -49,19 +49,18 @@ public partial class MainPageViewModel : ObservableObject
         _rabbitClientFactory = rabbitClientFactory;
         _cachingConnectionFactory = cachingConnectionFactory;
 
-        sendableMessages = new List<SendableMessageBase> { new Messages.CreateSendableMessage(), new DeleteSendableMessage() }; // ToDo use reflection to load all subclasses
-        sendableMessage = sendableMessages.Last();
+        sendableMessages = new List<SendableMessageBase> {new CreateSendableMessage(), new DeleteSendableMessage()}; // ToDo use reflection to load all subclasses
 
-        _subscriptions.Add(
-            new Subscription<Messages.Create>(
-                _cachingConnectionFactory.GetConnectionForServer(host, username, password, port),
-                "proto.data",
-                "create",
-                "proto.data.create",
-                "Create Messages",
-                wrapper => { Debug.WriteLine(wrapper.Message.Prop1); }
-            )
+
+        var dummySub = new Subscription(
+            _cachingConnectionFactory.GetConnectionForServer(host, username, password, port),
+            "proto.data",
+            "create",
+            "proto.data.create",
+            "Create Messages"
         );
+        dummySub.StartConsuming(typeof(Create), wrapper => { Debug.WriteLine((wrapper.Message as Create)?.Prop1); });
+        _subscriptions.Add(dummySub);
     }
 
     [RelayCommand]
@@ -115,7 +114,7 @@ public partial class MainPageViewModel : ObservableObject
     {
         try
         {
-            JsonMessage = JsonSerializer.Serialize(JsonSerializer.Deserialize(JsonMessage, typeof(object)), typeof(object), new JsonSerializerOptions { WriteIndented = true });
+            JsonMessage = JsonSerializer.Serialize(JsonSerializer.Deserialize(JsonMessage, typeof(object)), typeof(object), new JsonSerializerOptions {WriteIndented = true});
         }
         catch (Exception ex)
         {
@@ -126,10 +125,27 @@ public partial class MainPageViewModel : ObservableObject
     [RelayCommand]
     public void SendableMessageIndexChanged()
     {
-        var sendableMessage = SendableMessage;
-        Exchange = sendableMessage.PreferredExchangeName;
-        RoutingKey = sendableMessage.PreferredRoutingKey;
-        JsonMessage = sendableMessage.SampleJsonMessage;
-        ProtoFile = sendableMessage.ProtoSchema;
+        Exchange = SendableMessage.PreferredExchangeName;
+        RoutingKey = SendableMessage.PreferredRoutingKey;
+        JsonMessage = SendableMessage.SampleJsonMessage;
+        ProtoFile = SendableMessage.ProtoSchema;
+    }
+
+    [RelayCommand]
+    public async Task OpenSubscriptionEditor()
+    {
+        await Shell.Current.GoToAsync($"{nameof(SubscriptionEditorPage)}?{nameof(Host)}={Host}&{nameof(Username)}={Username}&{nameof(Password)}={Password}&{nameof(Port)}={Port}");
+    }
+
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (query != null && query.ContainsKey("Subscription")
+                          && query["Subscription"] is Subscription subscription
+                          && query["Type"] is Type type
+           )
+        {
+            Subscriptions.Add(subscription);
+            subscription.StartConsuming(type, wrapper => Debug.WriteLine(JsonSerializer.Serialize(wrapper.Message)));
+        }
     }
 }

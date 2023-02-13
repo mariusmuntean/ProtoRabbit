@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
+using ProtoRabbit.Pages;
 using ProtoRabbit.Services;
 using ProtoRabbit.ViewModels;
 using RabbitMQ.Client;
@@ -35,6 +36,9 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddSingleton<MainPageViewModel>();
+        
+        builder.Services.AddSingleton<SubscriptionEditorPage>();
+        builder.Services.AddSingleton<SubscriptionEditorViewModel>();
 
         return builder.Build();
     }
