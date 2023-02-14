@@ -8,7 +8,7 @@
              xmlns:services="clr-namespace:ProtoRabbit.Services"
              x:DataType="viewmodel:MainPageViewModel"
              x:Class="ProtoRabbit.Pages.MainPage"
-             Title="">
+             Shell.NavBarIsVisible="False">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -29,41 +29,60 @@
                 <Setter Property="FontSize" Value="Large" />
                 <Setter Property="TextColor" Value="LightGrey" />
             </Style>
-            <Style x:Key="JsonMessageStyle" TargetType="Entry" >
+            <Style x:Key="JsonMessageStyle" TargetType="Entry">
                 <Setter Property="FontFamily" Value="CascadiaMono" />
                 <Setter Property="FontSize" Value="20" />
                 <Setter Property="FontAutoScalingEnabled" Value="True" />
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="VerticalOptions" Value="StartAndExpand" />
             </Style>
-            <Style x:Key="ParameterEntryStyle" TargetType="Entry" >
+            <Style x:Key="ParameterEntryStyle" TargetType="Entry">
                 <Setter Property="FontFamily" Value="CascadiaMono" />
                 <Setter Property="FontSize" Value="20" />
+            </Style>
+            <Style x:Key="SubscriptionLabelStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="CascadiaMono" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontAutoScalingEnabled" Value="True" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="StartAndExpand" />
+            </Style>
+            <Style x:Key="SubscriptionMessageLabelStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="CascadiaMono" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontAutoScalingEnabled" Value="True" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="StartAndExpand" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+    <Grid RowDefinitions="Auto, Auto, Auto, *"
+          RowSpacing="20"
+          Margin="10">
 
-            <HorizontalStackLayout Spacing="25" Padding="30"
+        <VerticalStackLayout Grid.Row="0"
+                             Spacing="25"
+                                Padding="30,0"
+                                VerticalOptions="Center">
+
+            <HorizontalStackLayout Spacing="20"
                                    VerticalOptions="CenterAndExpand"
                                    HorizontalOptions="Center"
-                                   HeightRequest="150"
+                                   HeightRequest="50"
                                    MaximumHeightRequest="110">
-                <Image Source="protobuf.png" HeightRequest="60" WidthRequest="250"
+                <Image Source="protobuf.png" HeightRequest="40" WidthRequest="180"
                        BackgroundColor="AliceBlue" />
-                <Image Source="rabbitmq.png" HeightRequest="60" WidthRequest="250"
+                <Image Source="rabbitmq.png" HeightRequest="40" WidthRequest="180"
                        BackgroundColor="AliceBlue" />
             </HorizontalStackLayout>
+        </VerticalStackLayout>
 
-            <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
-
-            <!-- SERVER -->
-            <Label Text="Server" HorizontalOptions="Start" Style="{StaticResource SectionLabelStyle}" />
+        <!-- SERVER -->
+        <VerticalStackLayout Grid.Row="1" Spacing="20">
+            <Label  Text="Server"
+                HorizontalOptions="Start"
+                Style="{StaticResource SectionLabelStyle}" />
             <!-- host and port -->
             <HorizontalStackLayout Spacing="10"
                                    HorizontalOptions="Center">
@@ -109,122 +128,171 @@
                     HorizontalOptions="Center"
                     IsVisible="{Binding Connected}" />
             </HorizontalStackLayout>
+        </VerticalStackLayout>
 
-            <!-- SEND -->
-            <VerticalStackLayout
+        <!-- SEND -->
+        <VerticalStackLayout
+            Grid.Row="2"
                 Spacing="25"
-                Padding="30,0"
-                IsVisible="{Binding Connected}"
-                HeightRequest="650">
-                <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
-                <Label Text="Send" HorizontalOptions="Start" Style="{StaticResource SectionLabelStyle}" />
+                IsVisible="{Binding Connected}">
+            <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
+            <Label Text="Send"
+                   HorizontalOptions="Start"
+                   Style="{StaticResource SectionLabelStyle}" />
 
-                <Picker Title="Select a sendable message"
+            <Picker Title="Select a sendable message"
                         x:Name="SelectableMessagePicker"
                         ItemsSource="{Binding SendableMessages}"
                         ItemDisplayBinding="{Binding Name}"
                         SelectedItem="{Binding SendableMessage, Mode=TwoWay}"
                         HorizontalOptions="Center"
                         WidthRequest="300">
-                    <Picker.Behaviors>
-                        <toolkit:EventToCommandBehavior
+                <Picker.Behaviors>
+                    <toolkit:EventToCommandBehavior
                             EventName="SelectedIndexChanged"
-                            Command="{Binding SendableMessageIndexChangedCommand}"
-                            />
-                    </Picker.Behaviors>
-                </Picker>
+                            Command="{Binding SendableMessageIndexChangedCommand}" />
+                </Picker.Behaviors>
+            </Picker>
 
-                <Entry Placeholder="Exchange"
+            <Entry Placeholder="Exchange"
                        ToolTipProperties.Text="Exchange"
                        Text="{Binding Exchange}"
-                       Style="{StaticResource ParameterEntryStyle}"/>
-                <Entry Placeholder="Routing Key"
+                       Style="{StaticResource ParameterEntryStyle}" />
+            <Entry Placeholder="Routing Key"
                        ToolTipProperties.Text="Routing Key"
                        Text="{Binding RoutingKey}"
-                       Style="{StaticResource ParameterEntryStyle}"/>
+                       Style="{StaticResource ParameterEntryStyle}" />
 
-                <Grid ColumnSpacing="8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-
-                    <Border Grid.Column="0" HorizontalOptions="FillAndExpand"
-                                VerticalOptions="StartAndExpand">
-                        <Grid Padding="0,0,5,5">
-                            <Editor 
+            <Grid ColumnSpacing="8" ColumnDefinitions="*, *">
+                <Border Grid.Column="0" HorizontalOptions="FillAndExpand"
+                            VerticalOptions="StartAndExpand">
+                    <Grid Padding="0,0,5,5">
+                        <Editor
                                 Placeholder="JSON Message"
                                 ToolTipProperties.Text="JSON Message"
                                 AutoSize="TextChanges"
                                 Style="{StaticResource JsonMessageStyle}"
                                 Text="{Binding JsonMessage, Mode=TwoWay}" />
-                            <ImageButton Source="shine.png"
+                        <ImageButton Source="shine.png"
                                          ToolTipProperties.Text="Prettify"
-                                Padding="2"
-                                HeightRequest="10"
-                                WidthRequest="10"
-                                BackgroundColor="{StaticResource Secondary}"
-                                CornerRadius="5"
-                                HorizontalOptions="End"
-                                VerticalOptions="End"
-                                Command="{Binding PrettifyMessageCommand}" />
-                        </Grid>
-                    </Border>
+                                         Padding="2"
+                                         HeightRequest="10"
+                                         WidthRequest="10"
+                                         BackgroundColor="{StaticResource Secondary}"
+                                         CornerRadius="5"
+                                         HorizontalOptions="End"
+                                         VerticalOptions="End"
+                                         Command="{Binding PrettifyMessageCommand}" />
+                    </Grid>
+                </Border>
 
 
-                    <Border Grid.Column="1">
-                        <Editor Placeholder="Proto file"
+                <Border Grid.Column="1">
+                    <Editor Placeholder="Proto file"
                                 ToolTipProperties.Text="Proto File"
-                                Style="{StaticResource JsonMessageStyle}"                                
+                                Style="{StaticResource JsonMessageStyle}"
                                 AutoSize="TextChanges"
-                                Text="{Binding ProtoFile}"/>
-                    </Border>
+                                Text="{Binding ProtoFile}" />
+                </Border>
 
-                </Grid>
+            </Grid>
 
-                <Button Text="Send" HorizontalOptions="Center"
+            <Button Text="Send" HorizontalOptions="Center"
                         ToolTipProperties.Text="Click to send"
                         Command="{Binding SendCommand}" />
-            </VerticalStackLayout>
+        </VerticalStackLayout>
 
-            <!-- RECEIVE -->
-            <VerticalStackLayout
+        <!-- RECEIVE -->
+        <VerticalStackLayout
+        Grid.Row="3"
                 Spacing="25"
-                Padding="30,0"
                 VerticalOptions="Center"
                 IsVisible="{Binding Connected}">
-                <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
-                <Label Text="Receive" HorizontalOptions="Start" Style="{StaticResource SectionLabelStyle}" />
+            <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
+            <Label Text="Receive"
+                   HorizontalOptions="Start"
+                   Style="{StaticResource SectionLabelStyle}" />
 
-                <Button Text="New Sub"
-                        HorizontalOptions="Start"
-                        Command="{Binding OpenSubscriptionEditorCommand}"></Button>
+            <Grid ColumnSpacing="10"
+                      ColumnDefinitions="300,Auto, *">
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
+                <!-- ToDo: pause/remove subscriptions -->
+                <CollectionView Grid.Column="0"
+                                    SelectionMode="Single"
+                                    ItemsSource="{Binding Subscriptions}"
+                                    SelectedItem="{Binding CurrentSubscription}"
+                                    SelectionChangedCommand="{Binding SelectedSubscriptionChangedCommand}">
+                    <CollectionView.Header>
+                        <HorizontalStackLayout >
+                            <Label Margin="10,0"
+                                       Text="Subscriptions"
+                                       FontSize="Default"
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center"/>
+                            <Button Text="+"
+                                        Padding="0"
+                                        BorderWidth="0"
+                                        Margin="0"
+                                        Scale="0.5"
+                                        Command="{Binding OpenSubscriptionEditorCommand}">
+                            </Button>
+                        </HorizontalStackLayout>
+                    </CollectionView.Header>
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical"
+                                               ItemSpacing="5" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="services:Subscription">
+                            <Label Text="{Binding SubscriptionName}"
+                                       Style="{StaticResource SubscriptionLabelStyle}"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <Label Text="None"
+                               FontSize="Small"/>
+                    </CollectionView.EmptyView>
+                </CollectionView>
 
-                    <CollectionView SelectionMode="Single" ItemsSource="{Binding Subscriptions}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="services:Subscription">
-                                <Label Text="{Binding SubscriptionName}"></Label>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                        <CollectionView.EmptyViewTemplate>
-                            <DataTemplate>
-                                <Label Text="No subscriptions"></Label>
-                            </DataTemplate>
-                        </CollectionView.EmptyViewTemplate>
-                    </CollectionView>
+                <BoxView Grid.Column="1"
+                             VerticalOptions="CenterAndExpand"
+                             WidthRequest="2"
+                             Color="Gray"></BoxView>
 
-                </Grid>
+                <CollectionView Grid.Column="2"
+                                    SelectionMode="Single"
+                                    VerticalScrollBarVisibility="Always"
+                                    VerticalOptions="FillAndExpand"
+                                    ItemsSource="{Binding CurrentSubscriptionMessages}">
+                    <CollectionView.Header>
+                        <HorizontalStackLayout >
+                            <Label Margin="10,0"
+                                       Text="Messages"
+                                       FontSize="Default"
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </CollectionView.Header>
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical"
+                                               ItemSpacing="15" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="services:Subscription">
+                            <Label Text="{Binding .}"
+                                       Style="{StaticResource SubscriptionMessageLabelStyle}"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <Label Text="None"
+                               FontSize="Small"/>
+                    </CollectionView.EmptyView>
+                </CollectionView>
 
-            </VerticalStackLayout>
-
+            </Grid>
 
         </VerticalStackLayout>
-    </ScrollView>
+
+    </Grid>
 
 </ContentPage>
