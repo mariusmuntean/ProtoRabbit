@@ -39,6 +39,9 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     [ObservableProperty] private SendableMessageBase sendableMessage;
 
     [ObservableProperty] private ObservableCollection<Subscription> _subscriptions = new ObservableCollection<Subscription>();
+    [ObservableProperty] private Subscription _currentSubscription;
+    [ObservableProperty] private ObservableCollection<string> _currentSubscriptionMessages;
+    private Dictionary<Subscription, ObservableCollection<string>> _subscriptionToMessageMap = new Dictionary<Subscription, ObservableCollection<string>>();
 
     private readonly CachingConnectionFactory _cachingConnectionFactory;
     private readonly RabbitClientFactory _rabbitClientFactory;
@@ -50,17 +53,6 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
         _cachingConnectionFactory = cachingConnectionFactory;
 
         sendableMessages = new List<SendableMessageBase> {new CreateSendableMessage(), new DeleteSendableMessage()}; // ToDo use reflection to load all subclasses
-
-
-        var dummySub = new Subscription(
-            _cachingConnectionFactory.GetConnectionForServer(host, username, password, port),
-            "proto.data",
-            "create",
-            "proto.data.create",
-            "Create Messages"
-        );
-        dummySub.StartConsuming(typeof(Create), wrapper => { Debug.WriteLine((wrapper.Message as Create)?.Prop1); });
-        _subscriptions.Add(dummySub);
     }
 
     [RelayCommand]
@@ -137,6 +129,13 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
         await Shell.Current.GoToAsync($"{nameof(SubscriptionEditorPage)}?{nameof(Host)}={Host}&{nameof(Username)}={Username}&{nameof(Password)}={Password}&{nameof(Port)}={Port}");
     }
 
+
+    [RelayCommand]
+    public void SelectedSubscriptionChanged()
+    {
+        CurrentSubscriptionMessages = _subscriptionToMessageMap[CurrentSubscription];
+    }
+
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         if (query != null && query.ContainsKey("Subscription")
@@ -145,7 +144,15 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
            )
         {
             Subscriptions.Add(subscription);
-            subscription.StartConsuming(type, wrapper => Debug.WriteLine(JsonSerializer.Serialize(wrapper.Message)));
+            _subscriptionToMessageMap[subscription] = new ObservableCollection<string>();
+            subscription.StartConsuming(type, wrapper =>
+            {
+                string message = $"{wrapper.DateTime} {JsonSerializer.Serialize(wrapper.Message)}";
+                _subscriptionToMessageMap[subscription].Add(message);
+            });
+
+            // clearing the dict otherwise even simple back navigation will return a full dict
+            query.Clear();
         }
     }
 }
