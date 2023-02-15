@@ -5,7 +5,8 @@
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              xmlns:services="clr-namespace:ProtoRabbit.Services"
              x:Class="ProtoRabbit.Components.SubscriptionsManager"
-             BindingContext="{x:Reference this}">
+             xmlns:components="clr-namespace:ProtoRabbit.Components"
+             x:DataType="components:SubscriptionsManager">
 
     <ContentView.Resources>
         <ResourceDictionary>

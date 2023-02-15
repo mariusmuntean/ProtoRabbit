@@ -206,12 +206,16 @@
         </VerticalStackLayout>
 
         <!-- RECEIVE -->
+
         <components:SubscriptionsManager Grid.Row="3"
                                          IsVisible="{Binding Connected}"
-                                    BindingContext="{Binding .}"
                      Grid.Column="1"
                      Grid.ColumnSpan="3"
-                     Subscriptions="{Binding Subscriptions}" CurrentSubscription="{Binding CurrentSubscription}" OpenSubscriptionEditorCommand="{Binding OpenSubscriptionEditorCommand}" />
+                     Subscriptions="{Binding Subscriptions}"
+                     CurrentSubscription="{Binding CurrentSubscription, Mode=TwoWay}"
+                     SelectedSubscriptionChangedCommand="{Binding SelectedSubscriptionChangedCommand}"
+                     OpenSubscriptionEditorCommand="{Binding OpenSubscriptionEditorCommand}"
+                     CurrentSubscriptionMessages="{Binding CurrentSubscriptionMessages}"/>
 
     </Grid>
 

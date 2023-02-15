@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace ProtoRabbit.Components;
@@ -37,14 +38,16 @@ public partial class SubscriptionsManager : ContentView
 
     void SubscriptionChanged(System.Object sender, Microsoft.Maui.Controls.SelectionChangedEventArgs e)
     {
+        CurrentSubscription = (Services.Subscription)e.CurrentSelection.FirstOrDefault();
+        SelectedSubscriptionChangedCommand?.Execute(null);
     }
 
 
     public static readonly BindableProperty OpenSubscriptionEditorCommandProperty = BindableProperty.Create(
-    nameof(OpenSubscriptionEditorCommand),
-    typeof(ICommand),
-    typeof(SubscriptionsManager)
-    );
+        nameof(OpenSubscriptionEditorCommand),
+        typeof(ICommand),
+        typeof(SubscriptionsManager)
+        );
 
     public ICommand OpenSubscriptionEditorCommand
     {
@@ -58,12 +61,25 @@ public partial class SubscriptionsManager : ContentView
     }
 
 
+    public static readonly BindableProperty SelectedSubscriptionChangedCommandProperty = BindableProperty.Create(
+        nameof(SelectedSubscriptionChangedCommand),
+        typeof(ICommand),
+        typeof(SubscriptionsManager)
+        );
+
+    public ICommand SelectedSubscriptionChangedCommand
+    {
+        get => (ICommand)GetValue(SelectedSubscriptionChangedCommandProperty);
+        set => SetValue(SelectedSubscriptionChangedCommandProperty, value);
+    }
+
+
 
     public static readonly BindableProperty CurrentSubscriptionMessagesProperty = BindableProperty.Create(
-    nameof(CurrentSubscriptionMessages),
-    typeof(ObservableCollection<string>),
-    typeof(SubscriptionsManager)
-    );
+        nameof(CurrentSubscriptionMessages),
+        typeof(ObservableCollection<string>),
+        typeof(SubscriptionsManager)
+        );
 
     public ObservableCollection<string> CurrentSubscriptionMessages
     {
