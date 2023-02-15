@@ -59,7 +59,8 @@
 
     <Grid RowDefinitions="Auto, Auto, Auto, *"
           RowSpacing="20"
-          Margin="10">
+          Margin="10"
+          BackgroundColor="DarkCyan">
 
         <VerticalStackLayout Grid.Row="0"
                              Spacing="25"
@@ -203,95 +204,108 @@
         </VerticalStackLayout>
 
         <!-- RECEIVE -->
-        <VerticalStackLayout
+        <Grid
         Grid.Row="3"
-                Spacing="25"
-                VerticalOptions="Center"
-                IsVisible="{Binding Connected}">
-            <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
+        RowDefinitions="Auto, Auto, *"
+        ColumnDefinitions="300,Auto, *"
+                RowSpacing="25"
+                 ColumnSpacing="10"
+                VerticalOptions="Fill"
+                IsVisible="{Binding Connected}"
+                BackgroundColor="DarkSlateBlue"
+                Padding="10">
+            <BoxView Grid.Row="0"
+                     Grid.Column="0"
+                     Grid.ColumnSpan="3"
+                     HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
             <Label Text="Receive"
+                   Grid.Row="1"
+                     Grid.Column="0"
+                     Grid.ColumnSpan="3"
                    HorizontalOptions="Start"
                    Style="{StaticResource SectionLabelStyle}" />
 
-            <Grid ColumnSpacing="10"
-                      ColumnDefinitions="300,Auto, *">
-
-                <!-- ToDo: pause/remove subscriptions -->
-                <CollectionView Grid.Column="0"
+            <!-- ToDo: pause/remove subscriptions -->
+            <CollectionView Grid.Row="2"
+                     Grid.Column="0"
                                     SelectionMode="Single"
                                     ItemsSource="{Binding Subscriptions}"
                                     SelectedItem="{Binding CurrentSubscription}"
-                                    SelectionChangedCommand="{Binding SelectedSubscriptionChangedCommand}">
-                    <CollectionView.Header>
-                        <HorizontalStackLayout >
-                            <Label Margin="10,0"
+                                    SelectionChangedCommand="{Binding SelectedSubscriptionChangedCommand}"
+                                    BackgroundColor="DarkGoldenrod">
+                <CollectionView.Header>
+                    <HorizontalStackLayout >
+                        <Label Margin="10,0"
                                        Text="Subscriptions"
                                        FontSize="Default"
                                        FontAttributes="Bold"
                                        VerticalOptions="Center"/>
-                            <Button Text="+"
+                        <Button Text="+"
                                         Padding="0"
                                         BorderWidth="0"
                                         Margin="0"
                                         Scale="0.5"
                                         Command="{Binding OpenSubscriptionEditorCommand}">
-                            </Button>
-                        </HorizontalStackLayout>
-                    </CollectionView.Header>
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical"
+                        </Button>
+                    </HorizontalStackLayout>
+                </CollectionView.Header>
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical"
                                                ItemSpacing="5" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="services:Subscription">
-                            <Label Text="{Binding SubscriptionName}"
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="services:Subscription">
+                        <Label Text="{Binding SubscriptionName}"
                                        Style="{StaticResource SubscriptionLabelStyle}"/>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                    <CollectionView.EmptyView>
-                        <Label Text="None"
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <Label Text="None"
                                FontSize="Small"/>
-                    </CollectionView.EmptyView>
-                </CollectionView>
+                </CollectionView.EmptyView>
+            </CollectionView>
 
-                <BoxView Grid.Column="1"
-                             VerticalOptions="CenterAndExpand"
-                             WidthRequest="2"
+            <BoxView Grid.Row="2"
+                     Grid.Column="1"
+                             VerticalOptions="Fill"
+                             WidthRequest="5"
                              Color="Gray"></BoxView>
 
-                <CollectionView Grid.Column="2"
+            <CollectionView Grid.Row="2"
+                     Grid.Column="2"
                                     SelectionMode="Single"
                                     VerticalScrollBarVisibility="Always"
                                     VerticalOptions="FillAndExpand"
-                                    ItemsSource="{Binding CurrentSubscriptionMessages}">
-                    <CollectionView.Header>
-                        <HorizontalStackLayout >
-                            <Label Margin="10,0"
+                                    ItemsUpdatingScrollMode="KeepLastItemInView"
+                                    ItemsSource="{Binding CurrentSubscriptionMessages}"
+                                    BackgroundColor="DarkGreen">
+                <CollectionView.Header>
+                    <HorizontalStackLayout >
+                        <Label Margin="10,0"
                                        Text="Messages"
                                        FontSize="Default"
                                        FontAttributes="Bold"
                                        VerticalOptions="Center"/>
-                        </HorizontalStackLayout>
-                    </CollectionView.Header>
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical"
+                    </HorizontalStackLayout>
+                </CollectionView.Header>
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical"
                                                ItemSpacing="15" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="services:Subscription">
-                            <Label Text="{Binding .}"
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="services:Subscription">
+                        <Label Text="{Binding .}"
                                        Style="{StaticResource SubscriptionMessageLabelStyle}"/>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                    <CollectionView.EmptyView>
-                        <Label Text="None"
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <Label Text="None"
                                FontSize="Small"/>
-                    </CollectionView.EmptyView>
-                </CollectionView>
+                </CollectionView.EmptyView>
+            </CollectionView>
 
-            </Grid>
 
-        </VerticalStackLayout>
+        </Grid>
 
     </Grid>
 
