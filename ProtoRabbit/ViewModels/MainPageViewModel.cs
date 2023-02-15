@@ -37,6 +37,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
 
     [ObservableProperty] private List<SendableMessageBase> sendableMessages;
     [ObservableProperty] private SendableMessageBase sendableMessage;
+    [ObservableProperty] private int sendableMessageIndex;
 
     [ObservableProperty] private ObservableCollection<Subscription> _subscriptions = new ObservableCollection<Subscription>();
     [ObservableProperty] private Subscription _currentSubscription;
@@ -52,7 +53,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
         _rabbitClientFactory = rabbitClientFactory;
         _cachingConnectionFactory = cachingConnectionFactory;
 
-        sendableMessages = new List<SendableMessageBase> {new CreateSendableMessage(), new DeleteSendableMessage()}; // ToDo use reflection to load all subclasses
+        sendableMessages = new List<SendableMessageBase> { new CreateSendableMessage(), new DeleteSendableMessage() }; // ToDo use reflection to load all subclasses
     }
 
     [RelayCommand]
@@ -106,7 +107,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     {
         try
         {
-            JsonMessage = JsonSerializer.Serialize(JsonSerializer.Deserialize(JsonMessage, typeof(object)), typeof(object), new JsonSerializerOptions {WriteIndented = true});
+            JsonMessage = JsonSerializer.Serialize(JsonSerializer.Deserialize(JsonMessage, typeof(object)), typeof(object), new JsonSerializerOptions { WriteIndented = true });
         }
         catch (Exception ex)
         {
@@ -117,6 +118,13 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     public void SendableMessageIndexChanged()
     {
+        if (SendableMessageIndex == -1)
+        {
+            return;
+        }
+
+        SendableMessage = SendableMessages[SendableMessageIndex];
+
         Exchange = SendableMessage.PreferredExchangeName;
         RoutingKey = SendableMessage.PreferredRoutingKey;
         JsonMessage = SendableMessage.SampleJsonMessage;
