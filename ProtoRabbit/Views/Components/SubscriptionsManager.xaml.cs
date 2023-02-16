@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-namespace ProtoRabbit.Pages.Components;
+namespace ProtoRabbit.Views.Components;
 
 public partial class SubscriptionsManager : ContentView
 {

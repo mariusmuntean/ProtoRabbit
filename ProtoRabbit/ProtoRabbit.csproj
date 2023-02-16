@@ -58,8 +58,8 @@
 
     <ItemGroup>
       <Folder Include="Services\" />
-      <Folder Include="Pages\" />
-      <Folder Include="Pages\Components\" />
+      <Folder Include="Views\" />
+      <Folder Include="Views\Components\" />
     </ItemGroup>
 
     <ItemGroup>

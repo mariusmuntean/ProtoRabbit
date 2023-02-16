@@ -5,9 +5,10 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewmodel="clr-namespace:ProtoRabbit.ViewModels"
              x:DataType="viewmodel:SubscriptionEditorViewModel"
-             x:Class="ProtoRabbit.Pages.SubscriptionEditorPage"
+             x:Class="ProtoRabbit.Views.SubscriptionEditorPage"
              Shell.PresentationMode="Animated"
              Title="">
+    
     <VerticalStackLayout HorizontalOptions="Center"
                          VerticalOptions="Center"
                          Spacing="5">

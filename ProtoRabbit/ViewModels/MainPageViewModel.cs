@@ -6,9 +6,9 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ProtoBuf;
-using ProtoRabbit.Pages;
 using ProtoRabbit.Services;
 using ProtoRabbit.Services.Messages;
+using ProtoRabbit.Views;
 
 namespace ProtoRabbit.ViewModels;
 

@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ProtoRabbit.Pages;
+using Microsoft.Maui.Controls.Hosting;
+using Microsoft.Maui.Hosting;
 using ProtoRabbit.Services;
 using ProtoRabbit.ViewModels;
+using ProtoRabbit.Views;
 using RabbitMQ.Client;
 
 namespace ProtoRabbit;
