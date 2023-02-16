@@ -46,13 +46,6 @@
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="VerticalOptions" Value="StartAndExpand" />
             </Style>
-            <Style x:Key="SubscriptionMessageLabelStyle" TargetType="Label">
-                <Setter Property="FontFamily" Value="CascadiaMono" />
-                <Setter Property="FontSize" Value="20" />
-                <Setter Property="FontAutoScalingEnabled" Value="True" />
-                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-                <Setter Property="VerticalOptions" Value="StartAndExpand" />
-            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 

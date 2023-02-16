@@ -16,6 +16,13 @@
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="VerticalOptions" Value="StartAndExpand" />
             </Style>
+            <Style x:Key="SubscriptionMessageLabelStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="CascadiaMono" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontAutoScalingEnabled" Value="True" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="StartAndExpand" />
+            </Style>
         </ResourceDictionary>
 
     </ContentView.Resources>
@@ -96,21 +103,20 @@
                         ItemsUpdatingScrollMode="KeepLastItemInView"
                         ItemsSource="{Binding CurrentSubscriptionMessages}">
             <CollectionView.Header>
-                <VerticalStackLayout>
-                    <Label Margin="10,0"
+                <Grid ColumnDefinitions="*, Auto, Auto">
+                    <Label Grid.Column="0"
+                           Margin="10,0"
                            Text="Messages"
                            FontSize="Default"
                            FontAttributes="Bold" />
-                </VerticalStackLayout>
+                </Grid>
             </CollectionView.Header>
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical"
-                                   ItemSpacing="15" />
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="services:Subscription">
-                    <Label Text="{Binding .}"
-                           Style="{StaticResource SubscriptionMessageLabelStyle}" />
+                    <Label Text="{Binding .}" Style="{StaticResource SubscriptionMessageLabelStyle}" />
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.EmptyView>
@@ -123,7 +129,6 @@
                 </Grid>
             </CollectionView.EmptyView>
         </CollectionView>
-
 
     </Grid>
 </ContentView>

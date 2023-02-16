@@ -85,5 +85,4 @@ public partial class SubscriptionsManager : ContentView
         get => (ObservableCollection<string>)GetValue(CurrentSubscriptionMessagesProperty);
         set => SetValue(CurrentSubscriptionMessagesProperty, value);
     }
-
 }
