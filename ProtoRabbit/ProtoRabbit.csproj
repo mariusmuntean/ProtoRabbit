@@ -59,7 +59,7 @@
     <ItemGroup>
       <Folder Include="Services\" />
       <Folder Include="Pages\" />
-      <Folder Include="Components\" />
+      <Folder Include="Pages\Components\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -68,7 +68,7 @@
       <None Remove="Resources\Fonts\CascadiaMono.ttf" />
       <None Remove="Resources\Images\hot-svgrepo-com.svg" />
       <None Remove="Pages\" />
-      <None Remove="Components\" />
+      <None Remove="Pages\Components\" />
     </ItemGroup>
     <ItemGroup>
       <BundleResource Include="Resources\Fonts\CascadiaMono.ttf" />
@@ -81,7 +81,7 @@
       <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\MainPage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
-      <MauiXaml Update="Components\SubscriptionsManager.xaml">
+      <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Components\SubscriptionsManager.xaml">
         <SubType></SubType>
       </MauiXaml>
     </ItemGroup>

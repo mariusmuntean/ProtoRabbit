@@ -1,8 +1,5 @@
 ﻿using CommunityToolkit.Maui;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Controls.Hosting;
-using Microsoft.Maui.Hosting;
 using ProtoRabbit.Pages;
 using ProtoRabbit.Services;
 using ProtoRabbit.ViewModels;
@@ -29,14 +26,14 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
-        
+
         builder.Services.AddSingleton<ConnectionFactory>(); // RabbitMQ connection factory
         builder.Services.AddSingleton<CachingConnectionFactory>(); // ProtoRabbit connection factory
         builder.Services.AddSingleton<RabbitClientFactory>();
 
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddSingleton<MainPageViewModel>();
-        
+
         builder.Services.AddSingleton<SubscriptionEditorPage>();
         builder.Services.AddSingleton<SubscriptionEditorViewModel>();
 

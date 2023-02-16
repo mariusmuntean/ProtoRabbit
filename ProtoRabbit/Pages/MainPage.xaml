@@ -4,8 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:ProtoRabbit.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:system="clr-namespace:System;assembly=System.Runtime"
-             xmlns:services="clr-namespace:ProtoRabbit.Services" xmlns:components="clr-namespace:ProtoRabbit.Components"
+             xmlns:components="clr-namespace:ProtoRabbit.Pages.Components"
              x:DataType="viewmodel:MainPageViewModel"
              x:Class="ProtoRabbit.Pages.MainPage"
              Shell.NavBarIsVisible="False">
@@ -63,8 +62,8 @@
 
         <VerticalStackLayout Grid.Row="0"
                              Spacing="25"
-                                Padding="30,0"
-                                VerticalOptions="Center">
+                             Padding="30,0"
+                             VerticalOptions="Center">
 
             <HorizontalStackLayout Spacing="20"
                                    VerticalOptions="CenterAndExpand"
@@ -80,22 +79,20 @@
 
         <!-- SERVER -->
         <VerticalStackLayout Grid.Row="1" Spacing="20">
-            <Label  Text="Server"
-                HorizontalOptions="Start"
-                Style="{StaticResource SectionLabelStyle}" />
+            <Label Text="Server"
+                   HorizontalOptions="Start"
+                   Style="{StaticResource SectionLabelStyle}" />
             <!-- host and port -->
             <HorizontalStackLayout Spacing="10"
                                    HorizontalOptions="Center">
                 <Entry Text="{Binding Host}"
                        Placeholder="RabbitMQ URL"
                        WidthRequest="350"
-                       Style="{StaticResource ParameterEntryStyle}">
-                </Entry>
+                       Style="{StaticResource ParameterEntryStyle}" />
                 <Entry Text="{Binding Port}"
                        Placeholder="RabbitMQ URL"
                        WidthRequest="350"
-                       Style="{StaticResource ParameterEntryStyle}">
-                </Entry>
+                       Style="{StaticResource ParameterEntryStyle}" />
             </HorizontalStackLayout>
 
             <!-- username and pasword -->
@@ -104,14 +101,12 @@
                 <Entry Text="{Binding Username}"
                        Placeholder="Username"
                        WidthRequest="350"
-                       Style="{StaticResource ParameterEntryStyle}">
-                </Entry>
+                       Style="{StaticResource ParameterEntryStyle}" />
                 <Entry Text="{Binding Password}"
                        Placeholder="Password"
                        HorizontalOptions="Fill"
                        WidthRequest="350"
-                       Style="{StaticResource ParameterEntryStyle}">
-                </Entry>
+                       Style="{StaticResource ParameterEntryStyle}" />
             </HorizontalStackLayout>
 
 
@@ -133,89 +128,89 @@
         <!-- SEND -->
         <VerticalStackLayout
             Grid.Row="2"
-                Spacing="15"
-                IsVisible="{Binding Connected}">
+            Spacing="15"
+            IsVisible="{Binding Connected}">
             <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
             <Label Text="Send"
                    HorizontalOptions="Start"
                    Style="{StaticResource SectionLabelStyle}" />
 
             <Picker Title="Select a sendable message"
-                        x:Name="SelectableMessagePicker"
-                        ItemsSource="{Binding SendableMessages}"
-                        ItemDisplayBinding="{Binding Name}"
-                        SelectedIndex="{Binding SendableMessageIndex, Mode=TwoWay}"
-                        HorizontalOptions="Center"
-                        WidthRequest="300">
+                    x:Name="SelectableMessagePicker"
+                    ItemsSource="{Binding SendableMessages}"
+                    ItemDisplayBinding="{Binding Name}"
+                    SelectedIndex="{Binding SendableMessageIndex, Mode=TwoWay}"
+                    HorizontalOptions="Center"
+                    WidthRequest="300">
                 <Picker.Behaviors>
                     <toolkit:EventToCommandBehavior
-                            EventName="SelectedIndexChanged"
-                            Command="{Binding SendableMessageIndexChangedCommand}" />
+                        EventName="SelectedIndexChanged"
+                        Command="{Binding SendableMessageIndexChangedCommand}" />
                 </Picker.Behaviors>
             </Picker>
 
             <Entry Placeholder="Exchange"
-                       ToolTipProperties.Text="Exchange"
-                       WidthRequest="700"
-                       Text="{Binding Exchange}"
-                       Style="{StaticResource ParameterEntryStyle}" />
+                   ToolTipProperties.Text="Exchange"
+                   WidthRequest="700"
+                   Text="{Binding Exchange}"
+                   Style="{StaticResource ParameterEntryStyle}" />
             <Entry Placeholder="Routing Key"
-                       ToolTipProperties.Text="Routing Key"
-                       WidthRequest="700"
-                       Text="{Binding RoutingKey}"
-                       Style="{StaticResource ParameterEntryStyle}" />
+                   ToolTipProperties.Text="Routing Key"
+                   WidthRequest="700"
+                   Text="{Binding RoutingKey}"
+                   Style="{StaticResource ParameterEntryStyle}" />
 
             <Grid ColumnSpacing="8" ColumnDefinitions="*, *">
                 <Border Grid.Column="0" HorizontalOptions="FillAndExpand"
-                            VerticalOptions="StartAndExpand">
+                        VerticalOptions="StartAndExpand">
                     <Grid Padding="0,0,5,5">
                         <Editor
-                                Placeholder="JSON Message"
-                                ToolTipProperties.Text="JSON Message"
-                                AutoSize="TextChanges"
-                                Style="{StaticResource JsonMessageStyle}"
-                                Text="{Binding JsonMessage, Mode=TwoWay}" />
+                            Placeholder="JSON Message"
+                            ToolTipProperties.Text="JSON Message"
+                            AutoSize="TextChanges"
+                            Style="{StaticResource JsonMessageStyle}"
+                            Text="{Binding JsonMessage, Mode=TwoWay}" />
                         <ImageButton Source="shine.png"
-                                         ToolTipProperties.Text="Prettify"
-                                         Padding="2"
-                                         HeightRequest="10"
-                                         WidthRequest="10"
-                                         BackgroundColor="{StaticResource Secondary}"
-                                         CornerRadius="5"
-                                         Scale="0.6"
-                                         HorizontalOptions="End"
-                                         VerticalOptions="End"
-                                         Command="{Binding PrettifyMessageCommand}" />
+                                     ToolTipProperties.Text="Prettify"
+                                     Padding="2"
+                                     HeightRequest="10"
+                                     WidthRequest="10"
+                                     BackgroundColor="{StaticResource Secondary}"
+                                     CornerRadius="5"
+                                     Scale="0.6"
+                                     HorizontalOptions="End"
+                                     VerticalOptions="End"
+                                     Command="{Binding PrettifyMessageCommand}" />
                     </Grid>
                 </Border>
 
 
                 <Border Grid.Column="1">
                     <Editor Placeholder="Proto file"
-                                ToolTipProperties.Text="Proto File"
-                                Style="{StaticResource JsonMessageStyle}"
-                                AutoSize="TextChanges"
-                                Text="{Binding ProtoFile}" />
+                            ToolTipProperties.Text="Proto File"
+                            Style="{StaticResource JsonMessageStyle}"
+                            AutoSize="TextChanges"
+                            Text="{Binding ProtoFile}" />
                 </Border>
 
             </Grid>
 
             <Button Text="Send" HorizontalOptions="Center"
-                        ToolTipProperties.Text="Click to send"
-                        Command="{Binding SendCommand}" />
+                    ToolTipProperties.Text="Click to send"
+                    Command="{Binding SendCommand}" />
         </VerticalStackLayout>
 
         <!-- RECEIVE -->
 
         <components:SubscriptionsManager Grid.Row="3"
                                          IsVisible="{Binding Connected}"
-                     Grid.Column="1"
-                     Grid.ColumnSpan="3"
-                     Subscriptions="{Binding Subscriptions}"
-                     CurrentSubscription="{Binding CurrentSubscription, Mode=TwoWay}"
-                     SelectedSubscriptionChangedCommand="{Binding SelectedSubscriptionChangedCommand}"
-                     OpenSubscriptionEditorCommand="{Binding OpenSubscriptionEditorCommand}"
-                     CurrentSubscriptionMessages="{Binding CurrentSubscriptionMessages}"/>
+                                         Grid.Column="1"
+                                         Grid.ColumnSpan="3"
+                                         Subscriptions="{Binding Subscriptions}"
+                                         CurrentSubscription="{Binding CurrentSubscription, Mode=TwoWay}"
+                                         SelectedSubscriptionChangedCommand="{Binding SelectedSubscriptionChangedCommand}"
+                                         OpenSubscriptionEditorCommand="{Binding OpenSubscriptionEditorCommand}"
+                                         CurrentSubscriptionMessages="{Binding CurrentSubscriptionMessages}" />
 
     </Grid>
 

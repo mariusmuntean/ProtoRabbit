@@ -1,27 +1,28 @@
 ﻿<Properties StartupConfiguration="{4A8B01F0-1058-49C1-A254-C56AA4187CCA}|Default">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/marius/Projects/ProtoRabbit/ProtoRabbit/ViewModels/MainPageViewModel.cs" relfile="ProtoRabbit/ViewModels/MainPageViewModel.cs" line="85" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.ProtoRabbit PreferredExecutionTarget="MyAppleMacCatalystID" />
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit/Components/SubscriptionsManager.xaml.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit/Pages/Components/SubscriptionsManager.xaml.cs">
     <Files>
-      <File FileName="ProtoRabbit/ViewModels/MainPageViewModel.cs" Line="1" Column="1" />
-      <File FileName="ProtoRabbit/Components/Subscriptions.xaml.cs" Line="37" Column="1" />
-      <File FileName="ProtoRabbit/ProtoRabbit.csproj" Line="52" Column="45" />
-      <File FileName="ProtoRabbit/Pages/MainPage.xaml" />
-      <File FileName="ProtoRabbit/Pages/SubscriptionEditorPage.xaml" />
-      <File FileName="ProtoRabbit/Components/SubscriptionsManager.xaml" Line="1" Column="1" />
+      <File FileName="ProtoRabbit/Pages/Components/SubscriptionsManager.xaml.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="ProtoRabbit" expanded="True">
             <Node name="ProtoRabbit" expanded="True">
-              <Node name="Components" expanded="True">
-                <Node name="SubscriptionsManager.xaml.cs" selected="True" />
-              </Node>
-              <Node name="Pages" expanded="True" />
-              <Node name="Platforms" expanded="True">
-                <Node name="MacCatalyst" expanded="True" />
+              <Node name="Pages" expanded="True">
+                <Node name="Components" expanded="True">
+                  <Node name="SubscriptionsManager.xaml" expanded="True">
+                    <Node name="SubscriptionsManager.xaml.cs" selected="True" />
+                  </Node>
+                </Node>
               </Node>
               <Node name="Services" expanded="True">
                 <Node name="Messages" expanded="True" />
@@ -33,10 +34,4 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.ProtoRabbit PreferredExecutionTarget="MyAppleMacCatalystID" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/marius/Projects/ProtoRabbit/ProtoRabbit/ViewModels/MainPageViewModel.cs" relfile="ProtoRabbit/ViewModels/MainPageViewModel.cs" line="85" column="1" />
-    </BreakpointStore>
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>
