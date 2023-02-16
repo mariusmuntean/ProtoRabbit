@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Text.Json;
 using ProtoBuf;
@@ -13,6 +14,8 @@ public class Subscription
     protected readonly string _routingKey;
     protected readonly string _queueName;
     protected readonly string _subscriptionName;
+
+    EventHandler<BasicDeliverEventArgs> _onReceived;
 
     private IModel _channel;
     private EventingBasicConsumer _consumer;
@@ -30,6 +33,8 @@ public class Subscription
         _connection = connection;
     }
 
+    public Guid Id { get; } = Guid.NewGuid();
+
     public string Exchange => _exchange;
 
     public string RoutingKey => _routingKey;
@@ -45,8 +50,18 @@ public class Subscription
         _channel.QueueBind(response.QueueName, _exchange, _routingKey);
 
         _consumer = new EventingBasicConsumer(_channel);
-        _consumer.Received += GetOnReceived(messageType, onMessage);
+
+        _onReceived = GetOnReceived(messageType, onMessage);
+        _consumer.Received += _onReceived;
         _channel.BasicConsume(_queueName, autoAck: true, consumer: _consumer);
+    }
+
+    public void StopConsuming()
+    {
+        _channel.Close();
+        _consumer.Received -= _onReceived;
+        _consumer = null;
+        _channel.Dispose();
     }
 
     private EventHandler<BasicDeliverEventArgs> GetOnReceived(Type messageType, Action<MessageWrapper<object>> onMessage)

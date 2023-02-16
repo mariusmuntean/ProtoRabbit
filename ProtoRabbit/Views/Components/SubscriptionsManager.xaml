@@ -35,7 +35,7 @@
         ColumnSpacing="10"
         VerticalOptions="Fill"
         Padding="10">
-        
+
 
         <!-- ToDo: pause/remove subscriptions -->
         <CollectionView Grid.Row="2"
@@ -66,7 +66,14 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="services:Subscription">
                     <Label Text="{Binding SubscriptionName}"
-                           Style="{StaticResource SubscriptionLabelStyle}" />
+                           Style="{StaticResource SubscriptionLabelStyle}" >
+                        <FlyoutBase.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Pause" IsEnabled="False"  />
+                                <MenuFlyoutItem Text="Remove" Clicked="RemoveSubscriptionClicked" CommandParameter="{Binding .}"/>
+                            </MenuFlyout>
+                        </FlyoutBase.ContextFlyout>
+                    </Label>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.EmptyView>

@@ -85,4 +85,25 @@ public partial class SubscriptionsManager : ContentView
         get => (ObservableCollection<string>)GetValue(CurrentSubscriptionMessagesProperty);
         set => SetValue(CurrentSubscriptionMessagesProperty, value);
     }
+
+
+    public static readonly BindableProperty StopSubscriptionCommandProperty = BindableProperty.Create(
+    nameof(StopSubscriptionCommand),
+    typeof(ICommand),
+    typeof(SubscriptionsManager)
+    );
+
+    public ICommand StopSubscriptionCommand
+    {
+        get => (ICommand)GetValue(StopSubscriptionCommandProperty);
+        set => SetValue(StopSubscriptionCommandProperty, value);
+    }
+
+    void RemoveSubscriptionClicked(System.Object sender, System.EventArgs e)
+    {
+        if (sender is MenuFlyoutItem menuFlyoutItem && menuFlyoutItem.CommandParameter is Services.Subscription sub)
+        {
+            StopSubscriptionCommand?.Execute(sub);
+        }
+    }
 }

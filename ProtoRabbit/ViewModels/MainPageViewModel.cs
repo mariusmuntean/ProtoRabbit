@@ -163,4 +163,20 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
             query.Clear();
         }
     }
+
+
+    [RelayCommand]
+    public void StopSubscription(Subscription subscription)
+    {
+        if(subscription is null)
+        {
+            Toast.Make($"No subscription selected.", ToastDuration.Long).Show();
+            return;
+        }
+
+        Debug.WriteLine($"Stoping subscription {subscription.Id} for messages in exchange {subscription.Exchange} with routing key {subscription.RoutingKey}");
+        subscription.StopConsuming();
+        Subscriptions.Remove(subscription);
+
+    }
 }
