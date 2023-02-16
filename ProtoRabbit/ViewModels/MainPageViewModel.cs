@@ -166,17 +166,22 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
 
 
     [RelayCommand]
-    public void StopSubscription(Subscription subscription)
+    public void StopSubscription(Subscription subscriptionToRemove)
     {
-        if(subscription is null)
+        if(subscriptionToRemove is null)
         {
             Toast.Make($"No subscription selected.", ToastDuration.Long).Show();
             return;
         }
 
-        Debug.WriteLine($"Stoping subscription {subscription.Id} for messages in exchange {subscription.Exchange} with routing key {subscription.RoutingKey}");
-        subscription.StopConsuming();
-        Subscriptions.Remove(subscription);
+        Debug.WriteLine($"Stoping subscription {subscriptionToRemove.Id} for messages in exchange {subscriptionToRemove.Exchange} with routing key {subscriptionToRemove.RoutingKey}");
+        subscriptionToRemove.StopConsuming();
+        Subscriptions.Remove(subscriptionToRemove);
+
+        if(_subscriptionToMessageMap.ContainsKey(subscriptionToRemove))
+        {
+            _subscriptionToMessageMap[subscriptionToRemove].Clear();
+        }
 
     }
 }
