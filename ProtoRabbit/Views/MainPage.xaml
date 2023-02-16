@@ -24,10 +24,6 @@
             <Style TargetType="Entry">
                 <Setter Property="FontSize" Value="20" />
             </Style>
-            <Style x:Key="SectionLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="Large" />
-                <Setter Property="TextColor" Value="LightGrey" />
-            </Style>
             <Style x:Key="JsonMessageStyle" TargetType="Entry">
                 <Setter Property="FontFamily" Value="CascadiaMono" />
                 <Setter Property="FontSize" Value="20" />
@@ -39,17 +35,10 @@
                 <Setter Property="FontFamily" Value="CascadiaMono" />
                 <Setter Property="FontSize" Value="20" />
             </Style>
-            <Style x:Key="SubscriptionLabelStyle" TargetType="Label">
-                <Setter Property="FontFamily" Value="CascadiaMono" />
-                <Setter Property="FontSize" Value="20" />
-                <Setter Property="FontAutoScalingEnabled" Value="True" />
-                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-                <Setter Property="VerticalOptions" Value="StartAndExpand" />
-            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid RowDefinitions="Auto, Auto, Auto, *"
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, *"
           RowSpacing="20"
           Margin="10">
 
@@ -194,8 +183,17 @@
         </VerticalStackLayout>
 
         <!-- RECEIVE -->
-
-        <components:SubscriptionsManager Grid.Row="3"
+        <BoxView Grid.Row="3"
+                 Grid.Column="0"
+                 Grid.ColumnSpan="3"
+                 HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
+        <Label Text="Receive"
+               Grid.Row="4"
+               Grid.Column="0"
+               Grid.ColumnSpan="3"
+               HorizontalOptions="Start"
+               Style="{StaticResource SectionLabelStyle}" />
+        <components:SubscriptionsManager Grid.Row="5"
                                          IsVisible="{Binding Connected}"
                                          Grid.Column="1"
                                          Grid.ColumnSpan="3"

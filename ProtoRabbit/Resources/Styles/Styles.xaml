@@ -402,4 +402,10 @@
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
 
+    <!-- Custom Styles -->
+    <Style x:Key="SectionLabelStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="Large" />
+        <Setter Property="TextColor" Value="LightGrey" />
+    </Style>
+
 </ResourceDictionary>

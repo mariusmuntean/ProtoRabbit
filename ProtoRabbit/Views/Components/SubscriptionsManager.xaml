@@ -29,22 +29,13 @@
 
     <Grid
         Grid.Row="3"
-        RowDefinitions="Auto, Auto, *"
+        RowDefinitions="*"
         ColumnDefinitions="300,Auto, *"
         RowSpacing="25"
         ColumnSpacing="10"
         VerticalOptions="Fill"
         Padding="10">
-        <BoxView Grid.Row="0"
-                 Grid.Column="0"
-                 Grid.ColumnSpan="3"
-                 HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
-        <Label Text="Receive"
-               Grid.Row="1"
-               Grid.Column="0"
-               Grid.ColumnSpan="3"
-               HorizontalOptions="Start"
-               Style="{StaticResource SectionLabelStyle}" />
+        
 
         <!-- ToDo: pause/remove subscriptions -->
         <CollectionView Grid.Row="2"
