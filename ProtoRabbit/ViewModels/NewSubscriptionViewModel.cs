@@ -31,7 +31,7 @@ public partial class NewSubscriptionViewModel : ObservableObject
     {
         Exchange = ReceivableMessage?.PreferredExchangeName;
         RoutingKey = ReceivableMessage?.PreferredRoutingKey;
-        QueueName = ReceivableMessage?.TargetQueueName;
+        QueueName = ReceivableMessage?.TargetQueueName + DateTime.Now.Millisecond;
         SubscriptionName = $"{Exchange}.{RoutingKey}";
     }
 
