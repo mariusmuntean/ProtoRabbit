@@ -1,7 +1,10 @@
 ﻿using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Handlers;
+
+#if MACCATALYST
 using UIKit;
+#endif
 
 namespace ProtoRabbit;
 
@@ -14,7 +17,7 @@ public partial class App : Application
         MainPage = new AppShell();
 
 #if MACCATALYST
-        // This is necessary on macOS because straight quotes are repaed by "”" or by "“".
+        // This is necessary on macOS because straight quotes are replaced by "”" or by "“".
         EditorHandler.Mapper.AppendToMapping("custom", (handler, view) =>
         {
             handler.PlatformView.SmartQuotesType = UITextSmartQuotesType.No;
