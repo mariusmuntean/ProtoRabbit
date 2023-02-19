@@ -53,7 +53,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
         _rabbitClientFactory = rabbitClientFactory;
         _cachingConnectionFactory = cachingConnectionFactory;
 
-        sendableMessages = new List<SendableMessageBase> { new CreateSendableMessage(), new DeleteSendableMessage() }; // ToDo use reflection to load all subclasses
+        sendableMessages = new List<SendableMessageBase> {new CreateSendableMessage(), new DeleteSendableMessage()}; // ToDo use reflection to load all subclasses
     }
 
     [RelayCommand]
@@ -78,9 +78,9 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     }
 
     [RelayCommand(CanExecute = nameof(CanSend))]
-    public void Send()
+    public async Task Send()
     {
-        if (_rabbitClient == null || _rabbitClient.IsClosed || sendableMessage is null)
+        if (_rabbitClient == null || _rabbitClient.IsClosed || SendableMessage is null)
         {
             return;
         }
@@ -92,7 +92,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
 
             var destStream = new MemoryStream();
             Serializer.Serialize(destStream, msgObj);
-            _rabbitClient.Send(Exchange, RoutingKey, destStream.ToArray());
+            await _rabbitClient.Send(Exchange, RoutingKey, destStream.ToArray());
         }
         catch (Exception e)
         {
@@ -107,7 +107,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     {
         try
         {
-            JsonMessage = JsonSerializer.Serialize(JsonSerializer.Deserialize(JsonMessage, typeof(object)), typeof(object), new JsonSerializerOptions { WriteIndented = true });
+            JsonMessage = JsonSerializer.Serialize(JsonSerializer.Deserialize(JsonMessage, typeof(object)), typeof(object), new JsonSerializerOptions {WriteIndented = true});
         }
         catch (Exception ex)
         {
@@ -168,7 +168,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     public void StopSubscription(Subscription subscriptionToRemove)
     {
-        if(subscriptionToRemove is null)
+        if (subscriptionToRemove is null)
         {
             Toast.Make($"No subscription selected.", ToastDuration.Long).Show();
             return;
@@ -178,10 +178,9 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
         subscriptionToRemove.StopConsuming();
         Subscriptions.Remove(subscriptionToRemove);
 
-        if(_subscriptionToMessageMap.ContainsKey(subscriptionToRemove))
+        if (_subscriptionToMessageMap.ContainsKey(subscriptionToRemove))
         {
             _subscriptionToMessageMap[subscriptionToRemove].Clear();
         }
-
     }
 }

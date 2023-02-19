@@ -14,20 +14,29 @@ public class RabbitClientFactory
     public RabbitClient GetClientForServer(string host, string username, string password, int port)
     {
         var connection = _cachingConnectionFactory.GetConnectionForServer(host, username, password, port);
-        var channel = connection.CreateModel();
-        return new RabbitClient(channel);
+        return new RabbitClient(connection);
     }
 }
 
 public class RabbitClient
 {
-    private readonly IModel _channel;
+    private readonly IConnection _connection;
+    private IModel _channel;
     private Action _onShutdown;
 
-    public RabbitClient(IModel channel)
+    private AsyncMessagePublisher _messagePublisher;
+
+    public RabbitClient(IConnection connection)
     {
-        _channel = channel;
-        _channel.ModelShutdown += OnModelShutdown;
+        _connection = connection;
+        _connection.ConnectionShutdown += OnConnectionShutdown;
+
+        _messagePublisher = new AsyncMessagePublisher();
+    }
+
+    private void OnConnectionShutdown(object sender, ShutdownEventArgs e)
+    {
+        _onShutdown?.Invoke();
     }
 
     /// <summary>
@@ -38,9 +47,10 @@ public class RabbitClient
         set => _onShutdown = value;
     }
 
-    public void Send(string exchange, string routingKey, byte[] @event)
+    public async Task<ulong> Send(string exchange, string routingKey, byte[] @event)
     {
-        _channel.BasicPublish(exchange, routingKey, body: @event);
+        var channel = GetChannel();
+        return await _messagePublisher.Send(channel, exchange, routingKey, @event);
     }
 
     /// <summary>
@@ -51,11 +61,26 @@ public class RabbitClient
         _channel.Close();
     }
 
-    public bool IsClosed => _channel == null || _channel.IsClosed;
+    public bool IsClosed => !_connection.IsOpen;
 
-    private void OnModelShutdown(object sender, ShutdownEventArgs e)
+    private IModel GetChannel()
     {
-        _onShutdown?.Invoke();
-        _onShutdown = null;
+        if (_channel is null)
+        {
+            _channel = GetNewChannelWithHandlers();
+        }
+        else if (_channel.IsClosed)
+        {
+            _channel.Dispose();
+            _channel = GetNewChannelWithHandlers();
+        }
+
+        return _channel;
+    }
+
+    private IModel GetNewChannelWithHandlers()
+    {
+        var newChannel = _connection.CreateModel();
+        return newChannel;
     }
 }
