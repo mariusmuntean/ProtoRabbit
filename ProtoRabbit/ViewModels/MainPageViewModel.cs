@@ -54,6 +54,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
         _rabbitClient = rabbitClient;
 
         _sendableMessages = new List<SendableMessageBase> { new CreateSendableMessage(), new DeleteSendableMessage() }; // ToDo use reflection to load all subclasses
+        _sendableMessageIndex = -1;
 
         _subscriptions = new ObservableCollection<Subscription>();
     }

@@ -69,7 +69,6 @@
                            Style="{StaticResource SubscriptionLabelStyle}">
                         <FlyoutBase.ContextFlyout>
                             <MenuFlyout>
-                                <MenuFlyoutItem Text="Pause" IsEnabled="False" />
                                 <MenuFlyoutItem Text="Remove" Clicked="RemoveSubscriptionClicked"
                                                 CommandParameter="{Binding .}" />
                             </MenuFlyout>
