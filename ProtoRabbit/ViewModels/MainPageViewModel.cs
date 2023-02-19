@@ -1,10 +1,15 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Text.Json;
+using System.Threading.Tasks;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Controls;
 using ProtoBuf;
 using ProtoRabbit.Services;
 using ProtoRabbit.Services.Messages;
@@ -14,67 +19,61 @@ namespace ProtoRabbit.ViewModels;
 
 public partial class MainPageViewModel : ObservableObject, IQueryAttributable
 {
-    [ObservableProperty] private string host = "localhost";
+    [ObservableProperty] private string _host = "localhost";
 
-    [ObservableProperty] private string username = "guest";
+    [ObservableProperty] private string _username = "guest";
 
-    [ObservableProperty] private string password = "guest";
+    [ObservableProperty] private string _password = "guest";
 
-    [ObservableProperty] private int port = 5672;
+    [ObservableProperty] private int _port = 5672;
 
-    [ObservableProperty] private bool connected = false;
-
-    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SendCommand))]
-    private string exchange = null;
+    [ObservableProperty] private bool _connected = false;
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SendCommand))]
-    private string routingKey = null;
+    private string _exchange = null;
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SendCommand))]
-    private string jsonMessage = null;
+    private string _routingKey = null;
 
-    [ObservableProperty] private string protoFile = null;
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SendCommand))]
+    private string _jsonMessage = null;
 
-    [ObservableProperty] private List<SendableMessageBase> sendableMessages;
-    [ObservableProperty] private SendableMessageBase sendableMessage;
-    [ObservableProperty] private int sendableMessageIndex;
+    [ObservableProperty] private string _protoFile = null;
 
-    [ObservableProperty] private ObservableCollection<Subscription> _subscriptions = new ObservableCollection<Subscription>();
+    [ObservableProperty] private List<SendableMessageBase> _sendableMessages;
+    [ObservableProperty] private SendableMessageBase _sendableMessage;
+    [ObservableProperty] private int _sendableMessageIndex;
+
+    private readonly Dictionary<Subscription, ObservableCollection<string>> _subscriptionToMessageMap;
+    [ObservableProperty] private ObservableCollection<Subscription> _subscriptions;
     [ObservableProperty] private Subscription _currentSubscription;
     [ObservableProperty] private ObservableCollection<string> _currentSubscriptionMessages;
-    private Dictionary<Subscription, ObservableCollection<string>> _subscriptionToMessageMap = new Dictionary<Subscription, ObservableCollection<string>>();
 
-    private readonly CachingConnectionFactory _cachingConnectionFactory;
-    private readonly RabbitClientFactory _rabbitClientFactory;
-    private RabbitClient _rabbitClient;
+    private readonly RabbitClient _rabbitClient;
 
-    public MainPageViewModel(RabbitClientFactory rabbitClientFactory, CachingConnectionFactory cachingConnectionFactory)
+    public MainPageViewModel(RabbitClient rabbitClient)
     {
-        _rabbitClientFactory = rabbitClientFactory;
-        _cachingConnectionFactory = cachingConnectionFactory;
+        _rabbitClient = rabbitClient;
 
-        sendableMessages = new List<SendableMessageBase> {new CreateSendableMessage(), new DeleteSendableMessage()}; // ToDo use reflection to load all subclasses
+        _sendableMessages = new List<SendableMessageBase> {new CreateSendableMessage(), new DeleteSendableMessage()}; // ToDo use reflection to load all subclasses
+
+        _subscriptionToMessageMap = new Dictionary<Subscription, ObservableCollection<string>>();
+        _subscriptions = new ObservableCollection<Subscription>();
     }
 
     [RelayCommand]
-    public async Task Connect()
+    public void Connect()
     {
-        _rabbitClient = _rabbitClientFactory.GetClientForServer(host, username, password, port);
         _rabbitClient.OnShutdown = ConnectionShutDown;
+        _rabbitClient.Connect(Host, Username, Password, Port);
         Connected = true;
         Debug.WriteLine("Connected");
-    }
-
-    private void ConnectionShutDown()
-    {
-        Connected = false;
-        Debug.WriteLine($"Disconnected.");
     }
 
     [RelayCommand]
     public void Disconnect()
     {
-        _rabbitClient.Close();
+        _rabbitClient.CloseConnection();
     }
 
     [RelayCommand(CanExecute = nameof(CanSend))]
@@ -88,7 +87,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
         try
         {
             Debug.WriteLine($"Sending :{JsonMessage}");
-            var msgObj = JsonSerializer.Deserialize(JsonMessage, sendableMessage.MessageType);
+            var msgObj = JsonSerializer.Deserialize(JsonMessage, _sendableMessage.MessageType);
 
             var destStream = new MemoryStream();
             Serializer.Serialize(destStream, msgObj);
@@ -96,11 +95,12 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
         }
         catch (Exception e)
         {
-            Toast.Make($"Failed to send {JsonMessage}. {e}", ToastDuration.Long).Show();
+            await Toast.Make($"Failed to send {JsonMessage}. {e}", ToastDuration.Long).Show();
         }
     }
 
     public bool CanSend() => !string.IsNullOrWhiteSpace(Exchange) && !string.IsNullOrWhiteSpace(RoutingKey) && !string.IsNullOrWhiteSpace(JsonMessage);
+
 
     [RelayCommand]
     public void PrettifyMessage()
@@ -111,7 +111,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
         }
         catch (Exception ex)
         {
-            Toast.Make($"Prettify Failed {ex.ToString()}", ToastDuration.Long).Show();
+            Toast.Make($"Prettify Failed {ex}", ToastDuration.Long).Show();
         }
     }
 
@@ -134,7 +134,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     public async Task OpenSubscriptionEditor()
     {
-        await Shell.Current.GoToAsync($"{nameof(SubscriptionEditorPage)}?{nameof(Host)}={Host}&{nameof(Username)}={Username}&{nameof(Password)}={Password}&{nameof(Port)}={Port}");
+        await Shell.Current.GoToAsync($"{nameof(NewSubscriptionPage)}?{nameof(Host)}={Host}&{nameof(Username)}={Username}&{nameof(Password)}={Password}&{nameof(Port)}={Port}");
     }
 
 
@@ -142,6 +142,25 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     public void SelectedSubscriptionChanged()
     {
         CurrentSubscriptionMessages = _subscriptionToMessageMap[CurrentSubscription];
+    }
+
+    [RelayCommand]
+    public void StopSubscription(Subscription subscriptionToRemove)
+    {
+        if (subscriptionToRemove is null)
+        {
+            Toast.Make("No subscription selected.", ToastDuration.Long).Show();
+            return;
+        }
+
+        Debug.WriteLine($"Stopping subscription {subscriptionToRemove.Id} for messages in exchange {subscriptionToRemove.Exchange} with routing key {subscriptionToRemove.RoutingKey}");
+        subscriptionToRemove.StopConsuming();
+        Subscriptions.Remove(subscriptionToRemove);
+
+        if (_subscriptionToMessageMap.ContainsKey(subscriptionToRemove))
+        {
+            _subscriptionToMessageMap[subscriptionToRemove].Clear();
+        }
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -164,23 +183,9 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
         }
     }
 
-
-    [RelayCommand]
-    public void StopSubscription(Subscription subscriptionToRemove)
+    private void ConnectionShutDown()
     {
-        if (subscriptionToRemove is null)
-        {
-            Toast.Make($"No subscription selected.", ToastDuration.Long).Show();
-            return;
-        }
-
-        Debug.WriteLine($"Stoping subscription {subscriptionToRemove.Id} for messages in exchange {subscriptionToRemove.Exchange} with routing key {subscriptionToRemove.RoutingKey}");
-        subscriptionToRemove.StopConsuming();
-        Subscriptions.Remove(subscriptionToRemove);
-
-        if (_subscriptionToMessageMap.ContainsKey(subscriptionToRemove))
-        {
-            _subscriptionToMessageMap[subscriptionToRemove].Clear();
-        }
+        Connected = false;
+        Debug.WriteLine("Disconnected.");
     }
 }

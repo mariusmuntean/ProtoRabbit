@@ -90,7 +90,7 @@
         <BoxView Grid.Row="2"
                  Grid.Column="1"
                  VerticalOptions="Fill"
-                 WidthRequest="5"
+                 WidthRequest="2"
                  Color="Gray" />
 
         <CollectionView Grid.Row="2"

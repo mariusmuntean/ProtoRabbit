@@ -1,26 +1,27 @@
 ﻿<Properties StartupConfiguration="{4A8B01F0-1058-49C1-A254-C56AA4187CCA}|Default">
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/marius/Projects/ProtoRabbit/ProtoRabbit/ViewModels/MainPageViewModel.cs" relfile="ProtoRabbit/ViewModels/MainPageViewModel.cs" line="85" column="1" />
+      <Breakpoint file="/Users/marius/Projects/ProtoRabbit/ProtoRabbit/ViewModels/MainPageViewModel.cs" relfile="ProtoRabbit/ViewModels/MainPageViewModel.cs" line="79" column="1" />
+      <Breakpoint file="/Users/marius/Projects/ProtoRabbit/ProtoRabbit/Services/AsyncMessagePublisher.cs" relfile="ProtoRabbit/Services/AsyncMessagePublisher.cs" line="83" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.ItemProperties.ProtoRabbit PreferredExecutionTarget="MyAppleMacCatalystID" />
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit/ProtoRabbit.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit/Views/NewSubscriptionPage.xaml">
     <Files>
-      <File FileName="ProtoRabbit/Services/Messages/DeleteReceivableMessage.cs" Line="8" Column="2" />
-      <File FileName="ProtoRabbit/Views/Components/SubscriptionsManager.xaml.cs" Line="32" Column="34" />
-      <File FileName="ProtoRabbit/ViewModels/MainPageViewModel.cs" Line="167" Column="1" />
-      <File FileName="ProtoRabbit/Services/Subscription.cs" Line="64" Column="28" />
-      <File FileName="ProtoRabbit/ProtoRabbit.csproj" Line="32" Column="40" />
-      <File FileName="ProtoRabbit/Views/MainPage.xaml" />
+      <File FileName="ProtoRabbit/ViewModels/MainPageViewModel.cs" />
+      <File FileName="ProtoRabbit/Services/RabbitClient.cs" />
+      <File FileName="ProtoRabbit/MauiProgram.cs" />
+      <File FileName="ProtoRabbit/Services/Subscription.cs" />
+      <File FileName="ProtoRabbit/Views/MainPage.xaml" Line="202" Column="48" />
+      <File FileName="ProtoRabbit/Views/NewSubscriptionPage.xaml" Line="1" Column="1" />
       <File FileName="ProtoRabbit/Views/Components/SubscriptionsManager.xaml" />
-      <File FileName="ProtoRabbit/AppShell.xaml" />
-      <File FileName="ProtoRabbit/App.xaml" />
-      <File FileName="ProtoRabbit/Resources/Styles/Styles.xaml" />
-      <File FileName="ProtoRabbit/Views/SubscriptionEditorPage.xaml" Line="26" Column="75" />
+      <File FileName="ProtoRabbit/Views/Components/SubscriptionsManager.xaml.cs" Line="35" Column="6" />
+      <File FileName="ProtoRabbit/Views/NewSubscriptionPage.xaml.cs" Line="10" Column="9" />
+      <File FileName="ProtoRabbit/ViewModels/NewSubscriptionViewModel.cs" Line="36" Column="6" />
+      <File FileName="ProtoRabbit/Views/MainPage.xaml.cs" Line="13" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -39,7 +40,7 @@
                   <Node name="SubscriptionsManager.xaml" expanded="True" />
                 </Node>
                 <Node name="MainPage.xaml" expanded="True" />
-                <Node name="SubscriptionEditorPage.xaml" expanded="True" />
+                <Node name="NewSubscriptionPage.xaml" expanded="True" selected="True" />
               </Node>
             </Node>
           </Node>

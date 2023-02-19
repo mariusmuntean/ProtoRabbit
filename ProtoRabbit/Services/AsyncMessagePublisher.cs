@@ -6,16 +6,47 @@ namespace ProtoRabbit.Services;
 
 public class AsyncMessagePublisher
 {
-    private readonly HashSet<IModel> _activeChannels = new HashSet<IModel>();
-    private readonly ConcurrentDictionary<ulong, TaskCompletionSource<ulong>> _messageIdToTcsMap = new ConcurrentDictionary<ulong, TaskCompletionSource<ulong>>();
+    private readonly ConcurrentDictionary<ulong, TaskCompletionSource<ulong>> _messageIdToTcsMap = new();
 
+    private readonly ConnectionManager _connectionManager;
+    private IModel _activeChannel;
 
-    public Task<ulong> Send(IModel channel, string exchange, string routingKey, byte[] @event)
+    public AsyncMessagePublisher(ConnectionManager connectionManager)
     {
-        ArgumentNullException.ThrowIfNull(channel, nameof(channel));
-        SetUpChannelIfNew(channel);
+        _connectionManager = connectionManager;
+    }
 
-        // Part 1 of the async message publishing - store the message ID and the TaskCompletion Source
+    public Task<ulong> Send(string exchange, string routingKey, byte[] @event)
+    {
+        var channel = GetChannel();
+        var task = GetTaskForMessagePublishing(channel);
+
+        channel.BasicPublish(exchange, routingKey, body: @event, mandatory: true);
+
+        return task;
+    }
+
+    private IModel GetChannel()
+    {
+        if (_activeChannel is null || _activeChannel.IsClosed)
+        {
+            _activeChannel?.Dispose();
+
+            var connection = _connectionManager.CurrentConnection ?? throw new Exception("The connection manager has currently no open connection. Cannot create a new channel.");
+            _activeChannel = connection.CreateModel();
+            _activeChannel.ConfirmSelect();
+            _activeChannel.ModelShutdown += OnModelShutdown;
+            _activeChannel.BasicAcks += NewChannel_BasicAcks;
+            _activeChannel.BasicNacks += NewChannel_BasicNacks;
+        }
+
+        return _activeChannel;
+    }
+
+    #region Part 1 of the async message publishing - store the message ID and the TaskCompletion Source
+
+    private Task<ulong> GetTaskForMessagePublishing(IModel channel)
+    {
         var messageKey = channel.NextPublishSeqNo;
         var tcs = new TaskCompletionSource<ulong>();
         if (!_messageIdToTcsMap.TryAdd(messageKey, tcs))
@@ -23,29 +54,16 @@ public class AsyncMessagePublisher
             throw new Exception($"Message no '{messageKey}' already enqueued");
         }
 
-        channel.BasicPublish(exchange, routingKey, body: @event, mandatory: true);
+        var task = tcs.Task;
 
-        return tcs.Task;
+
+        return task;
     }
 
-    private void SetUpChannelIfNew(IModel channel)
-    {
-        if (_activeChannels.Contains(channel))
-        {
-            return;
-        }
+    #endregion
 
-        channel.ConfirmSelect();
+    #region Part 2 of async message handling - Set a result or fail running tasks
 
-        channel.ModelShutdown += OnModelShutdown;
-        channel.BasicAcks += NewChannel_BasicAcks;
-        channel.BasicNacks += NewChannel_BasicNacks;
-
-        _activeChannels.Add(channel);
-    }
-
-
-    // Part 2 of async message handling
     private void NewChannel_BasicAcks(object sender, BasicAckEventArgs e)
     {
         // See the docs for handling 'multiple'. Here we're dealing with the simple case. https://www.rabbitmq.com/tutorials/tutorial-seven-dotnet.html
@@ -57,7 +75,6 @@ public class AsyncMessagePublisher
         }
     }
 
-    // Part 2 of async message handling
     private void NewChannel_BasicNacks(object sender, BasicNackEventArgs e)
     {
         if (_messageIdToTcsMap.TryGetValue(e.DeliveryTag, out var tcs))
@@ -67,13 +84,20 @@ public class AsyncMessagePublisher
         }
     }
 
-    // Part 2 of async message handling
     private void OnModelShutdown(object sender, ShutdownEventArgs e)
     {
+        // Transition all running tasks to Faulted
         foreach (var (messageKey, tcs) in _messageIdToTcsMap)
         {
             tcs.SetException(new Exception($"Underlying channel was shut down. {e}"));
             _messageIdToTcsMap.Remove(messageKey, out var _);
         }
+
+        // Remove event handler from current channel model and set to null to be collected
+        _activeChannel.ModelShutdown -= OnModelShutdown;
+        _activeChannel.Dispose();
+        _activeChannel = null;
     }
+
+    #endregion
 }

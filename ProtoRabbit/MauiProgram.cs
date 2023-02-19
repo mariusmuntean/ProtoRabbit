@@ -32,13 +32,15 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<ConnectionFactory>(); // RabbitMQ connection factory
         builder.Services.AddSingleton<CachingConnectionFactory>(); // ProtoRabbit connection factory
-        builder.Services.AddSingleton<RabbitClientFactory>();
+        builder.Services.AddSingleton<ConnectionManager>(); // ProtoRabbit connection manager
+        builder.Services.AddSingleton<RabbitClient>();
+        builder.Services.AddSingleton<AsyncMessagePublisher>();
 
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddSingleton<MainPageViewModel>();
 
-        builder.Services.AddSingleton<SubscriptionEditorPage>();
-        builder.Services.AddSingleton<SubscriptionEditorViewModel>();
+        builder.Services.AddSingleton<NewSubscriptionPage>();
+        builder.Services.AddSingleton<NewSubscriptionViewModel>();
 
         return builder.Build();
     }
