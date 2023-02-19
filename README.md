@@ -1,10 +1,10 @@
 # ProtoRabbit
 
-Desktop tool for sending and receiving Protobuf serialized messages to/from RabbitMQ. 
+.NET MAUI desktop tool (macOS and Windows) for sending and receiving Protobuf serialized messages to/from RabbitMQ. 
 Protobuf messages are harder to inspect while debugging so this tool takes care of deserializing and displaying them in JSON form.
 It also allows manually defining a JSON message that is then serialized with Protobuf and sent to RabbitMQ.
 
-### Note 1: I built this for my own needs.
+### Note 1: I built this for my own needs and to test out MAUI.
 ### Note 2: You probably won't be able to use it as it. Have a look at the code and extend it with your message types. 
 
 
