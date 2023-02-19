@@ -172,6 +172,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
             {
                 
             });
+            CurrentSubscription = subscription;
 
             // clearing the dict otherwise even simple back navigation will return a full dict
             query.Clear();
