@@ -201,8 +201,7 @@
                                          CurrentSubscription="{Binding CurrentSubscription, Mode=TwoWay}"
                                          StopSubscriptionCommand="{Binding StopSubscriptionCommand}"
                                          SelectedSubscriptionChangedCommand="{Binding SelectedSubscriptionChangedCommand}"
-                                         OpenSubscriptionEditorCommand="{Binding OpenSubscriptionEditorCommand}"
-                                         CurrentSubscriptionMessages="{Binding CurrentSubscriptionMessages}" />
+                                         OpenSubscriptionEditorCommand="{Binding OpenSubscriptionEditorCommand}" />
 
     </Grid>
 

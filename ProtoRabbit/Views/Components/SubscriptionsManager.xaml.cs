@@ -75,20 +75,6 @@ public partial class SubscriptionsManager : ContentView
     }
 
 
-
-    public static readonly BindableProperty CurrentSubscriptionMessagesProperty = BindableProperty.Create(
-        nameof(CurrentSubscriptionMessages),
-        typeof(ObservableCollection<string>),
-        typeof(SubscriptionsManager)
-        );
-
-    public ObservableCollection<string> CurrentSubscriptionMessages
-    {
-        get => (ObservableCollection<string>)GetValue(CurrentSubscriptionMessagesProperty);
-        set => SetValue(CurrentSubscriptionMessagesProperty, value);
-    }
-
-
     public static readonly BindableProperty StopSubscriptionCommandProperty = BindableProperty.Create(
     nameof(StopSubscriptionCommand),
     typeof(ICommand),

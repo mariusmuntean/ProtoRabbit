@@ -13,7 +13,7 @@ public class ConnectionManager
 
     public IConnection Connect(string host, string username, string password, int port)
     {
-        if (CurrentConnection is not null)
+        if (CurrentConnection is not null && CurrentConnection.IsOpen)
         {
             CurrentConnection.Close(1, "Establishing new connection");
         }

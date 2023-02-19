@@ -1,5 +1,7 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Text.Json;
 using ProtoBuf;
 using RabbitMQ.Client;
@@ -13,7 +15,9 @@ public class Subscription
     private readonly string _exchange;
     protected readonly string _routingKey;
     protected readonly string _queueName;
+    
     protected readonly string _subscriptionName;
+    private readonly ObservableCollection<MessageWrapper> _messages;
 
     EventHandler<BasicDeliverEventArgs> _onReceived;
 
@@ -31,6 +35,8 @@ public class Subscription
         _queueName = queueName;
         _subscriptionName = subscriptionName;
         _connection = connection;
+
+        _messages = new ObservableCollection<MessageWrapper>();
     }
 
     public Guid Id { get; } = Guid.NewGuid();
@@ -43,7 +49,9 @@ public class Subscription
 
     public string SubscriptionName => _subscriptionName;
 
-    public void StartConsuming(Type messageType, Action<MessageWrapper<object>> onMessage)
+    public ObservableCollection<MessageWrapper> Messages => _messages;
+
+    public void StartConsuming(Type messageType, Action<MessageWrapper> onMessage)
     {
         _channel = _connection.CreateModel();
         var response = _channel.QueueDeclare(_queueName, false, true, true);
@@ -64,7 +72,7 @@ public class Subscription
         _channel.Dispose();
     }
 
-    private EventHandler<BasicDeliverEventArgs> GetOnReceived(Type messageType, Action<MessageWrapper<object>> onMessage)
+    private EventHandler<BasicDeliverEventArgs> GetOnReceived(Type messageType, Action<MessageWrapper> onMessage)
     {
         void OnReceived(object sender, BasicDeliverEventArgs e)
         {
@@ -74,7 +82,10 @@ public class Subscription
                 var message = Serializer.Deserialize(messageType, ms);
                 var jsonMessage = JsonSerializer.Serialize(message);
                 Debug.WriteLine($"{DateTime.Now} {_exchange} {_routingKey} {_queueName} -> {jsonMessage}");
-                onMessage?.Invoke(new MessageWrapper<object>(DateTime.Now, Exchange, RoutingKey, QueueName, message));
+
+                var messageWrapper = new MessageWrapper(DateTime.Now, Exchange, RoutingKey, QueueName, message);
+                onMessage?.Invoke(messageWrapper);
+                Messages.Add(messageWrapper);
             }
             catch (Exception exception)
             {
@@ -84,22 +95,4 @@ public class Subscription
 
         return OnReceived;
     }
-}
-
-public class MessageWrapper<TMessage>
-{
-    public MessageWrapper(DateTime dateTime, string exchange, string routingKey, string queue, TMessage message)
-    {
-        DateTime = dateTime;
-        Exchange = exchange;
-        RoutingKey = routingKey;
-        Queue = queue;
-        Message = message;
-    }
-
-    public DateTime DateTime { get; }
-    public string Exchange { get; }
-    public string RoutingKey { get; }
-    public string Queue { get; }
-    public TMessage Message { get; }
 }

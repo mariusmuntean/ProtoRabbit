@@ -15,7 +15,7 @@ public class CachingConnectionFactory
     public IConnection GetConnectionForServer(string host, string username, string password, int port)
     {
         var server = (host, username, password, port);
-        if (!_serverToConnectionMap.ContainsKey(server))
+        if (!_serverToConnectionMap.ContainsKey(server) || !_serverToConnectionMap[server].IsOpen)
         {
             _connectionFactory.HostName = host;
             _connectionFactory.UserName = username;

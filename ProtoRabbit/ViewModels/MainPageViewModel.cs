@@ -44,10 +44,8 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     [ObservableProperty] private SendableMessageBase _sendableMessage;
     [ObservableProperty] private int _sendableMessageIndex;
 
-    private readonly Dictionary<Subscription, ObservableCollection<string>> _subscriptionToMessageMap;
     [ObservableProperty] private ObservableCollection<Subscription> _subscriptions;
     [ObservableProperty] private Subscription _currentSubscription;
-    [ObservableProperty] private ObservableCollection<string> _currentSubscriptionMessages;
 
     private readonly RabbitClient _rabbitClient;
 
@@ -55,9 +53,8 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     {
         _rabbitClient = rabbitClient;
 
-        _sendableMessages = new List<SendableMessageBase> {new CreateSendableMessage(), new DeleteSendableMessage()}; // ToDo use reflection to load all subclasses
+        _sendableMessages = new List<SendableMessageBase> { new CreateSendableMessage(), new DeleteSendableMessage() }; // ToDo use reflection to load all subclasses
 
-        _subscriptionToMessageMap = new Dictionary<Subscription, ObservableCollection<string>>();
         _subscriptions = new ObservableCollection<Subscription>();
     }
 
@@ -107,7 +104,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     {
         try
         {
-            JsonMessage = JsonSerializer.Serialize(JsonSerializer.Deserialize(JsonMessage, typeof(object)), typeof(object), new JsonSerializerOptions {WriteIndented = true});
+            JsonMessage = JsonSerializer.Serialize(JsonSerializer.Deserialize(JsonMessage, typeof(object)), typeof(object), new JsonSerializerOptions { WriteIndented = true });
         }
         catch (Exception ex)
         {
@@ -141,7 +138,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     public void SelectedSubscriptionChanged()
     {
-        CurrentSubscriptionMessages = _subscriptionToMessageMap[CurrentSubscription];
+        // CurrentSubscriptionMessages = _subscriptionToMessageMap[CurrentSubscription];
     }
 
     [RelayCommand]
@@ -157,9 +154,9 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
         subscriptionToRemove.StopConsuming();
         Subscriptions.Remove(subscriptionToRemove);
 
-        if (_subscriptionToMessageMap.ContainsKey(subscriptionToRemove))
+        if (subscriptionToRemove == CurrentSubscription)
         {
-            _subscriptionToMessageMap[subscriptionToRemove].Clear();
+            CurrentSubscription = null;
         }
     }
 
@@ -171,11 +168,9 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
            )
         {
             Subscriptions.Add(subscription);
-            _subscriptionToMessageMap[subscription] = new ObservableCollection<string>();
             subscription.StartConsuming(type, wrapper =>
             {
-                string message = $"{wrapper.DateTime} {JsonSerializer.Serialize(wrapper.Message)}";
-                _subscriptionToMessageMap[subscription].Add(message);
+                
             });
 
             // clearing the dict otherwise even simple back navigation will return a full dict
@@ -186,6 +181,14 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     private void ConnectionShutDown()
     {
         Connected = false;
+
+        foreach (var sub in Subscriptions)
+        {
+            sub.StopConsuming();
+        }
+        Subscriptions.Clear();
+        CurrentSubscription = null;
+
         Debug.WriteLine("Disconnected.");
     }
 }

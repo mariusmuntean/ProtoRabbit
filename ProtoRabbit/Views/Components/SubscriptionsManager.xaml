@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:services="clr-namespace:ProtoRabbit.Services"
              xmlns:components="clr-namespace:ProtoRabbit.Views.Components"
+             xmlns:valueConverters="clr-namespace:ProtoRabbit.Views.ValueConverters"
              x:Class="ProtoRabbit.Views.Components.SubscriptionsManager"
              x:DataType="components:SubscriptionsManager">
 
@@ -23,18 +24,17 @@
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="VerticalOptions" Value="StartAndExpand" />
             </Style>
+            <valueConverters:WrappedMessageToJsonConverter x:Key="WrappedMessageToJsonConverter" />
         </ResourceDictionary>
 
     </ContentView.Resources>
 
-    <Grid
-        Grid.Row="3"
-        RowDefinitions="*"
-        ColumnDefinitions="300,Auto, *"
-        RowSpacing="25"
-        ColumnSpacing="10"
-        VerticalOptions="Fill"
-        Padding="10">
+    <Grid RowDefinitions="*"
+          ColumnDefinitions="300,Auto, *"
+          RowSpacing="25"
+          ColumnSpacing="10"
+          VerticalOptions="Fill"
+          Padding="10">
 
 
         <!-- ToDo: pause/remove subscriptions -->
@@ -66,11 +66,12 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="services:Subscription">
                     <Label Text="{Binding SubscriptionName}"
-                           Style="{StaticResource SubscriptionLabelStyle}" >
+                           Style="{StaticResource SubscriptionLabelStyle}">
                         <FlyoutBase.ContextFlyout>
                             <MenuFlyout>
-                                <MenuFlyoutItem Text="Pause" IsEnabled="False"  />
-                                <MenuFlyoutItem Text="Remove" Clicked="RemoveSubscriptionClicked" CommandParameter="{Binding .}"/>
+                                <MenuFlyoutItem Text="Pause" IsEnabled="False" />
+                                <MenuFlyoutItem Text="Remove" Clicked="RemoveSubscriptionClicked"
+                                                CommandParameter="{Binding .}" />
                             </MenuFlyout>
                         </FlyoutBase.ContextFlyout>
                     </Label>
@@ -99,7 +100,7 @@
                         VerticalScrollBarVisibility="Always"
                         VerticalOptions="FillAndExpand"
                         ItemsUpdatingScrollMode="KeepLastItemInView"
-                        ItemsSource="{Binding CurrentSubscriptionMessages}">
+                        ItemsSource="{Binding CurrentSubscription.Messages}">
             <CollectionView.Header>
                 <Grid ColumnDefinitions="*, Auto, Auto">
                     <Label Grid.Column="0"
@@ -113,8 +114,12 @@
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="services:Subscription">
-                    <Label Text="{Binding .}" Style="{StaticResource SubscriptionMessageLabelStyle}" />
+                <DataTemplate x:DataType="services:MessageWrapper">
+                    <HorizontalStackLayout Spacing="5">
+                        <Label Text="{Binding Path=DateTime}" Style="{StaticResource SubscriptionMessageLabelStyle}" />
+                        <Label Text="{Binding Path=Message, Converter={StaticResource WrappedMessageToJsonConverter}}"
+                               Style="{StaticResource SubscriptionMessageLabelStyle}" />
+                    </HorizontalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.EmptyView>
