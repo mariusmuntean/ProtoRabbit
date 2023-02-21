@@ -4,6 +4,7 @@
     <option name="projectPerEditor">
       <map>
         <entry key="ProtoRabbit.Avalonia.X/ProtoRabbit.Avalonia.X/Views/MainView.axaml" value="ProtoRabbit.Avalonia.X/ProtoRabbit.Avalonia.X.Desktop/ProtoRabbit.Avalonia.X.Desktop.csproj" />
+        <entry key="ProtoRabbit.MVVM/Views/MainWindow.axaml" value="ProtoRabbit.MVVM/ProtoRabbit.MVVM.csproj" />
       </map>
     </option>
   </component>
