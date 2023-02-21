@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="ProtoRabbit.Avalonia.X/ProtoRabbit.Avalonia.X/Views/MainView.axaml" value="ProtoRabbit.Avalonia.X/ProtoRabbit.Avalonia.X.Desktop/ProtoRabbit.Avalonia.X.Desktop.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
