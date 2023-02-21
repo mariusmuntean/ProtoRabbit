@@ -31,8 +31,8 @@ public static class MauiProgram
 #endif
 
         builder.Services.AddSingleton<ConnectionFactory>(); // RabbitMQ connection factory
-        builder.Services.AddSingleton<CachingConnectionFactory>(); // ProtoRabbit connection factory
-        builder.Services.AddSingleton<ConnectionManager>(); // ProtoRabbit connection manager
+        builder.Services.AddSingleton<CachingConnectionFactory>(); // ProtoRabbit-MAUI connection factory
+        builder.Services.AddSingleton<ConnectionManager>(); // ProtoRabbit-MAUI connection manager
         builder.Services.AddSingleton<RabbitClient>();
         builder.Services.AddSingleton<AsyncMessagePublisher>();
 

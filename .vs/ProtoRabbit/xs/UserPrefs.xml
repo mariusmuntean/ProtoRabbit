@@ -1,60 +1,52 @@
 ﻿<Properties StartupConfiguration="{4A8B01F0-1058-49C1-A254-C56AA4187CCA}|Default">
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit/Services/Subscription.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit/ProtoRabbit.csproj">
     <Files>
-      <File FileName="ProtoRabbit/ViewModels/MainPageViewModel.cs" Line="57" Column="36" />
-      <File FileName="ProtoRabbit/Services/RabbitClient.cs" Line="20" Column="1" />
+      <File FileName="ProtoRabbit/ViewModels/MainPageViewModel.cs" Line="104" Column="34" />
+      <File FileName="ProtoRabbit/Services/RabbitClient.cs" />
       <File FileName="ProtoRabbit/MauiProgram.cs" />
-      <File FileName="ProtoRabbit/Views/Components/SubscriptionsManager.xaml.cs" Line="11" Column="6" />
-      <File FileName="ProtoRabbit/Views/NewSubscriptionPage.xaml.cs" Line="10" Column="9" />
-      <File FileName="ProtoRabbit/ViewModels/NewSubscriptionViewModel.cs" Line="34" Column="38" />
-      <File FileName="ProtoRabbit/Views/MainPage.xaml.cs" Line="13" Column="2" />
-      <File FileName="ProtoRabbit/Services/ConnectionManager.cs" Line="21" Column="1" />
-      <File FileName="ProtoRabbit/Services/CachingConnectionFactory.cs" Line="18" Column="61" />
-      <File FileName="ProtoRabbit/Services/AsyncMessagePublisher.cs" Line="19" Column="26" />
-      <File FileName="ProtoRabbit/Services/Messages/SendableMessageBase.cs" Line="1" Column="1" />
-      <File FileName="ProtoRabbit/Services/Subscription.cs" Line="70" Column="1" />
-      <File FileName="ProtoRabbit/Services/MessageWrapper.cs" Line="13" Column="27" />
-      <File FileName="ProtoRabbit/App.xaml.cs" Line="25" Column="1" />
-      <File FileName="ProtoRabbit/Platforms/MacCatalyst/Program.cs" Line="12" Column="1" />
+      <File FileName="ProtoRabbit/Views/Components/SubscriptionsManager.xaml.cs" />
+      <File FileName="ProtoRabbit/Views/NewSubscriptionPage.xaml.cs" />
+      <File FileName="ProtoRabbit/ViewModels/NewSubscriptionViewModel.cs" />
+      <File FileName="ProtoRabbit/Views/MainPage.xaml.cs" />
+      <File FileName="ProtoRabbit/Services/ConnectionManager.cs" />
+      <File FileName="ProtoRabbit/Services/CachingConnectionFactory.cs" />
+      <File FileName="ProtoRabbit/Services/AsyncMessagePublisher.cs" />
+      <File FileName="ProtoRabbit/Services/Messages/SendableMessageBase.cs" />
+      <File FileName="ProtoRabbit/Services/Subscription.cs" />
+      <File FileName="ProtoRabbit/Services/MessageWrapper.cs" />
+      <File FileName="ProtoRabbit/App.xaml.cs" />
+      <File FileName="ProtoRabbit/Platforms/MacCatalyst/Program.cs" />
+      <File FileName="ProtoRabbit/Views/Components/SubscriptionsManager.xaml" Line="68" Column="61" />
+      <File FileName="README.md" Line="1" Column="1" />
+      <File FileName="ProtoRabbit/App.xaml" Line="9" Column="66" />
+      <File FileName="ProtoRabbit/Resources/Styles/Colors.xaml" Line="1" Column="1" />
+      <File FileName="../../../../usr/local/share/dotnet/sdk/7.0.200/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets" Line="266" Column="5" />
+      <File FileName="ProtoRabbit/ProtoRabbit.csproj" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="ProtoRabbit" expanded="True">
+          <Node name="ProtoRabbit" expanded="True" selected="True">
+            <Node name="SolutionItems" expanded="True" />
             <Node name="ProtoRabbit" expanded="True">
-              <Node name="Platforms" expanded="True">
-                <Node name="MacCatalyst" expanded="True" />
-              </Node>
               <Node name="Resources" expanded="True">
                 <Node name="Styles" expanded="True" />
               </Node>
-              <Node name="Services" expanded="True">
-                <Node name="Messages" expanded="True" />
-              </Node>
               <Node name="ViewModels" expanded="True" />
               <Node name="Views" expanded="True">
-                <Node name="Components" expanded="True">
-                  <Node name="SubscriptionsManager.xaml" expanded="True" />
-                </Node>
-                <Node name="ValueConverters" expanded="True" />
-                <Node name="MainPage.xaml" expanded="True" />
-                <Node name="NewSubscriptionPage.xaml" expanded="True" />
+                <Node name="Components" expanded="True" />
               </Node>
-              <Node name="App.xaml" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.ProtoRabbit PreferredExecutionTarget="MyAppleMacCatalystID" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>

@@ -104,7 +104,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     public void PrettifyMessage()
     {
         try
-        {,
+        {
             JsonMessage = JsonSerializer.Serialize(JsonSerializer.Deserialize(JsonMessage, typeof(object)), typeof(object), new JsonSerializerOptions { WriteIndented = true });
         }
         catch (Exception ex)

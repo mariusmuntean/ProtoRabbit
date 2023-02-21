@@ -22,7 +22,7 @@ public class CachingConnectionFactory
             _connectionFactory.Password = password;
             _connectionFactory.Port = port;
 
-            var newConnection = _connectionFactory.CreateConnection("ProtoRabbit");
+            var newConnection = _connectionFactory.CreateConnection("ProtoRabbit-MAUI");
             _serverToConnectionMap[server] = newConnection;
         }
 
