@@ -7,10 +7,12 @@
     <ContentView.ControlTemplate>
         <ControlTemplate>
             <VerticalStackLayout Spacing="10">
+                <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
                 <Label Text="{TemplateBinding SectionTitle}"
                    HorizontalOptions="Start"
                    Style="{StaticResource SectionLabelStyle}" />
                 <ContentPresenter />
+                <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
 
             </VerticalStackLayout>
         </ControlTemplate>

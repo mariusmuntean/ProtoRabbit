@@ -3,7 +3,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:ProtoRabbit.ViewModels"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:components="clr-namespace:ProtoRabbit.Views.Components"
              x:DataType="viewmodel:MainPageViewModel"
              x:Class="ProtoRabbit.Views.MainPage"
@@ -11,7 +10,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            
+
             <Style TargetType="Label">
                 <Setter Property="FontSize" Value="25" />
             </Style>
@@ -67,82 +66,17 @@
                                       Password="{Binding Password}"
                                       ConnectCommand="{Binding ConnectCommand}"
                                       DisconnectCommand="{Binding DisconnectCommand}"
-                                      Connected="{Binding Connected}"/>
+                                      Connected="{Binding Connected}" />
 
         <!-- SEND -->
-        <VerticalStackLayout
-            Grid.Row="2"
-            Spacing="15"
-            IsVisible="{Binding Connected}">
-            <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
-            <Label Text="Send"
-                   HorizontalOptions="Start"
-                   Style="{StaticResource SectionLabelStyle}" />
-
-            <Picker Title="Select a sendable message"
-                    x:Name="SelectableMessagePicker"
-                    ItemsSource="{Binding SendableMessages}"
-                    ItemDisplayBinding="{Binding Name}"
-                    SelectedIndex="{Binding SendableMessageIndex, Mode=TwoWay}"
-                    HorizontalOptions="Center"
-                    WidthRequest="300">
-                <Picker.Behaviors>
-                    <toolkit:EventToCommandBehavior
-                        EventName="SelectedIndexChanged"
-                        Command="{Binding SendableMessageIndexChangedCommand}" />
-                </Picker.Behaviors>
-            </Picker>
-
-            <Entry Placeholder="Exchange"
-                   ToolTipProperties.Text="Exchange"
-                   WidthRequest="700"
-                   Text="{Binding Exchange}"
-                   Style="{StaticResource ParameterEntryStyle}" />
-            <Entry Placeholder="Routing Key"
-                   ToolTipProperties.Text="Routing Key"
-                   WidthRequest="700"
-                   Text="{Binding RoutingKey}"
-                   Style="{StaticResource ParameterEntryStyle}" />
-
-            <Grid ColumnSpacing="8" ColumnDefinitions="*, *">
-                <Border Grid.Column="0" HorizontalOptions="FillAndExpand"
-                        VerticalOptions="StartAndExpand">
-                    <Grid Padding="0,0,5,5">
-                        <Editor
-                            Placeholder="JSON Message"
-                            ToolTipProperties.Text="JSON Message"
-                            AutoSize="TextChanges"
-                            Style="{StaticResource JsonMessageStyle}"
-                            Text="{Binding JsonMessage, Mode=TwoWay}" />
-                        <ImageButton Source="shine.png"
-                                     ToolTipProperties.Text="Prettify"
-                                     Padding="2"
-                                     HeightRequest="10"
-                                     WidthRequest="10"
-                                     BackgroundColor="{StaticResource Secondary}"
-                                     CornerRadius="5"
-                                     Scale="0.6"
-                                     HorizontalOptions="End"
-                                     VerticalOptions="End"
-                                     Command="{Binding PrettifyMessageCommand}" />
-                    </Grid>
-                </Border>
-
-
-                <Border Grid.Column="1">
-                    <Editor Placeholder="Proto file"
-                            ToolTipProperties.Text="Proto File"
-                            Style="{StaticResource JsonMessageStyle}"
-                            AutoSize="TextChanges"
-                            Text="{Binding ProtoFile}" />
-                </Border>
-
-            </Grid>
-
-            <Button Text="Send" HorizontalOptions="Center"
-                    ToolTipProperties.Text="Click to send"
-                    Command="{Binding SendCommand}" />
-        </VerticalStackLayout>
+        <components:SendMessageControl Grid.Row="2"
+                                       SendableMessages="{Binding SendableMessages}"
+                                       SendableMessageIndex="{Binding SendableMessageIndex}"
+                                       SendableMessageIndexChangedCommand="{Binding SendableMessageIndexChangedCommand}"
+                                       Exchange="{Binding Exchange}"
+                                       RoutingKey="{Binding RoutingKey}"
+                                       SendCommand="{Binding SendCommand}"
+                                       IsVisible="{Binding Connected}" />
 
         <!-- RECEIVE -->
         <BoxView Grid.Row="3"

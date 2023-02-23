@@ -4,7 +4,7 @@
              xmlns:components="clr-namespace:ProtoRabbit.Views.Components"
              x:DataType="components:ConnectionControl"
              x:Class="ProtoRabbit.Views.Components.ConnectionControl">
-    <components:SectionControl SectionTitle="Server!!">
+    <components:SectionControl SectionTitle="Connection">
         <VerticalStackLayout Grid.Row="1" Spacing="20">
             <!-- host and port -->
             <HorizontalStackLayout Spacing="10"
