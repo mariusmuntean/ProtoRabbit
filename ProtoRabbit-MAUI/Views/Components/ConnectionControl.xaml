@@ -14,7 +14,7 @@
                        WidthRequest="350"
                        Style="{StaticResource ParameterEntryStyle}" />
                 <Entry Text="{Binding Port}"
-                       Placeholder="RabbitMQ URL"
+                       Placeholder="RabbitMQ Port"
                        WidthRequest="350"
                        Style="{StaticResource ParameterEntryStyle}" />
             </HorizontalStackLayout>

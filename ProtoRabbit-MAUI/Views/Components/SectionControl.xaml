@@ -3,20 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:components="clr-namespace:ProtoRabbit.Views.Components"
              x:DataType="components:SectionControl"
              x:Class="ProtoRabbit.Views.Components.SectionControl">
+  <ContentView.Resources>
+    <Style x:Key="SectionLabelStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="Large" />
+        <Setter Property="TextColor" Value="LightGrey" />
+    </Style>
+  </ContentView.Resources>
 
-    <ContentView.ControlTemplate>
-        <ControlTemplate>
-            <VerticalStackLayout Spacing="10">
-                <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
-                <Label Text="{TemplateBinding SectionTitle}"
+  <ContentView.ControlTemplate>
+    <ControlTemplate>
+      <Grid RowSpacing="10" RowDefinitions="Auto,Auto, *, Auto">
+        <BoxView Grid.Row="0" HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
+        <Label Grid.Row="1" Text="{TemplateBinding SectionTitle}"
                    HorizontalOptions="Start"
                    Style="{StaticResource SectionLabelStyle}" />
-                <ContentPresenter />
-                <BoxView HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
+        <ContentPresenter Grid.Row="2" />
+        <BoxView Grid.Row="3" HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
 
-            </VerticalStackLayout>
-        </ControlTemplate>
-    </ContentView.ControlTemplate>
+      </Grid>
+    </ControlTemplate>
+  </ContentView.ControlTemplate>
 
 </ContentView>
 

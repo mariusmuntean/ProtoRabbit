@@ -8,58 +8,40 @@
              x:Class="ProtoRabbit.Views.MainPage"
              Shell.NavBarIsVisible="False">
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <Style TargetType="Entry">
+        <Setter Property="FontSize" Value="20" />
+      </Style>
+      <Style x:Key="ParameterEntryStyle" TargetType="Entry">
+        <Setter Property="FontFamily" Value="CascadiaMono" />
+        <Setter Property="FontSize" Value="20" />
+      </Style>
+    </ResourceDictionary>
+  </ContentPage.Resources>
 
-            <Style TargetType="Label">
-                <Setter Property="FontSize" Value="25" />
-            </Style>
-            <Style TargetType="Editor">
-                <Setter Property="FontSize" Value="20" />
-            </Style>
-            <Style TargetType="Button">
-                <Setter Property="FontSize" Value="20" />
-            </Style>
-            <Style TargetType="Entry">
-                <Setter Property="FontSize" Value="20" />
-            </Style>
-            <Style x:Key="JsonMessageStyle" TargetType="Entry">
-                <Setter Property="FontFamily" Value="CascadiaMono" />
-                <Setter Property="FontSize" Value="20" />
-                <Setter Property="FontAutoScalingEnabled" Value="True" />
-                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-                <Setter Property="VerticalOptions" Value="StartAndExpand" />
-            </Style>
-            <Style x:Key="ParameterEntryStyle" TargetType="Entry">
-                <Setter Property="FontFamily" Value="CascadiaMono" />
-                <Setter Property="FontSize" Value="20" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
-    <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, *"
+  <Grid RowDefinitions="Auto, Auto, Auto, *"
           RowSpacing="20"
           Margin="10">
 
-        <VerticalStackLayout Grid.Row="0"
-                             Spacing="25"
-                             Padding="30,0"
-                             VerticalOptions="Center">
+    <HorizontalStackLayout Grid.Row="0"
+                           Spacing="20"
+                           VerticalOptions="CenterAndExpand"
+                           HorizontalOptions="Center"
+                           HeightRequest="50"
+                           MaximumHeightRequest="110">
+      <Image Source="protobuf.png"
+             HeightRequest="40"
+             WidthRequest="180"
+             BackgroundColor="AliceBlue" />
+      <Image Source="rabbitmq.png"
+             HeightRequest="40"
+             WidthRequest="180"
+             BackgroundColor="AliceBlue" />
+    </HorizontalStackLayout>
 
-            <HorizontalStackLayout Spacing="20"
-                                   VerticalOptions="CenterAndExpand"
-                                   HorizontalOptions="Center"
-                                   HeightRequest="50"
-                                   MaximumHeightRequest="110">
-                <Image Source="protobuf.png" HeightRequest="40" WidthRequest="180"
-                       BackgroundColor="AliceBlue" />
-                <Image Source="rabbitmq.png" HeightRequest="40" WidthRequest="180"
-                       BackgroundColor="AliceBlue" />
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
-
-        <!-- SERVER -->
-        <components:ConnectionControl Grid.Row="1"
+    <!-- SERVER -->
+    <components:ConnectionControl Grid.Row="1"
                                       Host="{Binding Host}"
                                       Port="{Binding Port}"
                                       Username="{Binding Username}"
@@ -68,8 +50,8 @@
                                       DisconnectCommand="{Binding DisconnectCommand}"
                                       Connected="{Binding Connected}" />
 
-        <!-- SEND -->
-        <components:SendMessageControl Grid.Row="2"
+    <!-- SEND -->
+    <components:SendMessageControl Grid.Row="2"
                                        SendableMessages="{Binding SendableMessages}"
                                        SendableMessageIndex="{Binding SendableMessageIndex}"
                                        SendableMessageIndexChangedCommand="{Binding SendableMessageIndexChangedCommand}"
@@ -78,18 +60,8 @@
                                        SendCommand="{Binding SendCommand}"
                                        IsVisible="{Binding Connected}" />
 
-        <!-- RECEIVE -->
-        <BoxView Grid.Row="3"
-                 Grid.Column="0"
-                 Grid.ColumnSpan="3"
-                 HeightRequest="2" HorizontalOptions="Fill" Color="Gray" />
-        <Label Text="Receive"
-               Grid.Row="4"
-               Grid.Column="0"
-               Grid.ColumnSpan="3"
-               HorizontalOptions="Start"
-               Style="{StaticResource SectionLabelStyle}" />
-        <components:SubscriptionsManager Grid.Row="5"
+    <!-- RECEIVE -->
+    <components:SubscribeAndReceiveMessageControl Grid.Row="3"
                                          IsVisible="{Binding Connected}"
                                          Grid.Column="1"
                                          Grid.ColumnSpan="3"
@@ -99,6 +71,6 @@
                                          SelectedSubscriptionChangedCommand="{Binding SelectedSubscriptionChangedCommand}"
                                          OpenSubscriptionEditorCommand="{Binding OpenSubscriptionEditorCommand}" />
 
-    </Grid>
+  </Grid>
 
 </ContentPage>

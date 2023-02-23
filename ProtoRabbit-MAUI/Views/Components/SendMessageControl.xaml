@@ -5,45 +5,52 @@
              xmlns:controls="clr-namespace:ProtoRabbit.Views.Components"
              x:DataType="controls:SendMessageControl"
              x:Class="ProtoRabbit.Views.Components.SendMessageControl">
-    <controls:SectionControl SectionTitle="Send">
 
-        <VerticalStackLayout Spacing="15">
-            <Picker Title="Select a sendable message"
+  <ContentView.Resources>
+    <Style TargetType="Editor">
+      <Setter Property="FontSize" Value="20" />
+    </Style>
+
+  </ContentView.Resources>
+
+  <controls:SectionControl SectionTitle="Send">
+    <VerticalStackLayout Spacing="15">
+      <Picker Title="Select a sendable message"
                     x:Name="SelectableMessagePicker"
                     ItemsSource="{Binding SendableMessages}"
                     ItemDisplayBinding="{Binding Name}"
                     SelectedIndex="{Binding SendableMessageIndex, Mode=TwoWay}"
                     HorizontalOptions="Center"
                     WidthRequest="300">
-                <Picker.Behaviors>
-                    <toolkit:EventToCommandBehavior
+        <Picker.Behaviors>
+          <toolkit:EventToCommandBehavior
                         EventName="SelectedIndexChanged"
                         Command="{Binding SendableMessageIndexChangedCommand}" />
-                </Picker.Behaviors>
-            </Picker>
+        </Picker.Behaviors>
+      </Picker>
 
-            <Entry Placeholder="Exchange"
+      <Entry Placeholder="Exchange"
                    ToolTipProperties.Text="Exchange"
                    WidthRequest="700"
                    Text="{Binding Exchange}"
                    Style="{StaticResource ParameterEntryStyle}" />
-            <Entry Placeholder="Routing Key"
+      <Entry Placeholder="Routing Key"
                    ToolTipProperties.Text="Routing Key"
                    WidthRequest="700"
                    Text="{Binding RoutingKey}"
                    Style="{StaticResource ParameterEntryStyle}" />
 
-            <Grid ColumnSpacing="8" ColumnDefinitions="*, *">
-                <Border Grid.Column="0" HorizontalOptions="FillAndExpand"
+      <Grid ColumnSpacing="8" ColumnDefinitions="*, *">
+        <Border Grid.Column="0" HorizontalOptions="FillAndExpand"
                         VerticalOptions="StartAndExpand">
-                    <Grid Padding="0,0,5,5">
-                        <Editor
+          <Grid Padding="0,0,5,5">
+            <Editor
                             Placeholder="JSON Message"
                             ToolTipProperties.Text="JSON Message"
                             AutoSize="TextChanges"
                             Style="{StaticResource JsonMessageStyle}"
                             Text="{Binding JsonMessage, Mode=TwoWay}" />
-                        <ImageButton Source="shine.png"
+            <ImageButton Source="shine.png"
                                      ToolTipProperties.Text="Prettify"
                                      Padding="2"
                                      HeightRequest="10"
@@ -54,25 +61,24 @@
                                      HorizontalOptions="End"
                                      VerticalOptions="End"
                                      Command="{Binding PrettifyMessageCommand}" />
-                    </Grid>
-                </Border>
+          </Grid>
+        </Border>
 
 
-                <Border Grid.Column="1">
-                    <Editor Placeholder="Proto file"
+        <Border Grid.Column="1">
+          <Editor Placeholder="Proto file"
                             ToolTipProperties.Text="Proto File"
                             Style="{StaticResource JsonMessageStyle}"
                             AutoSize="TextChanges"
                             Text="{Binding ProtoFile}" />
-                </Border>
+        </Border>
 
-            </Grid>
+      </Grid>
 
-            <Button Text="Send" HorizontalOptions="Center"
+      <Button Text="Send" HorizontalOptions="Center"
                     ToolTipProperties.Text="Click to send"
                     Command="{Binding SendCommand}" />
-        </VerticalStackLayout>
-
-    </controls:SectionControl>
+    </VerticalStackLayout>
+  </controls:SectionControl>
 </ContentView>
 
