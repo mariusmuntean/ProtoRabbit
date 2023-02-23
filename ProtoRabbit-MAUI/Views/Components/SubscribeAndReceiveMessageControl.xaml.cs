@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
+using ProtoRabbit.Services;
 
 namespace ProtoRabbit.Views.Components;
 
@@ -13,12 +14,12 @@ public partial class SubscribeAndReceiveMessageControl : ContentView
     public static readonly BindableProperty SubscriptionsProperty = BindableProperty.Create(
         nameof(Subscriptions),
         typeof(ObservableCollection<Services.Subscription>),
-        typeof(SubscriptionsManager)
+        typeof(SubscribeAndReceiveMessageControl)
         );
 
-    public ObservableCollection<SubscriptionsManager> Subscriptions
+    public ObservableCollection<Subscription> Subscriptions
     {
-        get => (ObservableCollection<SubscriptionsManager>)GetValue(SubscriptionsProperty);
+        get => (ObservableCollection<Subscription>)GetValue(SubscriptionsProperty);
         set => SetValue(SubscriptionsProperty, value);
     }
 
@@ -26,7 +27,7 @@ public partial class SubscribeAndReceiveMessageControl : ContentView
     public static readonly BindableProperty CurrentSubscriptionProperty = BindableProperty.Create(
     nameof(CurrentSubscription),
     typeof(Services.Subscription),
-    typeof(SubscriptionsManager)
+    typeof(SubscribeAndReceiveMessageControl)
     );
 
     public Services.Subscription CurrentSubscription
@@ -45,7 +46,7 @@ public partial class SubscribeAndReceiveMessageControl : ContentView
     public static readonly BindableProperty OpenSubscriptionEditorCommandProperty = BindableProperty.Create(
         nameof(OpenSubscriptionEditorCommand),
         typeof(ICommand),
-        typeof(SubscriptionsManager)
+        typeof(SubscribeAndReceiveMessageControl)
         );
 
     public ICommand OpenSubscriptionEditorCommand
@@ -63,7 +64,7 @@ public partial class SubscribeAndReceiveMessageControl : ContentView
     public static readonly BindableProperty SelectedSubscriptionChangedCommandProperty = BindableProperty.Create(
         nameof(SelectedSubscriptionChangedCommand),
         typeof(ICommand),
-        typeof(SubscriptionsManager)
+        typeof(SubscribeAndReceiveMessageControl)
         );
 
     public ICommand SelectedSubscriptionChangedCommand
@@ -76,7 +77,7 @@ public partial class SubscribeAndReceiveMessageControl : ContentView
     public static readonly BindableProperty StopSubscriptionCommandProperty = BindableProperty.Create(
     nameof(StopSubscriptionCommand),
     typeof(ICommand),
-    typeof(SubscriptionsManager)
+    typeof(SubscribeAndReceiveMessageControl)
     );
 
     public ICommand StopSubscriptionCommand
