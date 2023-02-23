@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:components="clr-namespace:ProtoRabbit.Views.Components"
+             x:DataType="components:ConnectionControl"
+             x:Class="ProtoRabbit.Views.Components.ConnectionControl">
+    <components:SectionControl SectionTitle="Server!!">
+        <VerticalStackLayout Grid.Row="1" Spacing="20">
+            <!-- host and port -->
+            <HorizontalStackLayout Spacing="10"
+                                   HorizontalOptions="Center">
+                <Entry Text="{Binding Host}"
+                       Placeholder="RabbitMQ URL"
+                       WidthRequest="350"
+                       Style="{StaticResource ParameterEntryStyle}" />
+                <Entry Text="{Binding Port}"
+                       Placeholder="RabbitMQ URL"
+                       WidthRequest="350"
+                       Style="{StaticResource ParameterEntryStyle}" />
+            </HorizontalStackLayout>
+
+            <!-- username and pasword -->
+            <HorizontalStackLayout Spacing="10"
+                                   HorizontalOptions="Center">
+                <Entry Text="{Binding Username}"
+                       Placeholder="Username"
+                       WidthRequest="350"
+                       Style="{StaticResource ParameterEntryStyle}" />
+                <Entry Text="{Binding Password}"
+                       Placeholder="Password"
+                       HorizontalOptions="Fill"
+                       WidthRequest="350"
+                       Style="{StaticResource ParameterEntryStyle}" />
+            </HorizontalStackLayout>
+
+            <!-- Connect/Disconnect -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="25">
+                <Button
+                    Text="Connect"
+                    Command="{Binding ConnectCommand}"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding Connected, Converter={StaticResource InvertedBoolConverter}}" />
+
+                <Button
+                    Text="Disconnect"
+                    Command="{Binding DisconnectCommand}"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding Connected}" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </components:SectionControl>
+
+</ContentView>
+

@@ -11,7 +11,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            
             <Style TargetType="Label">
                 <Setter Property="FontSize" Value="25" />
             </Style>
@@ -60,52 +60,14 @@
         </VerticalStackLayout>
 
         <!-- SERVER -->
-        <VerticalStackLayout Grid.Row="1" Spacing="20">
-            <Label Text="Server"
-                   HorizontalOptions="Start"
-                   Style="{StaticResource SectionLabelStyle}" />
-            <!-- host and port -->
-            <HorizontalStackLayout Spacing="10"
-                                   HorizontalOptions="Center">
-                <Entry Text="{Binding Host}"
-                       Placeholder="RabbitMQ URL"
-                       WidthRequest="350"
-                       Style="{StaticResource ParameterEntryStyle}" />
-                <Entry Text="{Binding Port}"
-                       Placeholder="RabbitMQ URL"
-                       WidthRequest="350"
-                       Style="{StaticResource ParameterEntryStyle}" />
-            </HorizontalStackLayout>
-
-            <!-- username and pasword -->
-            <HorizontalStackLayout Spacing="10"
-                                   HorizontalOptions="Center">
-                <Entry Text="{Binding Username}"
-                       Placeholder="Username"
-                       WidthRequest="350"
-                       Style="{StaticResource ParameterEntryStyle}" />
-                <Entry Text="{Binding Password}"
-                       Placeholder="Password"
-                       HorizontalOptions="Fill"
-                       WidthRequest="350"
-                       Style="{StaticResource ParameterEntryStyle}" />
-            </HorizontalStackLayout>
-
-
-            <HorizontalStackLayout HorizontalOptions="Center" Spacing="25">
-                <Button
-                    Text="Connect"
-                    Command="{Binding ConnectCommand}"
-                    HorizontalOptions="Center"
-                    IsVisible="{Binding Connected, Converter={StaticResource InvertedBoolConverter}}" />
-
-                <Button
-                    Text="Disconnect"
-                    Command="{Binding DisconnectCommand}"
-                    HorizontalOptions="Center"
-                    IsVisible="{Binding Connected}" />
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
+        <components:ConnectionControl Grid.Row="1"
+                                      Host="{Binding Host}"
+                                      Port="{Binding Port}"
+                                      Username="{Binding Username}"
+                                      Password="{Binding Password}"
+                                      ConnectCommand="{Binding ConnectCommand}"
+                                      DisconnectCommand="{Binding DisconnectCommand}"
+                                      Connected="{Binding Connected}"/>
 
         <!-- SEND -->
         <VerticalStackLayout

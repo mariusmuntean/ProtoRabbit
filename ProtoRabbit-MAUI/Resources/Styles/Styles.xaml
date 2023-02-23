@@ -2,7 +2,7 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
@@ -407,5 +407,7 @@
         <Setter Property="FontSize" Value="Large" />
         <Setter Property="TextColor" Value="LightGrey" />
     </Style>
+
+    <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
 
 </ResourceDictionary>
