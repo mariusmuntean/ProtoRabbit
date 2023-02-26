@@ -2,7 +2,6 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewmodel="clr-namespace:ProtoRabbit.ViewModels"
              xmlns:components="clr-namespace:ProtoRabbit.Views.Components"
              x:Class="ProtoRabbit.Views.Pages.MainPage"
              Shell.NavBarIsVisible="False">
@@ -63,12 +62,13 @@
 
         <!-- RECEIVE -->
         <components:SubscribeAndReceiveMessageControl Grid.Row="3"
-                                                      IsVisible="{Binding ConnectionVM.Connected}"
+                                                      BindingContext="{Binding SubscribeAndReceiveMessageViewModel}"
                                                       Subscriptions="{Binding Subscriptions}"
                                                       CurrentSubscription="{Binding CurrentSubscription, Mode=TwoWay}"
                                                       StopSubscriptionCommand="{Binding StopSubscriptionCommand}"
                                                       SelectedSubscriptionChangedCommand="{Binding SelectedSubscriptionChangedCommand}"
-                                                      OpenSubscriptionEditorCommand="{Binding OpenSubscriptionEditorCommand}" />
+                                                      OpenSubscriptionEditorCommand="{Binding Source={RelativeSource AncestorLevel=1, AncestorType={x:Type View}}, Path=BindingContext.OpenSubscriptionEditorCommand}"
+                                                      IsVisible="{Binding Source={RelativeSource AncestorLevel=1, AncestorType={x:Type View}}, Path=BindingContext.ConnectionVM.Connected}" />
 
     </Grid>
 

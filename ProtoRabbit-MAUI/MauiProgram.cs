@@ -40,6 +40,7 @@ public static class MauiProgram
         // Component VMs
         builder.Services.AddScoped<ConnectionViewModel>();
         builder.Services.AddScoped<SendMessageViewModel>();
+        builder.Services.AddScoped<SubscribeAndReceiveMessageViewModel>();
 
         // Pages and their VMs
         builder.Services.AddSingleton<MainPage>();
