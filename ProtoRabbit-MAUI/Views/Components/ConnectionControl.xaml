@@ -53,7 +53,9 @@
         <Button Text="Disconnect"
                 Command="{Binding DisconnectCommand}"
                 HorizontalOptions="Center"
+                IsEnabled="True"
                 IsVisible="{Binding Connected}" />
+        <ActivityIndicator IsVisible="{Binding IsChangingConnectionStatus}" IsRunning="True" />
       </HorizontalStackLayout>
     </Grid>
   </components:SectionControl>

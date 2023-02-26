@@ -85,11 +85,23 @@ public partial class ConnectionControl : ContentView
     nameof(Connected),
     typeof(bool),
     typeof(ConnectionControl)
-);
+    );
 
     public bool Connected
     {
         get => (bool)GetValue(ConnectedProperty);
         set => SetValue(ConnectedProperty, value);
+    }
+
+    public static readonly BindableProperty IsChangingConnectionStatusProperty = BindableProperty.Create(
+    nameof(IsChangingConnectionStatus),
+    typeof(bool),
+    typeof(ConnectionControl)
+    );
+
+    public bool IsChangingConnectionStatus
+    {
+        get => (bool)GetValue(IsChangingConnectionStatusProperty);
+        set => SetValue(IsChangingConnectionStatusProperty, value);
     }
 }

@@ -12,32 +12,50 @@ public partial class ConnectionViewModel : ObservableObject
     public ConnectionViewModel(RabbitClient rabbitClient)
     {
         _rabbitClient = rabbitClient;
+        _rabbitClient.AddOnConnectionShutdownAction(ConnectionShutDown);
     }
 
-    [ObservableProperty] private string _host = "localhost";
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(ConnectCommand))] private string _host = "localhost";
+
+    [ObservableProperty] private int _port = 5672;
 
     [ObservableProperty] private string _username = "guest";
 
     [ObservableProperty] private string _password = "guest";
 
-    [ObservableProperty] private int _port = 5672;
-
     [ObservableProperty] private bool _connected = false;
+    [ObservableProperty] private bool _isChangingConnectionStatus = false;
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanConnect))]
     public void Connect()
     {
-        _rabbitClient.RemoveOnConnectionShutdownAction(ConnectionShutDown);
-        _rabbitClient.AddOnConnectionShutdownAction(ConnectionShutDown);
-        _rabbitClient.Connect(Host, Username, Password, Port);
-        Connected = true;
-        Debug.WriteLine("Connected");
+        try
+        {
+            IsChangingConnectionStatus = true;
+            _rabbitClient.Connect(Host, Username, Password, Port);
+            Connected = true;
+            Debug.WriteLine("Connected");
+        }
+        finally
+        {
+            IsChangingConnectionStatus = false;
+        }
     }
+
+    public bool CanConnect() => !string.IsNullOrWhiteSpace(Host) && !IsChangingConnectionStatus;
 
     [RelayCommand]
     public void Disconnect()
     {
-        _rabbitClient.CloseConnection();
+        try
+        {
+            IsChangingConnectionStatus = true;
+            _rabbitClient.CloseConnection();
+        }
+        finally
+        {
+            IsChangingConnectionStatus = false;
+        }
     }
 
     private void ConnectionShutDown()
