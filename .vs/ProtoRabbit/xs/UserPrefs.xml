@@ -1,31 +1,36 @@
-﻿<Properties StartupConfiguration="{874B68C1-690A-46D1-9780-138AC234CCD6}|Default">
+﻿<Properties StartupConfiguration="{4A8B01F0-1058-49C1-A254-C56AA4187CCA}|Default">
   <MonoDevelop.Ide.ItemProperties.ProtoRabbit.Avalonia.X.ProtoRabbit.Avalonia.X.Desktop PreferredExecutionTarget="MonoDevelop.Default" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit.Avalonia.X/ProtoRabbit.Avalonia.X/Views/MainView.axaml">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit-MAUI/ProtoRabbit-MAUI.csproj">
     <Files>
-      <File FileName="ProtoRabbit.Avalonia.X/ProtoRabbit.Avalonia.X/Views/MainWindow.axaml" Line="1" Column="1" />
-      <File FileName="ProtoRabbit.Avalonia.X/ProtoRabbit.Avalonia.X/Views/MainView.axaml" Line="26" Column="1" />
+      <File FileName="ProtoRabbit-MAUI/ProtoRabbit-MAUI.csproj" Line="59" Column="30" />
+      <File FileName="ProtoRabbit.sln" Line="39" Column="1" />
+      <File FileName="../../../../usr/local/share/dotnet/sdk/7.0.200/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="ProtoRabbit" expanded="True">
-            <Node name="ProtoRabbit.Avalonia.X" expanded="True">
-              <Node name="ProtoRabbit.Avalonia.X" expanded="True">
-                <Node name="Views" expanded="True" />
-              </Node>
-              <Node name="ProtoRabbit.Avalonia.X.Desktop" selected="True" />
+            <Node name="ProtoRabbit.MVVM" expanded="True">
+              <Node name="ProtoRabbit.MVVM" expanded="True" />
             </Node>
+            <Node name="SolutionItems" expanded="True" />
+            <Node name="ProtoRabbit-MAUI" expanded="True" />
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.ProtoRabbit PreferredExecutionTarget="MyAppleMacCatalystID" />
   <MonoDevelop.Ide.ItemProperties.ProtoRabbit-MAUI PreferredExecutionTarget="MyAppleMacCatalystID" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/marius/Projects/ProtoRabbit/ProtoRabbit-MAUI/ProtoRabbit-MAUI.csproj" relfile="ProtoRabbit-MAUI/ProtoRabbit-MAUI.csproj" line="28" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <DisabledProjects>
+    <String>ProtoRabbit-MVVM/ProtoRabbit-MVVM.csproj</String>
+  </DisabledProjects>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.ProtoRabbit PreferredExecutionTarget="MyAppleMacCatalystID" />
 </Properties>

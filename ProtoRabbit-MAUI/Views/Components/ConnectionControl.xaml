@@ -4,51 +4,59 @@
              xmlns:components="clr-namespace:ProtoRabbit.Views.Components"
              x:DataType="components:ConnectionControl"
              x:Class="ProtoRabbit.Views.Components.ConnectionControl">
-    <components:SectionControl SectionTitle="Connection">
-        <VerticalStackLayout Grid.Row="1" Spacing="20">
-            <!-- host and port -->
-            <HorizontalStackLayout Spacing="10"
-                                   HorizontalOptions="Center">
-                <Entry Text="{Binding Host}"
+  <components:SectionControl SectionTitle="Connection">
+    <Grid RowSpacing="20"
+          RowDefinitions="Auto, Auto"
+          ColumnSpacing="20"
+          ColumnDefinitions="Auto, Auto"
+          HorizontalOptions="Center">
+
+      <!-- host and port -->
+      <HorizontalStackLayout Grid.Row="0" Grid.Column="0"
+                             Spacing="10"
+                             HorizontalOptions="Center">
+        <Entry Text="{Binding Host}"
                        Placeholder="RabbitMQ URL"
                        WidthRequest="350"
                        Style="{StaticResource ParameterEntryStyle}" />
-                <Entry Text="{Binding Port}"
+        <Entry Text="{Binding Port}"
                        Placeholder="RabbitMQ Port"
                        WidthRequest="350"
                        Style="{StaticResource ParameterEntryStyle}" />
-            </HorizontalStackLayout>
+      </HorizontalStackLayout>
 
-            <!-- username and pasword -->
-            <HorizontalStackLayout Spacing="10"
-                                   HorizontalOptions="Center">
-                <Entry Text="{Binding Username}"
+      <!-- username and pasword -->
+      <HorizontalStackLayout Grid.Row="1" Grid.Column="0"
+                             Spacing="10"
+                             HorizontalOptions="Center">
+        <Entry Text="{Binding Username}"
                        Placeholder="Username"
                        WidthRequest="350"
                        Style="{StaticResource ParameterEntryStyle}" />
-                <Entry Text="{Binding Password}"
+        <Entry Text="{Binding Password}"
                        Placeholder="Password"
                        HorizontalOptions="Fill"
                        WidthRequest="350"
                        Style="{StaticResource ParameterEntryStyle}" />
-            </HorizontalStackLayout>
+      </HorizontalStackLayout>
 
-            <!-- Connect/Disconnect -->
-            <HorizontalStackLayout HorizontalOptions="Center" Spacing="25">
-                <Button
-                    Text="Connect"
-                    Command="{Binding ConnectCommand}"
-                    HorizontalOptions="Center"
-                    IsVisible="{Binding Connected, Converter={StaticResource InvertedBoolConverter}}" />
+      <!-- Connect/Disconnect -->
+      <HorizontalStackLayout Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             Spacing="25">
+        <Button Text="Connect"
+                Command="{Binding ConnectCommand}"
+                HorizontalOptions="Center"
+                IsVisible="{Binding Connected, Converter={StaticResource InvertedBoolConverter}}" />
 
-                <Button
-                    Text="Disconnect"
-                    Command="{Binding DisconnectCommand}"
-                    HorizontalOptions="Center"
-                    IsVisible="{Binding Connected}" />
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
-    </components:SectionControl>
+        <Button Text="Disconnect"
+                Command="{Binding DisconnectCommand}"
+                HorizontalOptions="Center"
+                IsVisible="{Binding Connected}" />
+      </HorizontalStackLayout>
+    </Grid>
+  </components:SectionControl>
 
 </ContentView>
 

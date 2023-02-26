@@ -7,12 +7,15 @@ public class RabbitClient
     private readonly ConnectionManager _connectionManager;
     private readonly AsyncMessagePublisher _asyncMessagePublisher;
     private IConnection _connection;
-    private Action _onShutdown;
+
+    private readonly List<Action> _onConnectionShutdownActions;
 
     public RabbitClient(ConnectionManager connectionManager, AsyncMessagePublisher asyncMessagePublisher)
     {
         _connectionManager = connectionManager;
         _asyncMessagePublisher = asyncMessagePublisher;
+
+        _onConnectionShutdownActions = new List<Action>();
     }
 
     public void Connect(string host, string username, string password, int port)
@@ -34,11 +37,24 @@ public class RabbitClient
     public bool IsClosed => _connection is null || !_connection.IsOpen;
 
     /// <summary>
-    /// Optional action to be called when the connection is shut down. Receives the cause.
+    /// Add an optional action to be called when the connection is shut down.
     /// </summary>
-    public Action OnShutdown
+    /// <param name="onConnectionShutdown"></param>
+    public void AddOnConnectionShutdownAction(Action onConnectionShutdown)
     {
-        set => _onShutdown = value;
+        ArgumentNullException.ThrowIfNull(onConnectionShutdown);
+        _onConnectionShutdownActions.Add(onConnectionShutdown);
+    }
+
+    /// <summary>
+    /// Remove a previously added action for handling the connection shutting down.
+    /// </summary>
+    /// <param name="onConnectionShutdown"></param>
+    /// <returns>True if the specified action was removed, false otherwise, e.g. if the action was not previously registered.</returns>
+    public bool RemoveOnConnectionShutdownAction(Action onConnectionShutdown)
+    {
+        ArgumentNullException.ThrowIfNull(onConnectionShutdown);
+        return _onConnectionShutdownActions.Remove(onConnectionShutdown);
     }
 
     public async Task<ulong> Send(string exchange, string routingKey, byte[] @event)
@@ -48,6 +64,9 @@ public class RabbitClient
 
     private void OnConnectionShutdown(object sender, ShutdownEventArgs e)
     {
-        _onShutdown?.Invoke();
+        foreach (var onConnectionShutdownAction in _onConnectionShutdownActions)
+        {
+            onConnectionShutdownAction.Invoke();
+        }
     }
 }

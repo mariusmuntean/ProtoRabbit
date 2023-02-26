@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:ProtoRabbit.ViewModels"
+             xmlns:components="clr-namespace:ProtoRabbit.Views.Components"
+             x:Class="ProtoRabbit.Views.Pages.MainPage"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Entry">
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+            <Style x:Key="ParameterEntryStyle" TargetType="Entry">
+                <Setter Property="FontFamily" Value="CascadiaMono" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto, Auto, Auto, *"
+          RowSpacing="20"
+          Margin="10">
+
+        <HorizontalStackLayout Grid.Row="0"
+                               Spacing="20"
+                               VerticalOptions="CenterAndExpand"
+                               HorizontalOptions="Center"
+                               HeightRequest="50"
+                               MaximumHeightRequest="110">
+            <Image Source="protobuf.png"
+                   HeightRequest="40"
+                   WidthRequest="180"
+                   BackgroundColor="AliceBlue" />
+            <Image Source="rabbitmq.png"
+                   HeightRequest="40"
+                   WidthRequest="180"
+                   BackgroundColor="AliceBlue" />
+        </HorizontalStackLayout>
+
+        <!-- SERVER -->
+        <components:ConnectionControl Grid.Row="1"
+                                      BindingContext="{Binding ConnectionVM}"
+                                      Host="{Binding Host}"
+                                      Port="{Binding Port}"
+                                      Username="{Binding Username}"
+                                      Password="{Binding Password}"
+                                      ConnectCommand="{Binding ConnectCommand}"
+                                      DisconnectCommand="{Binding DisconnectCommand}"
+                                      Connected="{Binding Connected}" />
+
+        <!-- SEND -->
+        <components:SendMessageControl Grid.Row="2"
+                                       SendableMessages="{Binding SendableMessages}"
+                                       SendableMessageIndex="{Binding SendableMessageIndex}"
+                                       SendableMessageIndexChangedCommand="{Binding SendableMessageIndexChangedCommand}"
+                                       Exchange="{Binding Exchange}"
+                                       RoutingKey="{Binding RoutingKey}"
+                                       SendCommand="{Binding SendCommand}"
+                                       IsVisible="{Binding ConnectionVM.Connected}" />
+
+        <!-- RECEIVE -->
+        <components:SubscribeAndReceiveMessageControl Grid.Row="3"
+                                                      IsVisible="{Binding ConnectionVM.Connected}"
+                                                      Subscriptions="{Binding Subscriptions}"
+                                                      CurrentSubscription="{Binding CurrentSubscription, Mode=TwoWay}"
+                                                      StopSubscriptionCommand="{Binding StopSubscriptionCommand}"
+                                                      SelectedSubscriptionChangedCommand="{Binding SelectedSubscriptionChangedCommand}"
+                                                      OpenSubscriptionEditorCommand="{Binding OpenSubscriptionEditorCommand}" />
+
+    </Grid>
+
+</ContentPage>

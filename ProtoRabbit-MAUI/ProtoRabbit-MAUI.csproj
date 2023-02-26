@@ -36,6 +36,10 @@
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-maccatalyst|AnyCPU'">
 		<RuntimeIdentifiers>maccatalyst-arm64</RuntimeIdentifiers>
 	</PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <MtouchFastDev>true</MtouchFastDev>
+      <MtouchDebug>true</MtouchDebug>
+    </PropertyGroup>
 
     <ItemGroup>
         <!-- App Icon -->
@@ -88,5 +92,21 @@
       <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Components\SubscriptionsManager.xaml">
         <SubType></SubType>
       </MauiXaml>
+      <MauiXaml Update="Views\Pages\NewSubscriptionPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="Views\Pages\MainPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Views\Pages\NewSubscriptionPage.xaml.cs">
+        <DependentUpon>NewSubscriptionPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Pages\MainPage.xaml.cs">
+        <DependentUpon>MainPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

@@ -14,20 +14,13 @@ using ProtoBuf;
 using ProtoRabbit.Services;
 using ProtoRabbit.Services.Messages;
 using ProtoRabbit.Views;
+using ProtoRabbit.Views.Pages;
 
 namespace ProtoRabbit.ViewModels;
 
 public partial class MainPageViewModel : ObservableObject, IQueryAttributable
 {
-    [ObservableProperty] private string _host = "localhost";
-
-    [ObservableProperty] private string _username = "guest";
-
-    [ObservableProperty] private string _password = "guest";
-
-    [ObservableProperty] private int _port = 5672;
-
-    [ObservableProperty] private bool _connected = false;
+    [ObservableProperty] private ConnectionViewModel _connectionVM;
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SendCommand))]
     private string _exchange = null;
@@ -49,29 +42,21 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
 
     private readonly RabbitClient _rabbitClient;
 
-    public MainPageViewModel(RabbitClient rabbitClient)
+    public MainPageViewModel(ConnectionViewModel connectionViewModel, RabbitClient rabbitClient)
     {
-        _rabbitClient = rabbitClient;
+        ConnectionVM = connectionViewModel;
+        ConnectionVM.PropertyChanged += (s, e) =>
+        {
+            Console.WriteLine(e.PropertyName);
+        };
 
-        _sendableMessages = new List<SendableMessageBase> { new CreateSendableMessage(), new DeleteSendableMessage() }; // ToDo use reflection to load all subclasses
+        _rabbitClient = rabbitClient;
+        _rabbitClient.AddOnConnectionShutdownAction(ConnectionShutDown);
+
+        _sendableMessages = new List<SendableMessageBase> {new CreateSendableMessage(), new DeleteSendableMessage()}; // ToDo use reflection to load all subclasses
         _sendableMessageIndex = -1;
 
         _subscriptions = new ObservableCollection<Subscription>();
-    }
-
-    [RelayCommand]
-    public void Connect()
-    {
-        _rabbitClient.OnShutdown = ConnectionShutDown;
-        _rabbitClient.Connect(Host, Username, Password, Port);
-        Connected = true;
-        Debug.WriteLine("Connected");
-    }
-
-    [RelayCommand]
-    public void Disconnect()
-    {
-        _rabbitClient.CloseConnection();
     }
 
     [RelayCommand(CanExecute = nameof(CanSend))]
@@ -85,7 +70,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
         try
         {
             Debug.WriteLine($"Sending :{JsonMessage}");
-            var msgObj = JsonSerializer.Deserialize(JsonMessage, _sendableMessage.MessageType);
+            var msgObj = JsonSerializer.Deserialize(JsonMessage, SendableMessage.MessageType);
 
             var destStream = new MemoryStream();
             Serializer.Serialize(destStream, msgObj);
@@ -105,7 +90,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     {
         try
         {
-            JsonMessage = JsonSerializer.Serialize(JsonSerializer.Deserialize(JsonMessage, typeof(object)), typeof(object), new JsonSerializerOptions { WriteIndented = true });
+            JsonMessage = JsonSerializer.Serialize(JsonSerializer.Deserialize(JsonMessage, typeof(object)), typeof(object), new JsonSerializerOptions {WriteIndented = true});
         }
         catch (Exception ex)
         {
@@ -132,7 +117,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     public async Task OpenSubscriptionEditor()
     {
-        await Shell.Current.GoToAsync($"{nameof(NewSubscriptionPage)}?{nameof(Host)}={Host}&{nameof(Username)}={Username}&{nameof(Password)}={Password}&{nameof(Port)}={Port}");
+        await Shell.Current.GoToAsync($"{nameof(NewSubscriptionPage)}?{nameof(ConnectionVM.Host)}={ConnectionVM.Host}&{nameof(ConnectionVM.Username)}={ConnectionVM.Username}&{nameof(ConnectionVM.Password)}={ConnectionVM.Password}&{nameof(ConnectionVM.Port)}={ConnectionVM.Port}");
     }
 
 
@@ -169,10 +154,7 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
            )
         {
             Subscriptions.Add(subscription);
-            subscription.StartConsuming(type, wrapper =>
-            {
-                
-            });
+            subscription.StartConsuming(type, wrapper => { });
             CurrentSubscription = subscription;
 
             // clearing the dict otherwise even simple back navigation will return a full dict
@@ -182,15 +164,12 @@ public partial class MainPageViewModel : ObservableObject, IQueryAttributable
 
     private void ConnectionShutDown()
     {
-        Connected = false;
-
         foreach (var sub in Subscriptions)
         {
             sub.StopConsuming();
         }
+
         Subscriptions.Clear();
         CurrentSubscription = null;
-
-        Debug.WriteLine("Disconnected.");
     }
 }

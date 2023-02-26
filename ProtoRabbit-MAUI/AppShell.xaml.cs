@@ -1,5 +1,6 @@
 ﻿using Microsoft.Maui.Controls;
 using ProtoRabbit.Views;
+using ProtoRabbit.Views.Pages;
 
 namespace ProtoRabbit;
 

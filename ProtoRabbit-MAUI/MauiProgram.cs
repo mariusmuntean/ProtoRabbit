@@ -6,6 +6,7 @@ using Microsoft.Maui.Hosting;
 using ProtoRabbit.Services;
 using ProtoRabbit.ViewModels;
 using ProtoRabbit.Views;
+using ProtoRabbit.Views.Pages;
 using RabbitMQ.Client;
 
 namespace ProtoRabbit;
@@ -36,6 +37,10 @@ public static class MauiProgram
         builder.Services.AddSingleton<RabbitClient>();
         builder.Services.AddSingleton<AsyncMessagePublisher>();
 
+        // Component VMs
+        builder.Services.AddScoped<ConnectionViewModel>();
+        
+        // Pages and their VMs
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddSingleton<MainPageViewModel>();
 
