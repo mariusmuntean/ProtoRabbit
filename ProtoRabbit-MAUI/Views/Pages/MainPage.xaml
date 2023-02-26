@@ -39,7 +39,7 @@
                    BackgroundColor="AliceBlue" />
         </HorizontalStackLayout>
 
-        <!-- SERVER -->
+        <!-- CONNECTION -->
         <components:ConnectionControl Grid.Row="1"
                                       BindingContext="{Binding ConnectionVM}"
                                       Host="{Binding Host}"
@@ -52,13 +52,14 @@
 
         <!-- SEND -->
         <components:SendMessageControl Grid.Row="2"
+                                       BindingContext="{Binding SendMessageVM}"
                                        SendableMessages="{Binding SendableMessages}"
                                        SendableMessageIndex="{Binding SendableMessageIndex}"
                                        SendableMessageIndexChangedCommand="{Binding SendableMessageIndexChangedCommand}"
                                        Exchange="{Binding Exchange}"
                                        RoutingKey="{Binding RoutingKey}"
                                        SendCommand="{Binding SendCommand}"
-                                       IsVisible="{Binding ConnectionVM.Connected}" />
+                                       IsVisible="{Binding Source={RelativeSource AncestorLevel=1, AncestorType={x:Type View}}, Path=BindingContext.ConnectionVM.Connected}" />
 
         <!-- RECEIVE -->
         <components:SubscribeAndReceiveMessageControl Grid.Row="3"
