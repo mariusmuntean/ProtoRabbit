@@ -15,7 +15,7 @@ It also allows manually defining a JSON message that is then serialized with Pro
 
 <img src="Images/Sending.png" alt="Add a new sendable message type" width="70%" title="Add a new sendable message type"/>
 
-* Tell the `MainPageViewModel` about the new SendableMessage.
+* Tell the `SendMessageViewModel` about the new SendableMessage.
 
 <img src="Images/RegisterSending.png" alt="Add a new sendable message type" width="70%" title="Add a new sendable message type"/>
 

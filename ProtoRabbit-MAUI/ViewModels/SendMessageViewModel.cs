@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Text.Json;
-using System.Threading.Tasks;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -17,19 +13,19 @@ namespace ProtoRabbit.ViewModels;
 public partial class SendMessageViewModel : ObservableObject
 {
     private readonly RabbitClient _rabbitClient;
-    
+
     public SendMessageViewModel(RabbitClient rabbitClient)
     {
         _rabbitClient = rabbitClient;
 
-        _sendableMessages = new List<SendableMessageBase> { new CreateSendableMessage(), new DeleteSendableMessage() }; // ToDo use reflection to load all subclasses
+        _sendableMessages = new List<SendableMessageBase> {new CreateSendableMessage(), new DeleteSendableMessage()}; // ToDo use reflection to load all subclasses
         _sendableMessageIndex = -1;
     }
-    
+
     [ObservableProperty] private List<SendableMessageBase> _sendableMessages;
     [ObservableProperty] private SendableMessageBase _sendableMessage;
     [ObservableProperty] private int _sendableMessageIndex;
-    
+
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SendCommand))]
     private string _exchange = null;
 
@@ -40,8 +36,8 @@ public partial class SendMessageViewModel : ObservableObject
     private string _jsonMessage = null;
 
     [ObservableProperty] private string _protoFile = null;
-    
-    
+
+
     [RelayCommand(CanExecute = nameof(CanSend))]
     public async Task Send()
     {
