@@ -1,9 +1,18 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { connect, Connection, Channel } from 'amqplib'
 
 // Custom APIs for renderer
+let conn: Connection
+let channel: Channel
+
 const api = {
-  do: async (): Promise<any> => await ipcRenderer.invoke('invoke-channel', { name: 'Marius' })
+  connect: async () => {
+    conn = await connect('amqp://localhost')
+    channel = await conn.createChannel()
+  },
+  send: (msg: string) => channel?.publish('proto.data', 'create', Buffer.from(msg)),
+  do: async () => await ipcRenderer.invoke('invoke-channel', { name: 'Marius' })
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
