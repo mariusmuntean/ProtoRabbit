@@ -8,7 +8,7 @@ export const MessageReceiving = () => {
   const [subscription, setSubscription] = useState<string>('Create')
 
   return (
-    <Space direction="vertical" style={{ display: 'flex' }}>
+    <Space direction="vertical" style={{ display: 'flex', height: 'auto' }}>
       <div style={{ alignSelf: 'self-start' }}>Receive</div>
       <Layout style={{ background: 'none' }}>
         <Sider style={{ background: 'none' }}>
