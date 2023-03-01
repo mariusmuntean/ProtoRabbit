@@ -1,16 +1,16 @@
+import { Divider, Space } from 'antd'
+import { MessageReceiving } from './components/MessageReceiving'
+import { MessageSending } from './components/MessageSending'
+import { ServerConnection } from './components/ServerConnection'
+
 function App(): JSX.Element {
   return (
-    <button
-      onClick={async () => {
-        const r = await window.MYAPI.do()
-        console.log(r)
-
-        await window.MYAPI.connect()
-        window.MYAPI.send('HEY')
-      }}
-    >
-      GO
-    </button>
+    <Space direction="vertical" style={{ display: 'flex' }}>
+      <ServerConnection />
+      <Divider type="horizontal" style={{ backgroundColor: 'lightgray', margin: '0.3em' }} />
+      <MessageSending />
+      <MessageReceiving />
+    </Space>
   )
 }
 
