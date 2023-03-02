@@ -7,11 +7,37 @@ import { connect, Connection, Channel } from 'amqplib'
 let conn: Connection
 let channel: Channel
 
+let connectionStatusListener: (isConnected: boolean) => void
+type connectionStatusListenerType = typeof connectionStatusListener
+let connectionStatusListeners: connectionStatusListenerType[] = []
+
 const api = {
   connect: async () => {
+    if (conn) {
+      conn.close()
+    }
+
     conn = await connect('amqp://localhost')
+    console.log('Connected')
     channel = await conn.createChannel()
+
+    connectionStatusListeners.forEach((l) => l(true))
+    conn.on('close', (args) => {
+      console.log('Connection closed')
+      return connectionStatusListeners.forEach((l) => l(false))
+    })
+    conn.on('error', (args) => {
+      console.log('Connection error')
+      return connectionStatusListeners.forEach((l) => l(false))
+    })
   },
+  addConnectionStatusChangeListener: (listener: connectionStatusListenerType) =>
+    connectionStatusListeners.push(listener),
+  removeConnectionStatusChangeListener: (listener: connectionStatusListenerType) =>
+    (connectionStatusListeners = [...connectionStatusListeners.filter((l) => l != listener)]),
+
+  disconnect: () => conn?.close(),
+
   send: (msg: string) => channel?.publish('proto.data', 'create', Buffer.from(msg)),
   do: async () => await ipcRenderer.invoke('invoke-channel', { name: 'Marius' }),
   version: (): string => ipcRenderer.sendSync(IpcChannels.AppVersionChannel),

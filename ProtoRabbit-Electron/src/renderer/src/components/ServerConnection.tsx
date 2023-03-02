@@ -1,11 +1,24 @@
-import { useContext } from 'react'
+import { useCallback, useContext } from 'react'
 import { Button, Col, Input, Row, Space } from 'antd'
+import { DisconnectOutlined, LinkOutlined } from '@ant-design/icons'
 
 import { ProtoRabbitContext } from '@renderer/AppContext'
 
 export const ServerConnection = () => {
-  const { host, setHost, password, setPassword, port, setPort, username, setUsername } =
-    useContext(ProtoRabbitContext)
+  const {
+    host,
+    setHost,
+    password,
+    setPassword,
+    port,
+    setPort,
+    username,
+    setUsername,
+    isConnected
+  } = useContext(ProtoRabbitContext)
+
+  const connect = useCallback(async () => await window.MYAPI.connect(), [])
+
   return (
     <div>
       <Space direction="vertical">
@@ -34,7 +47,25 @@ export const ServerConnection = () => {
               />
             </Col>
           </Row>
-          <Button type="primary">Connect</Button>
+          {isConnected ? (
+            <Button
+              type="primary"
+              size="small"
+              onClick={window.MYAPI.disconnect}
+              icon={<DisconnectOutlined />}
+            >
+              Disconnect
+            </Button>
+          ) : (
+            <Button
+              type="primary"
+              size="small"
+              onClick={window.MYAPI.connect}
+              icon={<LinkOutlined />}
+            >
+              Connect
+            </Button>
+          )}
         </Space>
       </Space>
     </div>
