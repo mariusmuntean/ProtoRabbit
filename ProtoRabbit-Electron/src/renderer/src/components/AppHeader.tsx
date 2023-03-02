@@ -1,5 +1,6 @@
-import { Image } from 'antd'
 import { useMemo } from 'react'
+import { Image, Space } from 'antd'
+
 import protobuf from './../assets/protobuf.svg'
 import rabbitmq from './../assets/rabbitmq.svg'
 
@@ -16,24 +17,11 @@ export function AppHeader() {
         alignItems: 'center'
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          margin: '0',
-          padding: '0'
-        }}
-      >
+      <Space direction="horizontal">
         <Image src={protobuf} height={30} />
         <Image src={rabbitmq} height={60} />
-      </div>
-      <span
-        style={{
-          lineHeight: '2em'
-        }}
-      >
-        {appName}
-      </span>
+      </Space>
+      <span style={{ lineHeight: '2em' }}>{appName}</span>
     </div>
   )
 }
