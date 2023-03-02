@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { IpcChannels } from '../shared'
 
 function createWindow(): void {
   // Create the browser window.
@@ -73,4 +74,8 @@ app.on('window-all-closed', () => {
 ipcMain.handle('invoke-channel', (e, args) => {
   console.log(args)
   return { name: 'server' }
+})
+
+ipcMain.on(IpcChannels.AppVersionChannel, (e, args) => {
+  e.returnValue = app.getVersion()
 })
