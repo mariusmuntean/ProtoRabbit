@@ -1,5 +1,6 @@
 import { Divider, Layout, Space } from 'antd'
 import { Content, Footer, Header } from 'antd/es/layout/layout'
+import { AppHeader } from './components/AppHeader'
 import { AppVersion } from './components/AppVersion'
 import { MessageReceiving } from './components/MessageReceiving'
 import { MessageSending } from './components/MessageSending'
@@ -8,8 +9,8 @@ import { ServerConnection } from './components/ServerConnection'
 function App(): JSX.Element {
   return (
     <Layout style={{ height: '100%' }}>
-      <Header style={{ background: 'red', padding: '0', height: '3em' }}>
-        <div style={{ color: 'lightgray' }}>ProtoRabbit</div>
+      <Header style={{ backgroundColor: 'lightgray', padding: '0', height: 'auto' }}>
+        <AppHeader />
       </Header>
       <Content style={{ height: '100%' }}>
         <Space direction="vertical" style={{ display: 'flex' }}>

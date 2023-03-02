@@ -14,7 +14,8 @@ const api = {
   },
   send: (msg: string) => channel?.publish('proto.data', 'create', Buffer.from(msg)),
   do: async () => await ipcRenderer.invoke('invoke-channel', { name: 'Marius' }),
-  version: (): string => ipcRenderer.sendSync(IpcChannels.AppVersionChannel)
+  version: (): string => ipcRenderer.sendSync(IpcChannels.AppVersionChannel),
+  name: (): string => ipcRenderer.sendSync(IpcChannels.AppNameChannel)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

@@ -79,3 +79,6 @@ ipcMain.handle('invoke-channel', (e, args) => {
 ipcMain.on(IpcChannels.AppVersionChannel, (e, args) => {
   e.returnValue = app.getVersion()
 })
+ipcMain.on(IpcChannels.AppNameChannel, (e, args) => {
+  e.returnValue = app.getName()
+})

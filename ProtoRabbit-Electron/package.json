@@ -1,9 +1,9 @@
 {
-  "name": "protorabbit-electron",
-  "version": "1.0.0",
-  "description": "An Electron application with React and TypeScript",
+  "name": "ProtoRabbit",
+  "version": "0.1.0",
+  "description": "Send and receive protobuf serialized messages to and from RabbitMQ",
   "main": "./out/main/index.js",
-  "author": "example.com",
+  "author": "Marius M.",
   "homepage": "https://www.electronjs.org",
   "scripts": {
     "format": "prettier --write .",
