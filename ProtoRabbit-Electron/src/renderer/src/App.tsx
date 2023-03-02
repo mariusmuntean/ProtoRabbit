@@ -1,5 +1,6 @@
 import { Divider, Layout, Space } from 'antd'
 import { Content, Footer, Header } from 'antd/es/layout/layout'
+
 import { AppHeader } from './components/AppHeader'
 import { AppVersion } from './components/AppVersion'
 import { MessageReceiving } from './components/MessageReceiving'
