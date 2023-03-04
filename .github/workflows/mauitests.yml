@@ -4,20 +4,21 @@ jobs:
   test:
     runs-on: ubuntu-latest
     # necessary for setup-dotnet
-    env:
-      DOTNET_INSTALL_DIR: "./.dotnet"
+    # env:
+    #   DOTNET_INSTALL_DIR: "/Users/marius/.dotnet"
     steps:
       - uses: actions/checkout@main
 
       - name: Setup .NET 7
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '7.0.x'
+          dotnet-version: '7.0'
+      
       - name: Show DOTNET SDKs
         run: dotnet --list-sdks
 
-      # - name: Restore Packages
-      #   run: dotnet restore ProtoRabbit.sln
+      - name: Restore Packages
+        run: dotnet restore ProtoRabbit-MAUI/ProtoRabbit.sln
 
       # - name: Build solution
       #   run: dotnet build ProtoRabbit.sln --no-restore --configuration Release
