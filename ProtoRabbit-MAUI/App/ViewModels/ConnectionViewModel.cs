@@ -5,7 +5,7 @@ using ProtoRabbit.Services;
 
 namespace ProtoRabbit.ViewModels;
 
-public partial class ConnectionViewModel : ObservableObject
+public partial class ConnectionViewModel : ObservableObject, IConnectionViewModel
 {
     private readonly RabbitClient _rabbitClient;
 

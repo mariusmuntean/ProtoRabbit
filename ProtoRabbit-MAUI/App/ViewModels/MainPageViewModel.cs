@@ -8,11 +8,11 @@ namespace ProtoRabbit.ViewModels;
 
 public partial class MainPageViewModel : ObservableObject, IQueryAttributable
 {
-    [ObservableProperty] private ConnectionViewModel _connectionVM;
-    [ObservableProperty] private SendMessageViewModel _sendMessageVM;
-    [ObservableProperty] private SubscribeAndReceiveMessageViewModel _subscribeAndReceiveMessageViewModel;
+    [ObservableProperty] private IConnectionViewModel _connectionVM;
+    [ObservableProperty] private ISendMessageViewModel _sendMessageVM;
+    [ObservableProperty] private ISubscribeAndReceiveMessageViewModel _subscribeAndReceiveMessageViewModel;
 
-    public MainPageViewModel(ConnectionViewModel connectionViewModel, SendMessageViewModel sendMessageViewModel, SubscribeAndReceiveMessageViewModel subscribeAndReceiveMessageViewModel)
+    public MainPageViewModel(IConnectionViewModel connectionViewModel, ISendMessageViewModel sendMessageViewModel, ISubscribeAndReceiveMessageViewModel subscribeAndReceiveMessageViewModel)
     {
         ConnectionVM = connectionViewModel;
         ConnectionVM.PropertyChanged += (s, e) => { Console.WriteLine(e.PropertyName); };

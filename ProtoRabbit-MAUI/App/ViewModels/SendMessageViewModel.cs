@@ -10,7 +10,7 @@ using ProtoRabbit.Services.Messages;
 
 namespace ProtoRabbit.ViewModels;
 
-public partial class SendMessageViewModel : ObservableObject
+public partial class SendMessageViewModel : ObservableObject, ISendMessageViewModel
 {
     private readonly RabbitClient _rabbitClient;
 

@@ -8,7 +8,7 @@ using ProtoRabbit.Services;
 
 namespace ProtoRabbit.ViewModels;
 
-public partial class SubscribeAndReceiveMessageViewModel : ObservableObject
+public partial class SubscribeAndReceiveMessageViewModel : ObservableObject, ISubscribeAndReceiveMessageViewModel
 {
     private readonly RabbitClient _rabbitClient;
 

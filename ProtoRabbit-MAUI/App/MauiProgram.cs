@@ -38,9 +38,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<AsyncMessagePublisher>();
 
         // Component VMs
-        builder.Services.AddScoped<ConnectionViewModel>();
-        builder.Services.AddScoped<SendMessageViewModel>();
-        builder.Services.AddScoped<SubscribeAndReceiveMessageViewModel>();
+        builder.Services.AddScoped<IConnectionViewModel, ConnectionViewModel>();
+        builder.Services.AddScoped<ISendMessageViewModel, SendMessageViewModel>();
+        builder.Services.AddScoped<ISubscribeAndReceiveMessageViewModel, SubscribeAndReceiveMessageViewModel>();
 
         // Pages and their VMs
         builder.Services.AddSingleton<MainPage>();
