@@ -2,7 +2,7 @@
   <DisabledProjects>
     <String>ProtoRabbit-MVVM/ProtoRabbit-MVVM.csproj</String>
   </DisabledProjects>
-  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit-MAUI/ProtoRabbit-MAUI.csproj">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit-MAUI/App/ProtoRabbit-MAUI.csproj">
     <Files>
       <File FileName="ProtoRabbit-MAUI/ProtoRabbit-MAUI.csproj" Line="59" Column="16" />
       <File FileName="ProtoRabbit.sln" />
@@ -26,7 +26,7 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/marius/Projects/ProtoRabbit/ProtoRabbit-MAUI/ProtoRabbit-MAUI.csproj" relfile="ProtoRabbit-MAUI/ProtoRabbit-MAUI.csproj" line="28" column="1" />
+      <Breakpoint file="/Users/marius/Projects/ProtoRabbit/ProtoRabbit-MAUI/App/ProtoRabbit-MAUI.csproj" relfile="ProtoRabbit-MAUI/App/ProtoRabbit-MAUI.csproj" line="28" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

@@ -1,11 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('OSX'))">net7.0-maccatalyst</TargetFrameworks>
+        <!-- We're using net7.0 just to be able to output a .dll that will be used by the test project (whose target framework is also net7.0) -->
+        <TargetFrameworks>net7.0</TargetFrameworks>
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('OSX'))">$(TargetFrameworks);net7.0-maccatalyst</TargetFrameworks>
         <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
-        <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-        <!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
-        <OutputType>Exe</OutputType>
+        
+        <!-- output an .exe only when the target framework isn't net7.0. This is used by the test project. -->
+        <OutputType Condition="'$(TargetFramework)' != 'net7.0'">Exe</OutputType>
         <RootNamespace>ProtoRabbit</RootNamespace>
         <UseMaui>true</UseMaui>
         <SingleProject>true</SingleProject>
