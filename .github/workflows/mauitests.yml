@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     # necessary for setup-dotnet
     env:
-      DOTNET_INSTALL_DIR: "/Users/marius/.dotnet"
+      DOTNET_INSTALL_DIR: "./.dotnet"
     steps:
       - uses: actions/checkout@main
 
