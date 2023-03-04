@@ -39,7 +39,6 @@ public class MainPageViewModelTests
         query.Should().BeEmpty();
     }
 
-
     [Test]
     public void ApplyQueryAttributes_DoesntClearTheQueryAttributes_WithoutSubscription()
     {
@@ -59,6 +58,25 @@ public class MainPageViewModelTests
 
         query.Should().ContainKey("Type");
         query["Type"].Should().Be(aType);
+    }
+
+
+    [Test]
+    public void ApplyQueryAttributes_NewSubscriptionsArePassedToSubVM()
+    {
+        // When new query attributes are applied with a new subscription
+        var dummySubscription = CreateDummySubscription();
+        var aType = GetType();
+        var query = new Dictionary<string, object>
+        {
+            ["Subscription"] = dummySubscription,
+            ["Type"] = aType
+        };
+        _mainPageViewModel.ApplyQueryAttributes(query);
+
+        // Then the new subscription is passed to SubscribeAndReceiveMessageViewModel
+        _subscribeAndReceiveMessageViewModelMock
+            .Verify(model => model.StartNewSubscription(It.Is<Subscription>(s => s == dummySubscription), It.Is<Type>(t => t == aType)), Times.Once);
     }
 
     private static Subscription CreateDummySubscription()
