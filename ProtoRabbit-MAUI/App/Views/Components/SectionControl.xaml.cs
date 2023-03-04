@@ -1,4 +1,6 @@
-﻿namespace ProtoRabbit.Views.Components;
+﻿using Microsoft.Maui.Controls;
+
+namespace ProtoRabbit.Views.Components;
 
 public partial class SectionControl : ContentView
 {
