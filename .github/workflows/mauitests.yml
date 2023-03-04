@@ -2,7 +2,7 @@ name: Run ProtoRabbit-MAUI Tests
 on:
   push:
     paths:
-      - 'ProtoRabbit-MAUI/*'
+      - 'ProtoRabbit-MAUI/**'
 jobs:
   test:
     runs-on: ubuntu-latest
