@@ -17,7 +17,7 @@ jobs:
       #   with:
       #     dotnet-version: '7.0'
 
-      - name: Install tizen workload for some reason
+      - name: Install tizen workload to make GitHub happy - necessary for some reason.
         run: dotnet workload restore ProtoRabbit-MAUI/ProtoRabbit-MAUI-Test/ProtoRabbit-MAUI-Test.csproj
 
       - name: Show DOTNET SDKs
@@ -27,4 +27,11 @@ jobs:
         run: dotnet restore ProtoRabbit-MAUI/ProtoRabbit-MAUI-Test/ProtoRabbit-MAUI-Test.csproj
 
       - name: Run Tests
-        run: dotnet test ProtoRabbit-MAUI/ProtoRabbit-MAUI-Test/ProtoRabbit-MAUI-Test.csproj
+        run: dotnet test --logger trx ProtoRabbit-MAUI/ProtoRabbit-MAUI-Test/ProtoRabbit-MAUI-Test.csproj
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2.4.2
+        with:
+          files: |
+            **/ProtoRabbit-MAUI-Test/**/*.trx
+
