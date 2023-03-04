@@ -3,10 +3,14 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'ProtoRabbit-MAUI/**'
+      - "ProtoRabbit-MAUI/**"
 jobs:
   test:
     runs-on: ubuntu-latest
+    # These permissions are necessary for 'publish-unit-test-result-action'
+    permissions:
+      checks: write
+      pull-requests: write
     # necessary for setup-dotnet
     # env:
     #   DOTNET_INSTALL_DIR: "/Users/marius/.dotnet"
@@ -35,4 +39,3 @@ jobs:
         with:
           files: |
             **/ProtoRabbit-MAUI-Test/**/*.trx
-
