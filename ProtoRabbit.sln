@@ -8,8 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		LICENSE = LICENSE
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Avalonia.MVVM", "Avalonia.MVVM", "{F55A5215-0535-4B7F-8179-51726E8C2F55}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtoRabbit-MVVM", "ProtoRabbit-MVVM\ProtoRabbit-MVVM.csproj", "{312F93BE-DDBC-4040-B373-C59BD1292DC3}"
 EndProject
 Global
@@ -26,8 +24,5 @@ Global
 		{312F93BE-DDBC-4040-B373-C59BD1292DC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{312F93BE-DDBC-4040-B373-C59BD1292DC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{312F93BE-DDBC-4040-B373-C59BD1292DC3}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{312F93BE-DDBC-4040-B373-C59BD1292DC3} = {F55A5215-0535-4B7F-8179-51726E8C2F55}
 	EndGlobalSection
 EndGlobal
