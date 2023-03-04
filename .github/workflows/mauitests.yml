@@ -1,5 +1,6 @@
 name: Run ProtoRabbit-MAUI Tests
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'ProtoRabbit-MAUI/**'
