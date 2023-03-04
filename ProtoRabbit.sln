@@ -1,14 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtoRabbit-MAUI", "ProtoRabbit-MAUI\ProtoRabbit-MAUI.csproj", "{4A8B01F0-1058-49C1-A254-C56AA4187CCA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtoRabbit-MAUI", "ProtoRabbit-MAUI\App\ProtoRabbit-MAUI.csproj", "{4A8B01F0-1058-49C1-A254-C56AA4187CCA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{20AA5EE6-94ED-4ABE-BD0B-DE495B1500BF}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 		LICENSE = LICENSE
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtoRabbit-MVVM", "ProtoRabbit-MVVM\ProtoRabbit-MVVM.csproj", "{312F93BE-DDBC-4040-B373-C59BD1292DC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,9 +18,5 @@ Global
 		{4A8B01F0-1058-49C1-A254-C56AA4187CCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A8B01F0-1058-49C1-A254-C56AA4187CCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A8B01F0-1058-49C1-A254-C56AA4187CCA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{312F93BE-DDBC-4040-B373-C59BD1292DC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{312F93BE-DDBC-4040-B373-C59BD1292DC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{312F93BE-DDBC-4040-B373-C59BD1292DC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{312F93BE-DDBC-4040-B373-C59BD1292DC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
