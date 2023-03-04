@@ -8,11 +8,11 @@ namespace ProtoRabbit_MAUI_Test;
 
 public class MainPageViewModelTests
 {
-    private Mock<IConnectionViewModel> _connectionViewModelMock;
-    private Mock<ISendMessageViewModel> _sendMessageViewModelMock;
-    private Mock<ISubscribeAndReceiveMessageViewModel> _subscribeAndReceiveMessageViewModelMock;
+    private Mock<IConnectionViewModel> _connectionViewModelMock = null!;
+    private Mock<ISendMessageViewModel> _sendMessageViewModelMock = null!;
+    private Mock<ISubscribeAndReceiveMessageViewModel> _subscribeAndReceiveMessageViewModelMock = null!;
 
-    private MainPageViewModel _mainPageViewModel;
+    private MainPageViewModel _mainPageViewModel = null!;
 
     [SetUp]
     public void Setup()
