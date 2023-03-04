@@ -23,8 +23,5 @@ jobs:
       - name: Restore Packages
         run: dotnet restore ProtoRabbit-MAUI/ProtoRabbit-MAUI-Test/ProtoRabbit-MAUI-Test.csproj
 
-      # - name: Build solution
-      #   run: dotnet build ProtoRabbit.sln --no-restore --configuration Release
-
-      # - name: Run Tests
-      #   run: dotnet test ProtoRabbit.sln --no-build --configuration Release
+      - name: Run Tests
+        run: dotnet test ProtoRabbit-MAUI/ProtoRabbit-MAUI-Test/ProtoRabbit-MAUI-Test.csproj
