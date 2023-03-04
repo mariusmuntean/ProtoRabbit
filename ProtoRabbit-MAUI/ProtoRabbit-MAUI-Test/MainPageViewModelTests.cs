@@ -8,6 +8,8 @@ namespace ProtoRabbit_MAUI_Test;
 
 public class MainPageViewModelTests
 {
+    private const string SubscriptionQueryAttr = "Subscription";
+    
     private Mock<IConnectionViewModel> _connectionViewModelMock = null!;
     private Mock<ISendMessageViewModel> _sendMessageViewModelMock = null!;
     private Mock<ISubscribeAndReceiveMessageViewModel> _subscribeAndReceiveMessageViewModelMock = null!;
@@ -30,7 +32,7 @@ public class MainPageViewModelTests
         // When new query attributes are applied with a new subscription
         var query = new Dictionary<string, object>
         {
-            ["Subscription"] = CreateDummySubscription(),
+            [SubscriptionQueryAttr] = CreateDummySubscription(),
             ["Type"] = GetType()
         };
         _mainPageViewModel.ApplyQueryAttributes(query);
@@ -47,14 +49,14 @@ public class MainPageViewModelTests
         var aType = GetType();
         var query = new Dictionary<string, object>
         {
-            ["Subscription"] = noSubscription,
+            [SubscriptionQueryAttr] = noSubscription,
             ["Type"] = aType
         };
         _mainPageViewModel.ApplyQueryAttributes(query);
 
         // Then the query dictionary is not cleared.
-        query.Should().ContainKey("Subscription");
-        query["Subscription"].Should().Be(noSubscription);
+        query.Should().ContainKey(SubscriptionQueryAttr);
+        query[SubscriptionQueryAttr].Should().Be(noSubscription);
 
         query.Should().ContainKey("Type");
         query["Type"].Should().Be(aType);
@@ -69,7 +71,7 @@ public class MainPageViewModelTests
         var aType = GetType();
         var query = new Dictionary<string, object>
         {
-            ["Subscription"] = dummySubscription,
+            [SubscriptionQueryAttr] = dummySubscription,
             ["Type"] = aType
         };
         _mainPageViewModel.ApplyQueryAttributes(query);
