@@ -5,22 +5,15 @@ on:
     paths:
       - "ProtoRabbit-MAUI/**"
 jobs:
-  test:
+  ProtoRabbit-MAUI Tests:
     runs-on: ubuntu-latest
     # These permissions are necessary for 'publish-unit-test-result-action'
     permissions:
       checks: write
       pull-requests: write
-    # necessary for setup-dotnet
-    # env:
-    #   DOTNET_INSTALL_DIR: "/Users/marius/.dotnet"
+
     steps:
       - uses: actions/checkout@main
-
-      # - name: Setup .NET 7
-      #   uses: actions/setup-dotnet@v3
-      #   with:
-      #     dotnet-version: '7.0'
 
       - name: Install tizen workload to make GitHub happy - necessary for some reason.
         run: dotnet workload restore ProtoRabbit-MAUI/ProtoRabbit-MAUI-Test/ProtoRabbit-MAUI-Test.csproj
