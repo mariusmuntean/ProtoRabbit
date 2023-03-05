@@ -12,9 +12,9 @@ namespace ProtoRabbit.ViewModels;
 
 public partial class SendMessageViewModel : ObservableObject, ISendMessageViewModel
 {
-    private readonly RabbitClient _rabbitClient;
+    private readonly IRabbitClient _rabbitClient;
 
-    public SendMessageViewModel(RabbitClient rabbitClient)
+    public SendMessageViewModel(IRabbitClient rabbitClient)
     {
         _rabbitClient = rabbitClient;
 

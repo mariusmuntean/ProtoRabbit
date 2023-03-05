@@ -2,7 +2,7 @@
 
 namespace ProtoRabbit.Services;
 
-public class RabbitClient
+public class RabbitClient : IRabbitClient
 {
     private readonly ConnectionManager _connectionManager;
     private readonly AsyncMessagePublisher _asyncMessagePublisher;
