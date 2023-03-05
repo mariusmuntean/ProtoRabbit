@@ -1,32 +1,38 @@
-﻿<Properties StartupConfiguration="{4A8B01F0-1058-49C1-A254-C56AA4187CCA}|Default">
+﻿<Properties StartupConfiguration="{DCBFD186-9BCC-4C12-BC0D-053DA0DBCF54}|Default">
   <DisabledProjects>
     <String>ProtoRabbit-MVVM/ProtoRabbit-MVVM.csproj</String>
   </DisabledProjects>
-  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit-MAUI/App/ProtoRabbit-MAUI.csproj">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ProtoRabbit-MAUI/ProtoRabbit-MAUI-Test/SendMessageViewModelTests.cs">
     <Files>
-      <File FileName="ProtoRabbit-MAUI/ProtoRabbit-MAUI.csproj" Line="59" Column="16" />
-      <File FileName="ProtoRabbit.sln" />
-      <File FileName="../../../../usr/local/share/dotnet/sdk/7.0.200/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets" />
+      <File FileName="ProtoRabbit-MAUI/ProtoRabbit-MAUI-Test/MainPageViewModelTests.cs" Line="1" Column="1" />
+      <File FileName="ProtoRabbit-MAUI/ProtoRabbit-MAUI-Test/SendMessageViewModelTests.cs" Line="58" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="ProtoRabbit" expanded="True" selected="True">
-            <Node name="SolutionItems" expanded="True" />
-            <Node name="ProtoRabbit-MAUI" expanded="True" />
+          <Node name="ProtoRabbit" expanded="True">
+            <Node name="ProtoRabbit-MAUI-Test" expanded="True">
+              <Node name="SendMessageViewModelTests.cs" selected="True" />
+            </Node>
           </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="ProtoRabbit" expanded="True" />
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.ProtoRabbit-MAUI-Test PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.ItemProperties.ProtoRabbit PreferredExecutionTarget="MyAppleMacCatalystID" />
-  <MonoDevelop.Ide.ItemProperties.ProtoRabbit-MAUI PreferredExecutionTarget="MyAppleMacCatalystID" />
   <MonoDevelop.Ide.ItemProperties.ProtoRabbit.Avalonia.X.ProtoRabbit.Avalonia.X.Desktop PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/marius/Projects/ProtoRabbit/ProtoRabbit-MAUI/App/ProtoRabbit-MAUI.csproj" relfile="ProtoRabbit-MAUI/App/ProtoRabbit-MAUI.csproj" line="28" column="1" />
+      <Breakpoint file="/Users/marius/Projects/ProtoRabbit/ProtoRabbit-MAUI/App/ProtoRabbit-MAUI.csproj" relfile="ProtoRabbit-MAUI/App/ProtoRabbit-MAUI.csproj" line="52" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

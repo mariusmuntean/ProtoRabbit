@@ -1,4 +1,4 @@
 # --container-architecture linux/amd64
 
 # Careful: we're using the LARGE image here, the docs say it is 20GB in size.
--P ubuntu-latest=catthehacker/ubuntu:full-latest
+-P ubuntu-latest=ghcr.io/catthehacker/ubuntu:full-latest

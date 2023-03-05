@@ -12,7 +12,7 @@ export const MessageSending = () => {
         defaultValue={'Create'}
         style={{ width: '10em' }}
       ></Select>
-      <Row gutter={5}>
+      <Row gutter={5} style={{ margin: '0' }}>
         <Col span={12}>
           <Input.TextArea placeholder="Json Message"></Input.TextArea>
         </Col>

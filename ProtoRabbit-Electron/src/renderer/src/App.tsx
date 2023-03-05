@@ -15,13 +15,25 @@ function App(): JSX.Element {
       </Header>
       <Content style={{ height: '100%' }}>
         <Space direction="vertical" style={{ display: 'flex' }}>
-          <Divider type="horizontal" style={{ backgroundColor: 'lightgray', margin: '0.3em' }} />
+          <Divider
+            type="horizontal"
+            style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }}
+          />
           <ServerConnection />
-          <Divider type="horizontal" style={{ backgroundColor: 'lightgray', margin: '0.3em' }} />
+          <Divider
+            type="horizontal"
+            style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }}
+          />
           <MessageSending />
-          <Divider type="horizontal" style={{ backgroundColor: 'lightgray', margin: '0.3em' }} />
+          <Divider
+            type="horizontal"
+            style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }}
+          />
           <MessageReceiving />
-          <Divider type="horizontal" style={{ backgroundColor: 'lightgray', margin: '0.3em' }} />
+          <Divider
+            type="horizontal"
+            style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }}
+          />
         </Space>
       </Content>
       <Footer style={{ height: 'auto', padding: '0.2em', backgroundColor: 'lightgray' }}>
