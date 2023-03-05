@@ -1,11 +1,12 @@
 import { useCallback, useContext } from 'react'
-import { Button, Col, Input, Row, Space } from 'antd'
+import { Button, Col, Input, notification, Row, Space } from 'antd'
 import { DisconnectOutlined, LinkOutlined } from '@ant-design/icons'
 
 import { ProtoRabbitContext } from '@renderer/AppContext'
 
 export const ServerConnection = () => {
   const {
+    ProtoRabbit,
     host,
     setHost,
     password,
@@ -17,7 +18,29 @@ export const ServerConnection = () => {
     isConnected
   } = useContext(ProtoRabbitContext)
 
-  const connect = useCallback(async () => await window.ProtoRabbit.connect(), [])
+  const connect = useCallback(async () => {
+    try {
+      await ProtoRabbit.connect()
+    } catch (e) {
+      notification.error({
+        message: 'Connection failed',
+        description: JSON.stringify(e),
+        duration: 5
+      })
+    }
+  }, [ProtoRabbit])
+
+  const disconnect = useCallback(async () => {
+    try {
+      await ProtoRabbit.disconnect()
+    } catch (e) {
+      notification.error({
+        message: 'Disconnect failed',
+        description: JSON.stringify(e),
+        duration: 5
+      })
+    }
+  }, [ProtoRabbit])
 
   return (
     <div>
@@ -48,21 +71,11 @@ export const ServerConnection = () => {
             </Col>
           </Row>
           {isConnected ? (
-            <Button
-              type="primary"
-              size="small"
-              onClick={window.ProtoRabbit.disconnect}
-              icon={<DisconnectOutlined />}
-            >
+            <Button type="primary" size="small" onClick={disconnect} icon={<DisconnectOutlined />}>
               Disconnect
             </Button>
           ) : (
-            <Button
-              type="primary"
-              size="small"
-              onClick={window.ProtoRabbit.connect}
-              icon={<LinkOutlined />}
-            >
+            <Button type="primary" size="small" onClick={connect} icon={<LinkOutlined />}>
               Connect
             </Button>
           )}

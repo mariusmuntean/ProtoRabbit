@@ -4,6 +4,6 @@ import { ProtoRabbit } from './index'
 declare global {
   interface Window {
     electron: ElectronAPI
-    ProtoRabbit
+    ProtoRabbit: ProtoRabbit
   }
 }
