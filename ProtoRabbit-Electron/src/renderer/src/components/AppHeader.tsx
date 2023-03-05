@@ -6,7 +6,7 @@ import rabbitmq from './../assets/rabbitmq.svg'
 
 export function AppHeader() {
   const appName = useMemo(() => {
-    return window.MYAPI.name()
+    return window.ProtoRabbit.name()
   }, [])
   return (
     <div

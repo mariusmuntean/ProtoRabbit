@@ -17,7 +17,7 @@ export const ServerConnection = () => {
     isConnected
   } = useContext(ProtoRabbitContext)
 
-  const connect = useCallback(async () => await window.MYAPI.connect(), [])
+  const connect = useCallback(async () => await window.ProtoRabbit.connect(), [])
 
   return (
     <div>
@@ -51,7 +51,7 @@ export const ServerConnection = () => {
             <Button
               type="primary"
               size="small"
-              onClick={window.MYAPI.disconnect}
+              onClick={window.ProtoRabbit.disconnect}
               icon={<DisconnectOutlined />}
             >
               Disconnect
@@ -60,7 +60,7 @@ export const ServerConnection = () => {
             <Button
               type="primary"
               size="small"
-              onClick={window.MYAPI.connect}
+              onClick={window.ProtoRabbit.connect}
               icon={<LinkOutlined />}
             >
               Connect

@@ -50,7 +50,7 @@ const api = {
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
-    contextBridge.exposeInMainWorld('MYAPI', api)
+    contextBridge.exposeInMainWorld('ProtoRabbit', api)
   } catch (error) {
     console.error(error)
   }
@@ -61,4 +61,4 @@ if (process.contextIsolated) {
   window.api = api
 }
 
-export type MYAPI = typeof api
+export type ProtoRabbit = typeof api
