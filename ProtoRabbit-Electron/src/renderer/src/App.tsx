@@ -1,5 +1,7 @@
 import { Divider, Layout, Space } from 'antd'
 import { Content, Footer, Header } from 'antd/es/layout/layout'
+import { useContext } from 'react'
+import { ProtoRabbitContext } from './AppContext'
 
 import { AppHeader } from './components/AppHeader'
 import { AppVersion } from './components/AppVersion'
@@ -8,6 +10,8 @@ import { MessageSending } from './components/MessageSending'
 import { ServerConnection } from './components/ServerConnection'
 
 function App(): JSX.Element {
+  const { isConnected } = useContext(ProtoRabbitContext)
+
   return (
     <Layout style={{ height: '100%' }}>
       <Header style={{ backgroundColor: 'lightgray', padding: '0', height: 'auto' }}>
@@ -20,16 +24,24 @@ function App(): JSX.Element {
             style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }}
           />
           <ServerConnection />
-          <Divider
-            type="horizontal"
-            style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }}
-          />
-          <MessageSending />
-          <Divider
-            type="horizontal"
-            style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }}
-          />
-          <MessageReceiving />
+          {isConnected && (
+            <>
+              <Divider
+                type="horizontal"
+                style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }}
+              />
+              <MessageSending />
+            </>
+          )}
+          {isConnected && (
+            <>
+              <Divider
+                type="horizontal"
+                style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }}
+              />
+              <MessageReceiving />
+            </>
+          )}
           <Divider
             type="horizontal"
             style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }}
