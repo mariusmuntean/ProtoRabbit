@@ -3,20 +3,27 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { IpcChannels } from '../shared'
+import fs from 'fs'
 
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: 1100,
+    height: 1400,
+    x: 2500,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
+      sandbox: false,
+      devTools: true
+      // contextIsolation: true,
+      // nodeIntegration: false
     }
   })
+
+  mainWindow.webContents.openDevTools()
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
@@ -81,4 +88,15 @@ ipcMain.on(IpcChannels.AppVersionChannel, (e, args) => {
 })
 ipcMain.on(IpcChannels.AppNameChannel, (e, args) => {
   e.returnValue = app.getName()
+})
+
+ipcMain.handle('write-to-temp-file', (e, args) => {
+  const protoFileName = args[0]
+  const protoFileContent = args[1]
+  const protoFilePath = join(app.getPath('temp'), protoFileName)
+
+  fs.writeFile(protoFilePath, protoFileContent, { encoding: 'utf8', flag: 'w' }, (e) => {})
+  console.log('Written protofile to 2 ' + protoFilePath)
+
+  return Promise.resolve(protoFilePath)
 })

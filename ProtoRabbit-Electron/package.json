@@ -12,7 +12,7 @@
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
     "start": "electron-vite preview",
-    "dev": "electron-vite dev",
+    "dev": "electron-vite dev -w",
     "build": "npm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:win": "npm run build && electron-builder --win --config",
@@ -25,7 +25,8 @@
     "@types/amqplib": "^0.10.1",
     "antd": "^5.2.3",
     "electron-updater": "^5.3.0",
-    "libamqp": "^1.0.7"
+    "libamqp": "^1.0.7",
+    "protobufjs": "^7.2.2"
   },
   "devDependencies": {
     "@electron-toolkit/tsconfig": "^1.0.1",

@@ -13,8 +13,7 @@ const defaultProtoRabbitContext = {
   isConnected: false
 }
 type ProtoRabbitContextType = typeof defaultProtoRabbitContext
-export const ProtoRabbitContext =
-  React.createContext<ProtoRabbitContextType>(defaultProtoRabbitContext)
+export const ProtoRabbitContext = React.createContext<ProtoRabbitContextType>(defaultProtoRabbitContext)
 
 export const AppContext = (props: PropsWithChildren) => {
   const protoRabbitApi = useMemo(() => window.ProtoRabbit, [])
