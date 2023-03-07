@@ -8,6 +8,10 @@ import { AppVersion } from './components/AppVersion'
 import { MessageReceiving } from './components/MessageReceiving'
 import { MessageSending } from './components/MessageSending'
 import { ServerConnection } from './components/ServerConnection'
+import { configMonacoEditor } from './MonacoConfig'
+
+// config monaco editor
+configMonacoEditor()
 
 function App(): JSX.Element {
   const { isConnected } = useContext(ProtoRabbitContext)
@@ -19,33 +23,21 @@ function App(): JSX.Element {
       </Header>
       <Content style={{ height: '100%' }}>
         <Space direction="vertical" style={{ display: 'flex' }}>
-          <Divider
-            type="horizontal"
-            style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }}
-          />
+          <Divider type="horizontal" style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }} />
           <ServerConnection />
           {isConnected && (
             <>
-              <Divider
-                type="horizontal"
-                style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }}
-              />
+              <Divider type="horizontal" style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }} />
               <MessageSending />
             </>
           )}
           {isConnected && (
             <>
-              <Divider
-                type="horizontal"
-                style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }}
-              />
+              <Divider type="horizontal" style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }} />
               <MessageReceiving />
             </>
           )}
-          <Divider
-            type="horizontal"
-            style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }}
-          />
+          <Divider type="horizontal" style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }} />
         </Space>
       </Content>
       <Footer style={{ height: 'auto', padding: '0.2em', backgroundColor: 'lightgray' }}>
