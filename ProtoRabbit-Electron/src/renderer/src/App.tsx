@@ -6,7 +6,7 @@ import { ProtoRabbitContext } from './AppContext'
 import { AppHeader } from './components/AppHeader'
 import { AppVersion } from './components/AppVersion'
 import { MessageReceiving } from './components/MessageReceiving'
-import { MessageSending } from './components/MessageSending'
+import { MessageSending } from './components/message sending/MessageSending'
 import { ServerConnection } from './components/ServerConnection'
 import { configMonacoEditor } from './MonacoConfig'
 

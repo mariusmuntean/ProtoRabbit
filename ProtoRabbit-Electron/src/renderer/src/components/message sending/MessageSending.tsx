@@ -4,6 +4,7 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 
 import Editor from '@monaco-editor/react'
 import { SendableMessageTemplate } from '@renderer/data/SendableMessageTemplate'
+import { CreateSendableMessageTemplate } from './CreateSendableMessageTemplate'
 
 export const MessageSending = () => {
   const { ProtoRabbit, sendableMessageTemplates } = useContext(ProtoRabbitContext)
@@ -34,6 +35,7 @@ export const MessageSending = () => {
     <Space direction="vertical" style={{ display: 'flex' }}>
       <div style={{ alignSelf: 'self-start' }}>Send</div>
       <Space>
+        <CreateSendableMessageTemplate />
         <Select
           options={sendableMessageTemplates.map((s) => ({ name: s.name, value: s.name }))}
           onChange={(v, o) => {
@@ -41,7 +43,9 @@ export const MessageSending = () => {
           }}
           style={{ width: '10em' }}
         />
-        <span>{}</span>
+        {sendableMessageTemplate && (
+          <span>{`Exchange: ${sendableMessageTemplate.exchange} Routing key: ${sendableMessageTemplate.routingKey}`}</span>
+        )}
       </Space>
       {!sendableMessageTemplate && <Empty description={'Choose a sendable message template'}></Empty>}
       {sendableMessageTemplate && (
