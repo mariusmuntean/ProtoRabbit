@@ -1,9 +1,11 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
-import { IpcChannels } from '../shared'
 import fs from 'fs'
+import Store from 'electron-store'
+
+import icon from '../../resources/icon.png?asset'
+import { IpcChannels } from '../shared/IpcChannels'
 
 function createWindow(): void {
   // Create the browser window.
@@ -99,4 +101,16 @@ ipcMain.handle('write-to-temp-file', (e, args) => {
   console.log('Written protofile to 2 ' + protoFilePath)
 
   return Promise.resolve(protoFilePath)
+})
+
+const appStore = new Store()
+ipcMain.handle(IpcChannels.WriteStoreKey, (e, args) => {
+  const key = args[0]
+  const value = args[1]
+  appStore.set(key, value)
+  return Promise.resolve()
+})
+ipcMain.handle(IpcChannels.ReadStoreKey, (e, args) => {
+  const key = args
+  return Promise.resolve(appStore.get(key))
 })

@@ -5,22 +5,12 @@ import { DisconnectOutlined, LinkOutlined } from '@ant-design/icons'
 import { ProtoRabbitContext } from '@renderer/AppContext'
 
 export const ServerConnection = () => {
-  const {
-    ProtoRabbit,
-    host,
-    setHost,
-    password,
-    setPassword,
-    port,
-    setPort,
-    username,
-    setUsername,
-    isConnected
-  } = useContext(ProtoRabbitContext)
+  const { ProtoRabbit, host, setHost, password, setPassword, port, setPort, username, setUsername, isConnected } =
+    useContext(ProtoRabbitContext)
 
   const connect = useCallback(async () => {
     try {
-      await ProtoRabbit.connect()
+      await ProtoRabbit.connect({ hostname: host, port, username, password })
     } catch (e) {
       notification.error({
         message: 'Connection failed',
@@ -28,7 +18,7 @@ export const ServerConnection = () => {
         duration: 5
       })
     }
-  }, [ProtoRabbit])
+  }, [ProtoRabbit, host, password, port, username])
 
   const disconnect = useCallback(async () => {
     try {
@@ -56,18 +46,10 @@ export const ServerConnection = () => {
             </Col>
 
             <Col span={12}>
-              <Input
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
+              <Input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
             </Col>
             <Col span={12}>
-              <Input
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <Input placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </Col>
           </Row>
           {isConnected ? (

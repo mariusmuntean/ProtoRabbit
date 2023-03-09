@@ -1,10 +1,44 @@
-import { IpcChannels } from './../shared'
+import { ProtoRabbitSettings } from './../shared/ProtoRabbitSettings'
+import { IpcChannels } from '../shared/IpcChannels'
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import { connect, Connection, Channel } from 'amqplib'
 import { load } from 'protobufjs'
 
 // Custom APIs for renderer
+export interface ConnectionOptions {
+  /**
+   * The to be used protocol
+   *
+   * Default value: 'amqp'
+   */
+  protocol?: string | undefined
+
+  /**
+   * Hostname used for connecting to the server.
+   *
+   * Default value: 'localhost'
+   */
+  hostname?: string | undefined
+  /**
+   * Port used for connecting to the server.
+   *
+   * Default value: 5672
+   */
+  port?: number | undefined
+  /**
+   * Username used for authenticating against the server.
+   *
+   * Default value: 'guest'
+   */
+  username?: string | undefined
+  /**
+   * Password used for authenticating against the server.
+   *
+   * Default value: 'guest'
+   */
+  password?: string | undefined
+}
 let conn: Connection
 let channel: Channel
 
@@ -13,12 +47,25 @@ type connectionStatusListenerType = typeof connectionStatusListener
 let connectionStatusListeners: connectionStatusListenerType[] = []
 
 const api = {
-  connect: async () => {
+  connect: async ({
+    protocol = 'amqp',
+    hostname = 'localhost',
+    port = 5672,
+    username = 'guest',
+    password = 'guest'
+  }: ConnectionOptions) => {
     if (conn) {
       conn.close()
     }
-
-    conn = await connect('amqp://localhost')
+    const connectionOptions: ConnectionOptions = {
+      protocol,
+      hostname,
+      port,
+      username,
+      password
+    }
+    console.log(connectionOptions)
+    conn = await connect(connectionOptions)
     console.log('Connected')
     channel = await conn.createChannel()
 
@@ -84,7 +131,8 @@ const api = {
     // return channel?.publish(exchange, routingKey, Buffer.from(msg))
   },
 
-  do: async () => await ipcRenderer.invoke('invoke-channel', { name: 'Marius' }),
+  settings: new ProtoRabbitSettings(ipcRenderer),
+
   version: (): string => ipcRenderer.sendSync(IpcChannels.AppVersionChannel),
   name: (): string => ipcRenderer.sendSync(IpcChannels.AppNameChannel)
 }

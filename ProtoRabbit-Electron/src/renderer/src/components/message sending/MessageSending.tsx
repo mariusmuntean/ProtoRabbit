@@ -56,7 +56,7 @@ export const MessageSending = () => {
                 defaultLanguage="json"
                 defaultValue="Json Message"
                 language="json"
-                options={{ minimap: { enabled: false }, scrollBeyondLastLine: false }}
+                options={{ minimap: { enabled: false }, scrollBeyondLastLine: false, automaticLayout: true }}
                 value={sendableMessageTemplate?.jsonSample}
                 onChange={(v, _) => setMessage(v ?? '')}
                 height="100%"
@@ -67,7 +67,7 @@ export const MessageSending = () => {
                 defaultLanguage="proto"
                 defaultValue="Protofile"
                 language="proto"
-                options={{ minimap: { enabled: false }, scrollBeyondLastLine: false, readOnly: true }}
+                options={{ minimap: { enabled: false }, scrollBeyondLastLine: false, readOnly: true, automaticLayout: true }}
                 value={sendableMessageTemplate?.protofile}
                 height="100%"
               />
