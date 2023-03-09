@@ -87,7 +87,7 @@ const api = {
 
   send: async (exchange: string, routingKey: string, protoFileContent: string, msg: string) => {
     // Get the temp protofile path
-    const tempProtoFilePath: string = await ipcRenderer.invoke('write-to-temp-file', ['x.proto', protoFileContent])
+    const tempProtoFilePath: string = await ipcRenderer.invoke(IpcChannels.WriteToTempFile, ['x.proto', protoFileContent])
     console.log(tempProtoFilePath)
 
     // Determine package and message name

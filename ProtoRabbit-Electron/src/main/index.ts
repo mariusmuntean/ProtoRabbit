@@ -80,11 +80,6 @@ app.on('window-all-closed', () => {
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
 
-ipcMain.handle('invoke-channel', (e, args) => {
-  console.log(args)
-  return { name: 'server' }
-})
-
 ipcMain.on(IpcChannels.AppVersionChannel, (e, args) => {
   e.returnValue = app.getVersion()
 })
@@ -92,13 +87,12 @@ ipcMain.on(IpcChannels.AppNameChannel, (e, args) => {
   e.returnValue = app.getName()
 })
 
-ipcMain.handle('write-to-temp-file', (e, args) => {
+ipcMain.handle(IpcChannels.WriteToTempFile, (e, args) => {
   const protoFileName = args[0]
   const protoFileContent = args[1]
   const protoFilePath = join(app.getPath('temp'), protoFileName)
 
   fs.writeFile(protoFilePath, protoFileContent, { encoding: 'utf8', flag: 'w' }, (e) => {})
-  console.log('Written protofile to 2 ' + protoFilePath)
 
   return Promise.resolve(protoFilePath)
 })
