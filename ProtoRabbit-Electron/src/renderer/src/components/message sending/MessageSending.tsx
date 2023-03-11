@@ -58,9 +58,11 @@ export const MessageSending = () => {
           />
           <UpsertSendableMessageTemplate tooltipPlacement="right" />
         </Col>
-        <Col span={8}>
+        <Col span={8} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           {sendableMessageTemplate && (
-            <span>{`Exchange: ${sendableMessageTemplate.exchange} Routing key: ${sendableMessageTemplate.routingKey}`}</span>
+            <span>
+              Exchange: <b>{`${sendableMessageTemplate.exchange}`}</b> Routing key: <b>{`${sendableMessageTemplate.routingKey}`}</b>
+            </span>
           )}
         </Col>
         <Col span={8} style={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>

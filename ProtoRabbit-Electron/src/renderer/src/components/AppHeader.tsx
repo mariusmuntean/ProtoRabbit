@@ -18,8 +18,8 @@ export function AppHeader() {
       }}
     >
       <Space direction="horizontal">
-        <Image src={protobuf} height={30} />
-        <Image src={rabbitmq} height={60} />
+        <Image src={protobuf} height={30} preview={false} />
+        <Image src={rabbitmq} height={60} preview={false} />
       </Space>
       <span style={{ lineHeight: '2em' }}>{appName}</span>
     </div>
