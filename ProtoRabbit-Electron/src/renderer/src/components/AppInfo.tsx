@@ -1,7 +1,8 @@
 import { useCallback, useState, useEffect } from 'react'
-import { Button, Modal, Space, Tooltip } from 'antd'
-import { InfoCircleOutlined } from '@ant-design/icons'
+import { Button, Divider, Modal, Space, Tooltip } from 'antd'
+import { InfoCircleOutlined, TwitterOutlined } from '@ant-design/icons'
 import Editor from '@monaco-editor/react'
+import AnchorLink from 'antd/es/anchor/AnchorLink'
 
 export const AppInfo = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -59,6 +60,17 @@ export const AppInfo = () => {
           <Tooltip title="Open the app configuration file in your own editor" placement="right">
             <Button onClick={async () => await window.ProtoRabbit.dataStore.openDataStoreInUserEditor()}>Open Config in Editor</Button>
           </Tooltip>
+          <Divider></Divider>
+          <AnchorLink
+            href="https://twitter.com/munteanmarius"
+            target="_blank"
+            title={
+              <Space>
+                <TwitterOutlined />
+                <span>{'@MunteanMarius'}</span>
+              </Space>
+            }
+          ></AnchorLink>
         </Space>
       </Modal>
     </>
