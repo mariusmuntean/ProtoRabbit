@@ -126,3 +126,24 @@ ipcMain.handle(IpcChannels.ReadStoreKey, (e, args) => {
   const key = args
   return Promise.resolve(appStore.get(key))
 })
+
+ipcMain.handle(IpcChannels.GetDataStorePath, (e, args) => {
+  return Promise.resolve(appStore.path)
+})
+
+ipcMain.handle(IpcChannels.GetDataStoreContent, (e, args) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(appStore.path, 'utf-8', (error, data) => {
+      if (error) {
+        reject(error)
+      } else if (data) {
+        resolve(data)
+      }
+    })
+  })
+})
+
+ipcMain.handle(IpcChannels.OpenDataStoreInUserEditor, (e, args) => {
+  appStore.openInEditor()
+  return Promise.resolve()
+})

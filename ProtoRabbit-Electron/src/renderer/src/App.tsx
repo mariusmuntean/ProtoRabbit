@@ -9,6 +9,7 @@ import { MessageReceiving } from './components/MessageReceiving'
 import { MessageSending } from './components/message sending/MessageSending'
 import { ServerConnection } from './components/ServerConnection'
 import { configMonacoEditor } from './MonacoConfig'
+import { AppInfo } from './components/AppInfo'
 
 // config monaco editor
 configMonacoEditor()
@@ -41,7 +42,10 @@ function App(): JSX.Element {
         </Space>
       </Content>
       <Footer style={{ height: 'auto', padding: '0.2em', backgroundColor: 'lightgray' }}>
-        <AppVersion />
+        <Space>
+          <AppVersion />
+          <AppInfo />
+        </Space>
       </Footer>
     </Layout>
   )

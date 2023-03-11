@@ -1,9 +1,11 @@
-import { ProtoRabbitSettings } from './ProtoRabbitSettings'
-import { IpcChannels } from '../shared/IpcChannels'
 import { contextBridge, ipcRenderer } from 'electron'
+import protobuf from 'protobufjs'
 import { electronAPI } from '@electron-toolkit/preload'
 import { connect, Connection, Channel } from 'amqplib'
-import protobuf from 'protobufjs'
+
+import { ProtoRabbitSettings } from './ProtoRabbitSettings'
+import { IpcChannels } from '../shared/IpcChannels'
+import { ProtoRabbitDataStore } from './ProtoRabbitDataStore'
 
 // Custom APIs for renderer
 export interface ConnectionOptions {
@@ -131,6 +133,7 @@ const api = {
   },
 
   settings: new ProtoRabbitSettings(ipcRenderer),
+  dataStore: new ProtoRabbitDataStore(ipcRenderer),
 
   version: (): string => ipcRenderer.sendSync(IpcChannels.AppVersionChannel),
   name: (): string => ipcRenderer.sendSync(IpcChannels.AppNameChannel)

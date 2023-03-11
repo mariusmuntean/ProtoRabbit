@@ -5,5 +5,9 @@ export const IpcChannels = {
   WriteToTempFile: 'write-to-temp-file',
 
   WriteStoreKey: 'write-store-key',
-  ReadStoreKey: 'read-store-key'
+  ReadStoreKey: 'read-store-key',
+
+  GetDataStorePath: 'getDataStorePath',
+  GetDataStoreContent: 'getDataStoreContent',
+  OpenDataStoreInUserEditor: 'openDataStoreInUserEditor'
 }

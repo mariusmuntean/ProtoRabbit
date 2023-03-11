@@ -53,7 +53,7 @@ export const ServerConnection = () => {
             </Col>
           </Row>
           {isConnected ? (
-            <Button type="primary" size="small" onClick={disconnect} icon={<DisconnectOutlined />}>
+            <Button type="primary" size="small" onClick={disconnect} icon={<DisconnectOutlined />} danger>
               Disconnect
             </Button>
           ) : (
