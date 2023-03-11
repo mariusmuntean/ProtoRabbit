@@ -1,5 +1,5 @@
 import { ProtoRabbitContext } from '@renderer/AppContext'
-import { Button, Col, Empty, Input, notification, Row, Select, Space } from 'antd'
+import { Button, Col, Empty, notification, Row, Select, Space } from 'antd'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import Editor from '@monaco-editor/react'
 
@@ -30,7 +30,6 @@ export const MessageSending = () => {
         sendableMessageTemplate.protofile,
         message
       )
-      // setMessage('')
     } catch (error) {
       notification.error({ message: 'Sending failed', description: JSON.stringify(error), duration: 5 })
     }
@@ -41,25 +40,34 @@ export const MessageSending = () => {
   return (
     <Space direction="vertical" style={{ display: 'flex' }}>
       <div style={{ alignSelf: 'self-start' }}>Send</div>
-      <Space>
-        <Select
-          options={selectionOptions}
-          value={selectedOption}
-          onChange={(v, selection) => {
-            if (Array.isArray(selection)) {
-              setSelectedSendableMessageTemplateId(selection[0].name)
-            } else {
-              setSelectedSendableMessageTemplateId(selection.name)
-            }
-          }}
-          style={{ width: '10em' }}
-        />
-        <CreateSendableMessageTemplate />
-        {sendableMessageTemplate && (
-          <span>{`Exchange: ${sendableMessageTemplate.exchange} Routing key: ${sendableMessageTemplate.routingKey}`}</span>
-        )}
-        {sendableMessageTemplate && <DeleteSendableMessageTemplate sendableMessageTemplate={sendableMessageTemplate} />}
-      </Space>
+
+      <Row align={'middle'}>
+        <Col span={8} style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
+          <Select
+            options={selectionOptions}
+            value={selectedOption}
+            onChange={(v, selection) => {
+              if (Array.isArray(selection)) {
+                setSelectedSendableMessageTemplateId(selection[0].name)
+              } else {
+                setSelectedSendableMessageTemplateId(selection.name)
+              }
+            }}
+            style={{ width: '10em' }}
+          />
+          <CreateSendableMessageTemplate />
+        </Col>
+        <Col span={8}>
+          {sendableMessageTemplate && (
+            <span>{`Exchange: ${sendableMessageTemplate.exchange} Routing key: ${sendableMessageTemplate.routingKey}`}</span>
+          )}
+        </Col>
+        <Col span={8} style={{ display: 'flex', justifyContent: 'end' }}>
+          {sendableMessageTemplate && <DeleteSendableMessageTemplate sendableMessageTemplate={sendableMessageTemplate} />}
+          {sendableMessageTemplate && <DeleteSendableMessageTemplate sendableMessageTemplate={sendableMessageTemplate} />}
+        </Col>
+      </Row>
+
       {!sendableMessageTemplate && <Empty description={'Choose a sendable message template'}></Empty>}
       {sendableMessageTemplate && (
         <>
@@ -88,9 +96,11 @@ export const MessageSending = () => {
           </Row>
         </>
       )}
-      <Button type="primary" onClick={send}>
-        Send
-      </Button>
+      <div style={{ display: 'flex', flexDirection: 'row', alignContent: 'center', justifyContent: 'center' }}>
+        <Button type="primary" onClick={send}>
+          Send Message
+        </Button>
+      </div>
     </Space>
   )
 }
