@@ -1,4 +1,6 @@
 export interface SendableMessageTemplate {
+  id: string
+
   /**
    * A name for this sendable message - will be displayed in the UI.
    */

@@ -1,14 +1,19 @@
 import { ProtoRabbitContext } from '@renderer/AppContext'
 import { Button, Col, Empty, Input, notification, Row, Select, Space } from 'antd'
-import { useCallback, useContext, useEffect, useState } from 'react'
-
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import Editor from '@monaco-editor/react'
-import { SendableMessageTemplate } from '@renderer/data/SendableMessageTemplate'
+
 import { CreateSendableMessageTemplate } from './CreateSendableMessageTemplate'
+import { DeleteSendableMessageTemplate } from './DeleteSendableMessageTemplate'
 
 export const MessageSending = () => {
-  const { ProtoRabbit, sendableMessageTemplates } = useContext(ProtoRabbitContext)
-  const [sendableMessageTemplate, setSendableMessageTemplate] = useState<SendableMessageTemplate>()
+  const { ProtoRabbit, sendableMessageTemplates, selectedSendableMessageTemplateId, setSelectedSendableMessageTemplateId } =
+    useContext(ProtoRabbitContext)
+
+  const sendableMessageTemplate = useMemo(() => {
+    return sendableMessageTemplates.find((t) => t.id === selectedSendableMessageTemplateId)
+  }, [selectedSendableMessageTemplateId, sendableMessageTemplates])
+
   const [message, setMessage] = useState<string>()
   useEffect(() => {
     setMessage(sendableMessageTemplate?.jsonSample)
@@ -31,21 +36,29 @@ export const MessageSending = () => {
     }
   }, [ProtoRabbit, message, sendableMessageTemplate])
 
+  const selectionOptions = sendableMessageTemplates.map((s) => ({ name: s.id, value: s.name }))
+  const selectedOption = selectionOptions.find((o) => o.name === selectedSendableMessageTemplateId)
   return (
     <Space direction="vertical" style={{ display: 'flex' }}>
       <div style={{ alignSelf: 'self-start' }}>Send</div>
       <Space>
-        <CreateSendableMessageTemplate />
         <Select
-          options={sendableMessageTemplates.map((s) => ({ name: s.name, value: s.name }))}
-          onChange={(v, o) => {
-            setSendableMessageTemplate(sendableMessageTemplates.find((s) => s.name == v))
+          options={selectionOptions}
+          value={selectedOption}
+          onChange={(v, selection) => {
+            if (Array.isArray(selection)) {
+              setSelectedSendableMessageTemplateId(selection[0].name)
+            } else {
+              setSelectedSendableMessageTemplateId(selection.name)
+            }
           }}
           style={{ width: '10em' }}
         />
+        <CreateSendableMessageTemplate />
         {sendableMessageTemplate && (
           <span>{`Exchange: ${sendableMessageTemplate.exchange} Routing key: ${sendableMessageTemplate.routingKey}`}</span>
         )}
+        {sendableMessageTemplate && <DeleteSendableMessageTemplate sendableMessageTemplate={sendableMessageTemplate} />}
       </Space>
       {!sendableMessageTemplate && <Empty description={'Choose a sendable message template'}></Empty>}
       {sendableMessageTemplate && (

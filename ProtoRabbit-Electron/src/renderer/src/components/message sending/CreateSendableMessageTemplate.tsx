@@ -1,8 +1,9 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useCallback, useContext, useMemo, useState } from 'react'
 import { Button, Divider, Input, Modal, Space } from 'antd'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import { ProtoRabbitContext } from '@renderer/AppContext'
 import Editor from '@monaco-editor/react'
+import { ulid } from 'ulid'
 
 const sampleProtoDefinition = `package ProtoRabbit;
 syntax = "proto3";
@@ -52,6 +53,7 @@ export const CreateSendableMessageTemplate = () => {
     }
 
     addSendableMessageTemplate({
+      id: ulid(),
       name: name!,
       exchange: exchange!,
       routingKey: routingKey!,

@@ -6,6 +6,7 @@ import Store from 'electron-store'
 
 import icon from '../../resources/icon.png?asset'
 import { IpcChannels } from '../shared/IpcChannels'
+import { ulid } from 'ulid'
 
 function createWindow(): void {
   // Create the browser window.
@@ -97,7 +98,24 @@ ipcMain.handle(IpcChannels.WriteToTempFile, (e, args) => {
   return Promise.resolve(protoFilePath)
 })
 
-const appStore = new Store()
+const appStore = new Store({
+  migrations: {
+    '0.1.1': (store) => {
+      if (!store.has('sendableMessageTemplates')) {
+        return
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const sendableMessageTemplates = store.get('sendableMessageTemplates') as any[]
+      if (!sendableMessageTemplates || sendableMessageTemplates.length === 0) {
+        return
+      }
+      sendableMessageTemplates?.forEach((template) => {
+        template.id = template.id ?? ulid()
+      })
+      store.set('sendableMessageTemplates', sendableMessageTemplates)
+    }
+  }
+})
 ipcMain.handle(IpcChannels.WriteStoreKey, (e, args) => {
   const key = args[0]
   const value = args[1]

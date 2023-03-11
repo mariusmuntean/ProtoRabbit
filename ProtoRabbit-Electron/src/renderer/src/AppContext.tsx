@@ -12,8 +12,12 @@ const defaultProtoRabbitContext = {
   password: 'guest',
   setPassword: (password: string) => {},
   isConnected: false,
+
   sendableMessageTemplates: new Array<SendableMessageTemplate>(),
-  addSendableMessageTemplate: (sendableMessageTemplate: SendableMessageTemplate) => {}
+  addSendableMessageTemplate: (sendableMessageTemplate: SendableMessageTemplate) => {},
+  deleteSendableMessageTemplate: (tempalteId: string) => {},
+  selectedSendableMessageTemplateId: '',
+  setSelectedSendableMessageTemplateId: (id: string) => {}
 }
 type ProtoRabbitContextType = typeof defaultProtoRabbitContext
 export const ProtoRabbitContext = React.createContext<ProtoRabbitContextType>(defaultProtoRabbitContext)
@@ -27,6 +31,7 @@ export const AppContext = (props: PropsWithChildren) => {
   const [isConnected, setIsConnected] = useState<boolean>(false)
   const [sendableMessageTemplates, setSendableMessageTemplates] = useState<SendableMessageTemplate[]>([
     {
+      id: '1',
       name: 'Create',
       exchange: 'proto.data',
       routingKey: 'c',
@@ -43,6 +48,7 @@ message AwesomeMessage {
 }`
     },
     {
+      id: '2',
       name: 'Delete',
       exchange: 'proto.data',
       routingKey: 'd',
@@ -57,6 +63,7 @@ message AwesomeMessage {
 }`
     }
   ])
+  const [selectedSendableMessageTemplateId, setSelectedSendableMessageTemplateId] = useState<string>('')
 
   useEffect(() => {
     protoRabbitApi.addConnectionStatusChangeListener(setIsConnected)
@@ -68,6 +75,7 @@ message AwesomeMessage {
       setPassword((await protoRabbitApi.settings.serverSettings.getPassword()) ?? password)
 
       setSendableMessageTemplates(await protoRabbitApi.settings.sendSettings.getSendableMessageTemplates())
+      setSelectedSendableMessageTemplateId(await protoRabbitApi.settings.sendSettings.getSelectedSendableMessageTemplateId())
     }
     loadSettings()
 
@@ -100,14 +108,30 @@ message AwesomeMessage {
         setPassword(newPassword)
       },
       isConnected,
+
       sendableMessageTemplates,
       addSendableMessageTemplate: (newTemplate: SendableMessageTemplate) => {
         const newSendableMessageTemplates = [...sendableMessageTemplates, newTemplate]
         protoRabbitApi.settings.sendSettings.setSendableMessageTemplates(newSendableMessageTemplates)
         setSendableMessageTemplates(newSendableMessageTemplates)
+      },
+      deleteSendableMessageTemplate: (templateId: string) => {
+        const templateToDelete = sendableMessageTemplates.find((t) => t.id === templateId)
+        if (!templateToDelete) {
+          return
+        }
+
+        const newSendableMessageTemplates = sendableMessageTemplates.filter((t) => t.id !== templateId)
+        protoRabbitApi.settings.sendSettings.setSendableMessageTemplates(newSendableMessageTemplates)
+        setSendableMessageTemplates(newSendableMessageTemplates)
+      },
+      selectedSendableMessageTemplateId: selectedSendableMessageTemplateId,
+      setSelectedSendableMessageTemplateId: (id: string) => {
+        protoRabbitApi.settings.sendSettings.setSelectedSendableMessageTemplateId(id)
+        setSelectedSendableMessageTemplateId(id)
       }
     }),
-    [host, isConnected, password, port, protoRabbitApi, sendableMessageTemplates, username]
+    [host, isConnected, password, port, protoRabbitApi, selectedSendableMessageTemplateId, sendableMessageTemplates, username]
   )
   return <ProtoRabbitContext.Provider value={ctx}>{props.children}</ProtoRabbitContext.Provider>
 }

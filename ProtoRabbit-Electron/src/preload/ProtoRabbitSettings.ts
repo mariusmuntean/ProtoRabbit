@@ -62,4 +62,12 @@ export class SendSettings {
   setSendableMessageTemplates = async (sendableMessageTemplates: SendableMessageTemplate[]): Promise<void> => {
     await this._ipcRenderer.invoke(IpcChannels.WriteStoreKey, ['sendableMessageTemplates', sendableMessageTemplates])
   }
+
+  getSelectedSendableMessageTemplateId = async (): Promise<string> => {
+    const selectedSendableMessageTemplateId = await this._ipcRenderer.invoke(IpcChannels.ReadStoreKey, 'selectedSendableMessageTemplateId')
+    return selectedSendableMessageTemplateId
+  }
+  setSelectedSendableMessageTemplateId = async (id: string[]): Promise<void> => {
+    await this._ipcRenderer.invoke(IpcChannels.WriteStoreKey, ['selectedSendableMessageTemplateId', id])
+  }
 }
