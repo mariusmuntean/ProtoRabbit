@@ -21,11 +21,13 @@ export const DeleteSendableMessageTemplate = ({ sendableMessageTemplate }: Props
       description="Are you sure to delete this template?"
       icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
       okButtonProps={{ danger: true }}
+      placement="topRight"
       okText="Yes"
+      onConfirm={onDeleteTemplate}
       cancelText="No"
     >
       <Tooltip title="Delete the current template" placement="left" color={'volcano'}>
-        <Button icon={<DeleteOutlined />} type="link" danger onClick={onDeleteTemplate} />
+        <Button icon={<DeleteOutlined />} type="link" danger />
       </Tooltip>
     </Popconfirm>
   )
