@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { Button, Divider, Input, Modal, Space } from 'antd'
+import { Button, Divider, Input, Modal, Space, Tooltip } from 'antd'
+import { TooltipPlacement } from 'antd/es/tooltip'
 import { PlusCircleOutlined, EditOutlined } from '@ant-design/icons'
 import Editor from '@monaco-editor/react'
 import { ulid } from 'ulid'
@@ -20,9 +21,10 @@ const sampleJsonSample = `{
 
 interface Props {
   sendableMessageTemplateToUpdate?: SendableMessageTemplate
+  tooltipPlacement?: TooltipPlacement
 }
 
-export const UpsertSendableMessageTemplate = ({ sendableMessageTemplateToUpdate }: Props) => {
+export const UpsertSendableMessageTemplate = ({ sendableMessageTemplateToUpdate, tooltipPlacement }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [name, setName] = useState<string | undefined>()
   const [exchange, setExchange] = useState<string | undefined>()
@@ -92,12 +94,17 @@ export const UpsertSendableMessageTemplate = ({ sendableMessageTemplateToUpdate 
 
   return (
     <>
-      <Button
-        icon={sendableMessageTemplateToUpdate ? <EditOutlined /> : <PlusCircleOutlined />}
-        size="small"
-        type="link"
-        onClick={onToggleModalClicked}
-      ></Button>
+      <Tooltip
+        title={sendableMessageTemplateToUpdate ? 'Update current message template' : 'Add new message template'}
+        placement={tooltipPlacement}
+      >
+        <Button
+          icon={sendableMessageTemplateToUpdate ? <EditOutlined /> : <PlusCircleOutlined />}
+          size="small"
+          type="link"
+          onClick={onToggleModalClicked}
+        />
+      </Tooltip>
       <Modal
         title={sendableMessageTemplateToUpdate ? `Edit ${sendableMessageTemplateToUpdate.name}` : 'Add new sendable message template'}
         open={isModalOpen}

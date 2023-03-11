@@ -53,9 +53,10 @@ export const MessageSending = () => {
                 setSelectedSendableMessageTemplateId(selection.name)
               }
             }}
-            style={{ width: '10em' }}
+            style={{ width: '20em' }}
+            dropdownMatchSelectWidth={true}
           />
-          <UpsertSendableMessageTemplate />
+          <UpsertSendableMessageTemplate tooltipPlacement="right" />
         </Col>
         <Col span={8}>
           {sendableMessageTemplate && (
@@ -64,7 +65,9 @@ export const MessageSending = () => {
         </Col>
         <Col span={8} style={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
           {sendableMessageTemplate && <DeleteSendableMessageTemplate sendableMessageTemplate={sendableMessageTemplate} />}
-          {sendableMessageTemplate && <UpsertSendableMessageTemplate sendableMessageTemplateToUpdate={sendableMessageTemplate} />}
+          {sendableMessageTemplate && (
+            <UpsertSendableMessageTemplate sendableMessageTemplateToUpdate={sendableMessageTemplate} tooltipPlacement="left" />
+          )}
         </Col>
       </Row>
 

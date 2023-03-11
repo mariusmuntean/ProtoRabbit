@@ -1,5 +1,5 @@
 import { useCallback, useContext } from 'react'
-import { Button, Popconfirm } from 'antd'
+import { Button, Popconfirm, Tooltip } from 'antd'
 import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import { SendableMessageTemplate } from 'src/shared/SendableMessageTemplate'
 import { ProtoRabbitContext } from '@renderer/AppContext'
@@ -24,7 +24,9 @@ export const DeleteSendableMessageTemplate = ({ sendableMessageTemplate }: Props
       okText="Yes"
       cancelText="No"
     >
-      <Button icon={<DeleteOutlined />} type="link" danger onClick={onDeleteTemplate} />
+      <Tooltip title="Delete the current template" placement="left" color={'volcano'}>
+        <Button icon={<DeleteOutlined />} type="link" danger onClick={onDeleteTemplate} />
+      </Tooltip>
     </Popconfirm>
   )
 }
