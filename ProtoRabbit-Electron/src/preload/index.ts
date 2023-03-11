@@ -1,4 +1,4 @@
-import { ProtoRabbitSettings } from './../shared/ProtoRabbitSettings'
+import { ProtoRabbitSettings } from './ProtoRabbitSettings'
 import { IpcChannels } from '../shared/IpcChannels'
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'

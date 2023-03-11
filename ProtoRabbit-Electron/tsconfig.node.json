@@ -5,7 +5,7 @@
   "src/main/*",
   "src/preload/*",
   "src/shared/**/*.ts",
-  "src/shared/ProtoRabbitSettings.ts"
+  "src/preload/ProtoRabbitSettings.ts"
 ],
   "compilerOptions": {
     "composite": true,

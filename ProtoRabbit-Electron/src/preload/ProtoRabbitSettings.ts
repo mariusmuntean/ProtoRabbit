@@ -1,10 +1,21 @@
 import { IpcRenderer } from 'electron'
-import { IpcChannels } from './IpcChannels'
+import { SendableMessageTemplate } from 'src/shared/SendableMessageTemplate'
+import { IpcChannels } from '../shared/IpcChannels'
+
+export class ProtoRabbitSettings {
+  readonly serverSettings: ServerSettings
+  readonly sendSettings: SendSettings
+
+  public constructor(ipcRenderer: IpcRenderer) {
+    this.serverSettings = new ServerSettings(ipcRenderer)
+    this.sendSettings = new SendSettings(ipcRenderer)
+  }
+}
 
 export class ServerSettings {
-  _ipcRenderer: Electron.IpcRenderer
+  _ipcRenderer: IpcRenderer
 
-  public constructor(ipcRenderer: Electron.IpcRenderer) {
+  public constructor(ipcRenderer: IpcRenderer) {
     this._ipcRenderer = ipcRenderer
   }
 
@@ -35,16 +46,20 @@ export class ServerSettings {
   setPassword = async (password: string): Promise<void> => {
     await this._ipcRenderer.invoke(IpcChannels.WriteStoreKey, ['password', password])
   }
-
-  // port: string,
-  // username: string,
-  // password: string
 }
 
-export class ProtoRabbitSettings {
-  readonly serverSettings: ServerSettings
+export class SendSettings {
+  _ipcRenderer: IpcRenderer
 
   public constructor(ipcRenderer: IpcRenderer) {
-    this.serverSettings = new ServerSettings(ipcRenderer)
+    this._ipcRenderer = ipcRenderer
+  }
+
+  getSendableMessageTemplates = async (): Promise<SendableMessageTemplate[]> => {
+    const sendableMessageTemplates = await this._ipcRenderer.invoke(IpcChannels.ReadStoreKey, 'sendableMessageTemplates')
+    return sendableMessageTemplates
+  }
+  setSendableMessageTemplates = async (sendableMessageTemplates: SendableMessageTemplate[]): Promise<void> => {
+    await this._ipcRenderer.invoke(IpcChannels.WriteStoreKey, ['sendableMessageTemplates', sendableMessageTemplates])
   }
 }

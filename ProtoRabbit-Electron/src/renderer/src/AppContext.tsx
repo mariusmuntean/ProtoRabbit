@@ -66,6 +66,8 @@ message AwesomeMessage {
       setPort((await protoRabbitApi.settings.serverSettings.getPort()) ?? port)
       setUsername((await protoRabbitApi.settings.serverSettings.getUsername()) ?? username)
       setPassword((await protoRabbitApi.settings.serverSettings.getPassword()) ?? password)
+
+      setSendableMessageTemplates(await protoRabbitApi.settings.sendSettings.getSendableMessageTemplates())
     }
     loadSettings()
 
@@ -100,7 +102,9 @@ message AwesomeMessage {
       isConnected,
       sendableMessageTemplates,
       addSendableMessageTemplate: (newTemplate: SendableMessageTemplate) => {
-        setSendableMessageTemplates((templates) => [...templates, newTemplate])
+        const newSendableMessageTemplates = [...sendableMessageTemplates, newTemplate]
+        protoRabbitApi.settings.sendSettings.setSendableMessageTemplates(newSendableMessageTemplates)
+        setSendableMessageTemplates(newSendableMessageTemplates)
       }
     }),
     [host, isConnected, password, port, protoRabbitApi, sendableMessageTemplates, username]
