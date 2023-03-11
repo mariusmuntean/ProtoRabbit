@@ -3,7 +3,7 @@ import { IpcChannels } from '../shared/IpcChannels'
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import { connect, Connection, Channel } from 'amqplib'
-import { load } from 'protobufjs'
+import protobuf from 'protobufjs'
 
 // Custom APIs for renderer
 export interface ConnectionOptions {
@@ -86,10 +86,6 @@ const api = {
   disconnect: () => conn?.close(),
 
   send: async (exchange: string, routingKey: string, protoFileContent: string, msg: string) => {
-    // Get the temp protofile path
-    const tempProtoFilePath: string = await ipcRenderer.invoke(IpcChannels.WriteToTempFile, ['x.proto', protoFileContent])
-    console.log(tempProtoFilePath)
-
     // Determine package and message name
     const lines = protoFileContent.split('\n')
     const packageName = lines
@@ -107,7 +103,12 @@ const api = {
     console.log('Message name: ' + messageName)
 
     try {
-      const { root } = await load(tempProtoFilePath)
+      // Load proto file content straight form a variable, as opposed to loading it from a file - https://github.com/protobufjs/protobuf.js/issues/1871#issuecomment-1464770967
+      const root = new protobuf.Root()
+      protobuf.parse(protoFileContent, root, { keepCase: true, alternateCommentMode: false, preferTrailingComment: false })
+      root.resolveAll()
+
+      // Check message
       const msgType = root.lookupType(packageName ? `${packageName}.${messageName}` : messageName)
       console.log('Checking ' + msg)
       const msgObj = JSON.parse(msg)
@@ -118,17 +119,15 @@ const api = {
         throw new Error(failureReason)
       }
 
+      // Send message
       const protobufMessage = msgType.create(msgObj)
       const msgUin8Array = msgType.encode(protobufMessage).finish()
-      console.log(msgUin8Array)
-
       channel?.publish(exchange, routingKey, Buffer.from(msgUin8Array))
-      console.log('Published msg', msg)
+      console.log('Published proto message: ', msgUin8Array)
+      console.log('Published json message', msg)
     } catch (error) {
       console.log(error)
     }
-
-    // return channel?.publish(exchange, routingKey, Buffer.from(msg))
   },
 
   settings: new ProtoRabbitSettings(ipcRenderer),
