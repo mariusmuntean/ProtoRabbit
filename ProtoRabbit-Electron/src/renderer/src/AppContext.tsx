@@ -14,8 +14,8 @@ const defaultProtoRabbitContext = {
   isConnected: false,
 
   sendableMessageTemplates: new Array<SendableMessageTemplate>(),
-  addSendableMessageTemplate: (sendableMessageTemplate: SendableMessageTemplate) => {},
   deleteSendableMessageTemplate: (tempalteId: string) => {},
+  upsertSendableMessageTemplate: (sendableMessageTemplate: SendableMessageTemplate) => {},
   selectedSendableMessageTemplateId: '',
   setSelectedSendableMessageTemplateId: (id: string) => {}
 }
@@ -110,11 +110,6 @@ message AwesomeMessage {
       isConnected,
 
       sendableMessageTemplates,
-      addSendableMessageTemplate: (newTemplate: SendableMessageTemplate) => {
-        const newSendableMessageTemplates = [...sendableMessageTemplates, newTemplate]
-        protoRabbitApi.settings.sendSettings.setSendableMessageTemplates(newSendableMessageTemplates)
-        setSendableMessageTemplates(newSendableMessageTemplates)
-      },
       deleteSendableMessageTemplate: (templateId: string) => {
         const templateToDelete = sendableMessageTemplates.find((t) => t.id === templateId)
         if (!templateToDelete) {
@@ -122,6 +117,12 @@ message AwesomeMessage {
         }
 
         const newSendableMessageTemplates = sendableMessageTemplates.filter((t) => t.id !== templateId)
+        protoRabbitApi.settings.sendSettings.setSendableMessageTemplates(newSendableMessageTemplates)
+        setSendableMessageTemplates(newSendableMessageTemplates)
+      },
+      upsertSendableMessageTemplate: (sendableMessageTemplate: SendableMessageTemplate) => {
+        const otherSendableMessageTemplates = sendableMessageTemplates.filter((t) => t.id !== sendableMessageTemplate.id)
+        const newSendableMessageTemplates = [...otherSendableMessageTemplates, sendableMessageTemplate]
         protoRabbitApi.settings.sendSettings.setSendableMessageTemplates(newSendableMessageTemplates)
         setSendableMessageTemplates(newSendableMessageTemplates)
       },

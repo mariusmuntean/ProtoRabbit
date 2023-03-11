@@ -1,9 +1,11 @@
-import { useCallback, useContext, useMemo, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { Button, Divider, Input, Modal, Space } from 'antd'
-import { PlusCircleOutlined } from '@ant-design/icons'
-import { ProtoRabbitContext } from '@renderer/AppContext'
+import { PlusCircleOutlined, EditOutlined } from '@ant-design/icons'
 import Editor from '@monaco-editor/react'
 import { ulid } from 'ulid'
+
+import { ProtoRabbitContext } from '@renderer/AppContext'
+import { SendableMessageTemplate } from 'src/shared/SendableMessageTemplate'
 
 const sampleProtoDefinition = `package ProtoRabbit;
 syntax = "proto3";
@@ -16,13 +18,24 @@ const sampleJsonSample = `{
   "userId": "123-xd-88"
 }`
 
-export const CreateSendableMessageTemplate = () => {
+interface Props {
+  sendableMessageTemplateToUpdate?: SendableMessageTemplate
+}
+
+export const UpsertSendableMessageTemplate = ({ sendableMessageTemplateToUpdate }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [name, setName] = useState<string>()
-  const [exchange, setExchange] = useState<string>()
+  const [name, setName] = useState<string | undefined>()
+  const [exchange, setExchange] = useState<string | undefined>()
   const [routingKey, setRoutingKey] = useState<string | undefined>()
   const [protofileContent, setProtofileContent] = useState<string | undefined>(sampleProtoDefinition)
   const [jsonSample, setJsonSample] = useState<string | undefined>(sampleJsonSample)
+  useEffect(() => {
+    setName((n) => sendableMessageTemplateToUpdate?.name ?? n)
+    setExchange((e) => sendableMessageTemplateToUpdate?.exchange ?? e)
+    setRoutingKey((r) => sendableMessageTemplateToUpdate?.routingKey ?? r)
+    setProtofileContent((p) => sendableMessageTemplateToUpdate?.protofile ?? p)
+    setJsonSample(sampleJsonSample)
+  }, [sendableMessageTemplateToUpdate])
 
   const onToggleModalClicked = useCallback(() => {
     setIsModalOpen((v) => !v)
@@ -30,30 +43,34 @@ export const CreateSendableMessageTemplate = () => {
 
   const clearState = useCallback(() => {
     setIsModalOpen(false)
-    setName(undefined)
-    setExchange(undefined)
-    setRoutingKey(undefined)
-    setProtofileContent(sampleProtoDefinition)
-    setJsonSample(sampleJsonSample)
-  }, [setIsModalOpen, setName, setExchange, setRoutingKey, setProtofileContent, setJsonSample])
+
+    // Clear fields only when not editing an existing template
+    if (!sendableMessageTemplateToUpdate) {
+      setName(undefined)
+      setExchange(undefined)
+      setRoutingKey(undefined)
+      setProtofileContent(sampleProtoDefinition)
+      setJsonSample(sampleJsonSample)
+    }
+  }, [sendableMessageTemplateToUpdate])
 
   const onModalCancel = useCallback(() => {
     clearState()
   }, [clearState])
 
-  const canCreateNewTemplate = useMemo<boolean>(() => {
+  const canUpsertTemplate = useMemo<boolean>(() => {
     // ToDo check if protofile content is actually a valid protobuf definition
     return !!name && !!exchange && !!routingKey && !!protofileContent
   }, [exchange, name, protofileContent, routingKey])
 
-  const { addSendableMessageTemplate } = useContext(ProtoRabbitContext)
-  const onOkClicked = useCallback(() => {
-    if (!canCreateNewTemplate) {
+  const { upsertSendableMessageTemplate } = useContext(ProtoRabbitContext)
+  const onInsertNewTemplateClicked = useCallback(() => {
+    if (!canUpsertTemplate) {
       return
     }
 
-    addSendableMessageTemplate({
-      id: ulid(),
+    upsertSendableMessageTemplate({
+      id: sendableMessageTemplateToUpdate?.id ?? ulid(),
       name: name!,
       exchange: exchange!,
       routingKey: routingKey!,
@@ -61,20 +78,35 @@ export const CreateSendableMessageTemplate = () => {
       jsonSample
     })
     clearState()
-  }, [addSendableMessageTemplate, canCreateNewTemplate, clearState, exchange, jsonSample, name, protofileContent, routingKey])
+  }, [
+    canUpsertTemplate,
+    upsertSendableMessageTemplate,
+    sendableMessageTemplateToUpdate,
+    name,
+    exchange,
+    routingKey,
+    protofileContent,
+    jsonSample,
+    clearState
+  ])
 
   return (
     <>
-      <Button icon={<PlusCircleOutlined />} size="small" type="link" onClick={onToggleModalClicked}></Button>
+      <Button
+        icon={sendableMessageTemplateToUpdate ? <EditOutlined /> : <PlusCircleOutlined />}
+        size="small"
+        type="link"
+        onClick={onToggleModalClicked}
+      ></Button>
       <Modal
-        title="Add new sendable message template"
+        title={sendableMessageTemplateToUpdate ? `Edit ${sendableMessageTemplateToUpdate.name}` : 'Add new sendable message template'}
         open={isModalOpen}
         destroyOnClose={true}
         closable={true}
         onCancel={onModalCancel}
-        onOk={onOkClicked}
+        onOk={onInsertNewTemplateClicked}
         okText="Create"
-        okButtonProps={{ disabled: !canCreateNewTemplate }}
+        okButtonProps={{ disabled: !canUpsertTemplate }}
         style={{ minHeight: '60em', height: '60em', overflow: 'auto', resize: 'vertical' }}
       >
         <Space direction="vertical" style={{ width: '100%' }}>

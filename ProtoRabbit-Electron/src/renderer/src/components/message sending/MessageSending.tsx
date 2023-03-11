@@ -3,7 +3,7 @@ import { Button, Col, Empty, notification, Row, Select, Space } from 'antd'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import Editor from '@monaco-editor/react'
 
-import { CreateSendableMessageTemplate } from './CreateSendableMessageTemplate'
+import { UpsertSendableMessageTemplate } from './UpsertSendableMessageTemplate'
 import { DeleteSendableMessageTemplate } from './DeleteSendableMessageTemplate'
 
 export const MessageSending = () => {
@@ -55,16 +55,16 @@ export const MessageSending = () => {
             }}
             style={{ width: '10em' }}
           />
-          <CreateSendableMessageTemplate />
+          <UpsertSendableMessageTemplate />
         </Col>
         <Col span={8}>
           {sendableMessageTemplate && (
             <span>{`Exchange: ${sendableMessageTemplate.exchange} Routing key: ${sendableMessageTemplate.routingKey}`}</span>
           )}
         </Col>
-        <Col span={8} style={{ display: 'flex', justifyContent: 'end' }}>
+        <Col span={8} style={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
           {sendableMessageTemplate && <DeleteSendableMessageTemplate sendableMessageTemplate={sendableMessageTemplate} />}
-          {sendableMessageTemplate && <DeleteSendableMessageTemplate sendableMessageTemplate={sendableMessageTemplate} />}
+          {sendableMessageTemplate && <UpsertSendableMessageTemplate sendableMessageTemplateToUpdate={sendableMessageTemplate} />}
         </Col>
       </Row>
 
