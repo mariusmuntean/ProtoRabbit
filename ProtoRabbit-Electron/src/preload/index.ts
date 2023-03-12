@@ -1,11 +1,12 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import protobuf from 'protobufjs'
 import { electronAPI } from '@electron-toolkit/preload'
-import { connect, Connection, Channel } from 'amqplib'
+import { connect, Connection, Channel, ConsumeMessage } from 'amqplib'
 
 import { ProtoRabbitSettings } from './ProtoRabbitSettings'
 import { IpcChannels } from '../shared/IpcChannels'
 import { ProtoRabbitDataStore } from './ProtoRabbitDataStore'
+import { getProtobufMessageType } from './../shared/ProtofileUtil'
+import { Subscription } from '../shared/Subscription'
 
 // Custom APIs for renderer
 export interface ConnectionOptions {
@@ -88,30 +89,10 @@ const api = {
   disconnect: () => conn?.close(),
 
   send: async (exchange: string, routingKey: string, protoFileContent: string, msg: string) => {
-    // Determine package and message name
-    const lines = protoFileContent.split('\n')
-    const packageName = lines
-      .find((l) => l.startsWith('package'))
-      ?.split(' ')?.[1]
-      ?.replace(';', '')
-    console.log('Package name: ' + packageName)
-
-    const messageName = lines
-      .map((l) => l.trim())
-      .find((l) => l.includes('message'))
-      ?.split(' ')?.[1]
-      ?.replace(';', '')
-    if (!messageName) throw new Error('cannot find message')
-    console.log('Message name: ' + messageName)
-
     try {
-      // Load proto file content straight form a variable, as opposed to loading it from a file - https://github.com/protobufjs/protobuf.js/issues/1871#issuecomment-1464770967
-      const root = new protobuf.Root()
-      protobuf.parse(protoFileContent, root, { keepCase: true, alternateCommentMode: false, preferTrailingComment: false })
-      root.resolveAll()
+      const msgType = getProtobufMessageType(protoFileContent)
 
       // Check message
-      const msgType = root.lookupType(packageName ? `${packageName}.${messageName}` : messageName)
       console.log('Checking ' + msg)
       const msgObj = JSON.parse(msg)
       const failureReason = msgType.verify(msgObj)
@@ -134,6 +115,24 @@ const api = {
 
   settings: new ProtoRabbitSettings(ipcRenderer),
   dataStore: new ProtoRabbitDataStore(ipcRenderer),
+
+  addNewSubscription: async (
+    name: string,
+    exchange: string,
+    routingKey: string,
+    queueName: string,
+    protofileData: string
+  ): Promise<Subscription> => {
+    const assertQueue = await channel.assertQueue(queueName, { durable: true, autoDelete: true })
+    const reply = channel.bindQueue(queueName, exchange, routingKey)
+
+    const msgType = getProtobufMessageType(protofileData)
+    const sub = new Subscription(name, exchange, routingKey, queueName, msgType)
+    const consume = await channel.consume(queueName, sub.addRabbitMqMessage)
+    sub.consumerTag = consume.consumerTag
+
+    return sub
+  },
 
   version: (): string => ipcRenderer.sendSync(IpcChannels.AppVersionChannel),
   name: (): string => ipcRenderer.sendSync(IpcChannels.AppNameChannel)

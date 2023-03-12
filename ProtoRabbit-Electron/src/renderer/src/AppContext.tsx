@@ -1,4 +1,5 @@
 import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react'
+import { Subscription } from './../../shared/Subscription'
 import { SendableMessageTemplate } from '../../shared/SendableMessageTemplate'
 
 const defaultProtoRabbitContext = {
@@ -17,7 +18,18 @@ const defaultProtoRabbitContext = {
   deleteSendableMessageTemplate: (tempalteId: string) => {},
   upsertSendableMessageTemplate: (sendableMessageTemplate: SendableMessageTemplate) => {},
   selectedSendableMessageTemplateId: '',
-  setSelectedSendableMessageTemplateId: (id: string) => {}
+  setSelectedSendableMessageTemplateId: (id: string) => {},
+
+  subscriptions: new Array<Subscription>(),
+  addNewSubscription: async (
+    name: string,
+    exchange: string,
+    routingKey: string,
+    queueName: string,
+    protofileData: string
+  ): Promise<void> => {
+    return Promise.resolve()
+  }
 }
 type ProtoRabbitContextType = typeof defaultProtoRabbitContext
 export const ProtoRabbitContext = React.createContext<ProtoRabbitContextType>(defaultProtoRabbitContext)
@@ -64,6 +76,7 @@ message AwesomeMessage {
     }
   ])
   const [selectedSendableMessageTemplateId, setSelectedSendableMessageTemplateId] = useState<string>('')
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
 
   useEffect(() => {
     protoRabbitApi.addConnectionStatusChangeListener(setIsConnected)
@@ -130,9 +143,32 @@ message AwesomeMessage {
       setSelectedSendableMessageTemplateId: (id: string) => {
         protoRabbitApi.settings.sendSettings.setSelectedSendableMessageTemplateId(id)
         setSelectedSendableMessageTemplateId(id)
+      },
+
+      subscriptions,
+      addNewSubscription: async (
+        name: string,
+        exchange: string,
+        routingKey: string,
+        queueName: string,
+        protofileData: string
+      ): Promise<void> => {
+        const sub = await window.ProtoRabbit.addNewSubscription(name, exchange, routingKey, queueName, protofileData)
+        subscriptions.push(sub)
+        return
       }
     }),
-    [host, isConnected, password, port, protoRabbitApi, selectedSendableMessageTemplateId, sendableMessageTemplates, username]
+    [
+      host,
+      isConnected,
+      password,
+      port,
+      protoRabbitApi,
+      selectedSendableMessageTemplateId,
+      sendableMessageTemplates,
+      subscriptions,
+      username
+    ]
   )
   return <ProtoRabbitContext.Provider value={ctx}>{props.children}</ProtoRabbitContext.Provider>
 }
