@@ -29,7 +29,9 @@ const defaultProtoRabbitContext = {
     protofileData: string
   ): Promise<void> => {
     return Promise.resolve()
-  }
+  },
+  currentSubscription: {} as Subscription,
+  setCurrentSubscription: (subscription: Subscription) => {}
 }
 type ProtoRabbitContextType = typeof defaultProtoRabbitContext
 export const ProtoRabbitContext = React.createContext<ProtoRabbitContextType>(defaultProtoRabbitContext)
@@ -77,6 +79,7 @@ message AwesomeMessage {
   ])
   const [selectedSendableMessageTemplateId, setSelectedSendableMessageTemplateId] = useState<string>('')
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
+  const [currentSubscription, setCurrentSubscription] = useState<Subscription>()
 
   useEffect(() => {
     protoRabbitApi.addConnectionStatusChangeListener(setIsConnected)
@@ -154,11 +157,13 @@ message AwesomeMessage {
         protofileData: string
       ): Promise<void> => {
         const sub = await window.ProtoRabbit.addNewSubscription(name, exchange, routingKey, queueName, protofileData)
-        subscriptions.push(sub)
-        return
-      }
+        setSubscriptions([...subscriptions, sub])
+      },
+      currentSubscription,
+      setCurrentSubscription: setCurrentSubscription
     }),
     [
+      currentSubscription,
       host,
       isConnected,
       password,

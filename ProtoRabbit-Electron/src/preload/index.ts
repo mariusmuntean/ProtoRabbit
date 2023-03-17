@@ -130,6 +130,7 @@ const api = {
     const sub = new Subscription(name, exchange, routingKey, queueName, msgType)
     const consume = await channel.consume(queueName, sub.addRabbitMqMessage)
     sub.consumerTag = consume.consumerTag
+    console.log('New sub', sub)
 
     return sub
   },

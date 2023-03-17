@@ -3,6 +3,15 @@ import { Tooltip, Button, Modal, Form, Checkbox, Input } from 'antd'
 import { FileAddOutlined } from '@ant-design/icons'
 import Editor from '@monaco-editor/react'
 import { ProtoRabbitContext } from '@renderer/AppContext'
+import { ValidateErrorEntity } from 'rc-field-form/lib/interface'
+
+interface NewSubscriptionType {
+  name: string
+  exchange: string
+  routingKey: string
+  queueName: string
+  protobufDefinition: string
+}
 
 export const NewSubscription = () => {
   const { addNewSubscription } = useContext(ProtoRabbitContext)
@@ -16,12 +25,15 @@ export const NewSubscription = () => {
     setIsModalVisible(false)
   }, [])
 
-  const onFinish = async (values: any) => {
+  const [form] = Form.useForm<NewSubscriptionType>()
+  const onFinish = async (values: NewSubscriptionType) => {
     console.log('Success:', values)
     await addNewSubscription(values.name, values.exchange, values.routingKey, values.queueName, values.protobufDefinition)
+    form?.resetFields()
+    setIsModalVisible(false)
   }
 
-  const onFinishFailed = (errorInfo: any) => {
+  const onFinishFailed = (errorInfo: ValidateErrorEntity<NewSubscriptionType>) => {
     console.log('Failed:', errorInfo)
   }
 
@@ -41,6 +53,7 @@ export const NewSubscription = () => {
         bodyStyle={{ width: '100%' }}
       >
         <Form
+          form={form}
           name="basic"
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
@@ -68,7 +81,6 @@ export const NewSubscription = () => {
             name="protobufDefinition"
             rules={[{ required: false, message: 'The protobuf definition to use for message deserialization' }]}
           >
-            {/* <div style={{ border: '2px solid lightgrey', borderRadius: '0.5em', padding: '0.5em' }}> */}
             <Editor
               defaultLanguage="proto"
               defaultValue="Protofile"
@@ -84,7 +96,6 @@ export const NewSubscription = () => {
               value={''}
               height="20em"
             />
-            {/* </div> */}
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 0, span: 24 }} style={{ justifyContent: 'center', display: 'flex' }}>

@@ -1,8 +1,10 @@
 import { ConsumeMessage } from 'amqplib'
 import protobuf from 'protobufjs'
+import { ulid } from 'ulid'
 
 export class Subscription {
-  private _consumerTag: string | undefined
+  public readonly id: string = ulid()
+  consumerTag: string | undefined
 
   readonly name: string
   readonly exchange: string
@@ -29,13 +31,6 @@ export class Subscription {
     this.queueName = queueName
 
     this.protobufMessageType = protobufMessageType
-  }
-
-  public get consumerTag(): string | undefined {
-    return this._consumerTag
-  }
-  public set consumerTag(v: string | undefined) {
-    this._consumerTag = v
   }
 
   public addRabbitMqMessage = (newRabbitMqMessage: ConsumeMessage | null) => {
