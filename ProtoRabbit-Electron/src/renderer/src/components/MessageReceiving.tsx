@@ -1,10 +1,11 @@
 import { ProtoRabbitContext } from '@renderer/AppContext'
-import { Layout, Radio, Space, Table, Tooltip } from 'antd'
+import { Divider, Layout, Radio, Space, Table, Tooltip } from 'antd'
 import { Header } from 'antd/es/layout/layout'
 import { ColumnType } from 'antd/es/table'
 import { useContext } from 'react'
 import { Subscription } from 'src/shared/Subscription'
 import { NewSubscription } from './message receiving/NewSubscription'
+import { SubscriptionList } from './message receiving/SubscriptionList'
 
 const { Content, Sider } = Layout
 
@@ -33,25 +34,27 @@ const SubscriptionTooltipTitle = ({ subscription }: Props) => {
 }
 
 export const MessageReceiving = () => {
-  const { subscriptions, setCurrentSubscription, currentSubscription } = useContext(ProtoRabbitContext)
   return (
     <Space direction="vertical" style={{ display: 'flex', height: 'auto' }}>
       <div style={{ alignSelf: 'self-start' }}>Receive</div>
-      <Space direction="vertical" style={{ background: 'none' }}>
+      <Space
+        direction="horizontal"
+        style={{ background: 'none', margin: '0.5em', display: 'flex', alignItems: 'stretch', alignContent: 'stretch', gap: '1em' }}
+      >
         {/* Subscriptions */}
+        <Layout>
+          <Header style={{ backgroundColor: 'transparent' }}>
+            <Space align="center" style={{ display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }}>
+              <div>Subscriptions</div>
+              <NewSubscription />
+            </Space>
+          </Header>
+          <Content>
+            <SubscriptionList />
+          </Content>
+        </Layout>
 
-        <Space align="center" style={{ display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }}>
-          <div>Subscriptions</div>
-          <NewSubscription />
-        </Space>
-
-        <Radio.Group defaultValue={currentSubscription?.id}>
-          {subscriptions?.map((s) => (
-            <Radio.Button key={s.id} value={s.id}>
-              <Tooltip title={<SubscriptionTooltipTitle subscription={s} />}>{s.name}</Tooltip>
-            </Radio.Button>
-          ))}
-        </Radio.Group>
+        <Divider type="vertical" style={{ height: '100%' }} />
 
         {/* Subscription Messages */}
         <Layout style={{}}>
