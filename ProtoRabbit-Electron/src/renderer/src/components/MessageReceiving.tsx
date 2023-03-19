@@ -13,7 +13,7 @@ export const MessageReceiving = () => {
       <div style={{ alignSelf: 'self-start' }}>Receive</div>
       <Space
         direction="horizontal"
-        style={{ background: 'none', margin: '0.5em', display: 'flex', alignItems: 'stretch', alignContent: 'stretch', gap: '1em' }}
+        style={{ background: 'none', margin: '0.5em', display: 'flex', alignItems: 'stretch', alignContent: 'stretch' }}
       >
         {/* Subscriptions */}
         <Layout>
