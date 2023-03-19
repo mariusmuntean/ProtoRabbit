@@ -25,7 +25,7 @@ export const SubscriptionList = () => {
             avatar={<SyncOutlined spin />}
             title={<a href="https://ant.design">{sub.name}</a>}
             description={
-              <Space direction="vertical" style={{ gap: '0.1em' }}>
+              <Space direction="vertical">
                 {`Exchange: ${sub.exchange}`}
                 {`Routing key: ${sub.routingKey}`}
               </Space>
