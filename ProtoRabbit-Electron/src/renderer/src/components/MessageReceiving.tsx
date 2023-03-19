@@ -1,37 +1,11 @@
-import { ProtoRabbitContext } from '@renderer/AppContext'
-import { Divider, Layout, Radio, Space, Table, Tooltip } from 'antd'
+import { Divider, Layout, Space } from 'antd'
 import { Header } from 'antd/es/layout/layout'
-import { ColumnType } from 'antd/es/table'
-import { useContext } from 'react'
-import { Subscription } from 'src/shared/Subscription'
+
 import { NewSubscription } from './message receiving/NewSubscription'
 import { SubscriptionList } from './message receiving/SubscriptionList'
+import { SubscriptionMessages } from './message receiving/SubscriptionMessages'
 
-const { Content, Sider } = Layout
-
-const cols: ColumnType<Subscription>[] = [
-  {
-    title: '',
-    render: (v, r, i) => r.name
-  }
-]
-interface Props {
-  subscription: Subscription
-}
-const SubscriptionTooltipTitle = ({ subscription }: Props) => {
-  return (
-    <>
-      Tag {subscription.consumerTag}
-      <br />
-      Exchange {subscription.exchange}
-      <br />
-      Routing key {subscription.routingKey}
-      <br />
-      Queue {subscription.queueName}
-      <br />
-    </>
-  )
-}
+const { Content } = Layout
 
 export const MessageReceiving = () => {
   return (
@@ -64,7 +38,7 @@ export const MessageReceiving = () => {
             </Space>
           </Header>
           <Content>
-            <span>subscription messages</span>
+            <SubscriptionMessages />
           </Content>
         </Layout>
       </Space>
