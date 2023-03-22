@@ -1,12 +1,12 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-import { connect, Connection, Channel, ConsumeMessage } from 'amqplib'
+import { connect, Connection, Channel } from 'amqplib'
 
 import { ProtoRabbitSettings } from './ProtoRabbitSettings'
 import { IpcChannels } from '../shared/IpcChannels'
 import { ProtoRabbitDataStore } from './ProtoRabbitDataStore'
 import { getProtobufMessageType } from './../shared/ProtofileUtil'
-import { Subscription } from '../shared/Subscription'
+import { SubscriptionManager } from './SubscriptionManager'
 
 // Custom APIs for renderer
 export interface ConnectionOptions {
@@ -49,6 +49,8 @@ let connectionStatusListener: (isConnected: boolean) => void
 type connectionStatusListenerType = typeof connectionStatusListener
 let connectionStatusListeners: connectionStatusListenerType[] = []
 
+let subscriptionManager: SubscriptionManager | undefined = undefined
+
 const api = {
   connect: async ({
     protocol = 'amqp',
@@ -67,20 +69,18 @@ const api = {
       username,
       password
     }
-    console.log(connectionOptions)
     conn = await connect(connectionOptions)
-    console.log('Connected')
     channel = await conn.createChannel()
 
     connectionStatusListeners.forEach((l) => l(true))
     conn.on('close', (args) => {
-      console.log('Connection closed')
       return connectionStatusListeners.forEach((l) => l(false))
     })
     conn.on('error', (args) => {
-      console.log('Connection error')
       return connectionStatusListeners.forEach((l) => l(false))
     })
+
+    subscriptionManager = new SubscriptionManager(channel)
   },
   addConnectionStatusChangeListener: (listener: connectionStatusListenerType) => connectionStatusListeners.push(listener),
   removeConnectionStatusChangeListener: (listener: connectionStatusListenerType) =>
@@ -93,12 +93,10 @@ const api = {
       const msgType = getProtobufMessageType(protoFileContent)
 
       // Check message
-      console.log('Checking ' + msg)
       const msgObj = JSON.parse(msg)
       const failureReason = msgType.verify(msgObj)
 
       if (failureReason) {
-        console.log(failureReason)
         throw new Error(failureReason)
       }
 
@@ -106,8 +104,6 @@ const api = {
       const protobufMessage = msgType.create(msgObj)
       const msgUin8Array = msgType.encode(protobufMessage).finish()
       channel?.publish(exchange, routingKey, Buffer.from(msgUin8Array))
-      console.log('Published proto message: ', msgUin8Array)
-      console.log('Published json message', msg)
     } catch (error) {
       console.log(error)
     }
@@ -116,24 +112,7 @@ const api = {
   settings: new ProtoRabbitSettings(ipcRenderer),
   dataStore: new ProtoRabbitDataStore(ipcRenderer),
 
-  addNewSubscription: async (
-    name: string,
-    exchange: string,
-    routingKey: string,
-    queueName: string,
-    protofileData: string
-  ): Promise<Subscription> => {
-    const assertQueue = await channel.assertQueue(queueName, { durable: true, autoDelete: true })
-    const reply = channel.bindQueue(queueName, exchange, routingKey)
-
-    const msgType = getProtobufMessageType(protofileData)
-    const sub = new Subscription(name, exchange, routingKey, queueName, msgType)
-    const consume = await channel.consume(queueName, sub.addRabbitMqMessage)
-    sub.consumerTag = consume.consumerTag
-    console.log('New sub', sub)
-
-    return sub
-  },
+  getSubscriptionManager: () => subscriptionManager,
 
   version: (): string => ipcRenderer.sendSync(IpcChannels.AppVersionChannel),
   name: (): string => ipcRenderer.sendSync(IpcChannels.AppNameChannel)

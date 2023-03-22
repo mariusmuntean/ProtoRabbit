@@ -24,7 +24,9 @@ export const MessageReceiving = () => {
             </Space>
           </Header>
           <Content>
-            <SubscriptionList />
+            <div style={{ overflow: 'auto' }}>
+              <SubscriptionList />
+            </div>
           </Content>
         </Layout>
 

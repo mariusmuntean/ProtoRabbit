@@ -41,7 +41,6 @@ export class Subscription {
 
     const decodedMessage = this.protobufMessageType.decode(newRabbitMqMessage.content)
     const decodedJsonMessage = JSON.stringify(decodedMessage.toJSON())
-    console.log(`Subscription ${this.consumerTag}: ${decodedJsonMessage}`)
 
     const newMessage = new Message(newRabbitMqMessage, decodedJsonMessage)
     // store them for later
@@ -61,6 +60,17 @@ export class Subscription {
       return
     }
     this.messageHandlers.push(handler)
+  }
+
+  public removeMessageHandler = (handler: HandleNewMessage) => {
+    if (!handler) {
+      return
+    }
+    const handlerIdx = this.messageHandlers.indexOf(handler)
+    if (handlerIdx === -1) {
+      return
+    }
+    this.messageHandlers.splice(handlerIdx, 1)
   }
 }
 

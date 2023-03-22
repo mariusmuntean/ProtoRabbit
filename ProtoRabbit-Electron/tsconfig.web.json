@@ -3,8 +3,13 @@
   "include": [
     "src/renderer/src/**/*",
     "src/preload/*.d.ts",
+    "src/preload/ProtoRabbitDataStore.ts",
+    "src/preload/ProtoRabbitSettings.ts",
+    "src/preload/SubscriptionManager.ts",
     "src/shared/**/*",
-    "src/preload/ProtoRabbitSettings.ts"
+  ],
+  "exclude": [
+    "./out"
   ],
   "compilerOptions": {
     "composite": true,
@@ -14,6 +19,6 @@
       "@renderer/*": [
         "src/renderer/src/*"
       ]
-    }
+    },
   }
 }

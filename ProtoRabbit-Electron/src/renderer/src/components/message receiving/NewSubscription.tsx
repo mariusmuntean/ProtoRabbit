@@ -1,8 +1,7 @@
-import { useCallback, useContext, useState } from 'react'
-import { Tooltip, Button, Modal, Form, Checkbox, Input } from 'antd'
+import { useCallback, useState } from 'react'
+import { Tooltip, Button, Modal, Form, Input } from 'antd'
 import { FileAddOutlined } from '@ant-design/icons'
 import Editor from '@monaco-editor/react'
-import { ProtoRabbitContext } from '@renderer/AppContext'
 import { ValidateErrorEntity } from 'rc-field-form/lib/interface'
 
 interface NewSubscriptionType {
@@ -14,7 +13,6 @@ interface NewSubscriptionType {
 }
 
 export const NewSubscription = () => {
-  const { addNewSubscription } = useContext(ProtoRabbitContext)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
   const onToggleModalVisibilityClicked = useCallback(() => {
@@ -27,8 +25,13 @@ export const NewSubscription = () => {
 
   const [form] = Form.useForm<NewSubscriptionType>()
   const onFinish = async (values: NewSubscriptionType) => {
-    console.log('Success:', values)
-    await addNewSubscription(values.name, values.exchange, values.routingKey, values.queueName, values.protobufDefinition)
+    await window.ProtoRabbit.getSubscriptionManager()?.addNewSubscription(
+      values.name,
+      values.exchange,
+      values.routingKey,
+      values.queueName,
+      values.protobufDefinition
+    )
     form?.resetFields()
     setIsModalVisible(false)
   }

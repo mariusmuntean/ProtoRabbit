@@ -1,5 +1,4 @@
-import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react'
-import { Subscription } from './../../shared/Subscription'
+import React, { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react'
 import { SendableMessageTemplate } from '../../shared/SendableMessageTemplate'
 
 const defaultProtoRabbitContext = {
@@ -15,23 +14,10 @@ const defaultProtoRabbitContext = {
   isConnected: false,
 
   sendableMessageTemplates: new Array<SendableMessageTemplate>(),
-  deleteSendableMessageTemplate: (tempalteId: string) => {},
+  deleteSendableMessageTemplate: (templateId: string) => {},
   upsertSendableMessageTemplate: (sendableMessageTemplate: SendableMessageTemplate) => {},
   selectedSendableMessageTemplateId: '',
-  setSelectedSendableMessageTemplateId: (id: string) => {},
-
-  subscriptions: new Array<Subscription>(),
-  addNewSubscription: async (
-    name: string,
-    exchange: string,
-    routingKey: string,
-    queueName: string,
-    protofileData: string
-  ): Promise<void> => {
-    return Promise.resolve()
-  },
-  currentSubscription: {} as Subscription,
-  setCurrentSubscription: (subscription: Subscription) => {}
+  setSelectedSendableMessageTemplateId: (id: string) => {}
 }
 type ProtoRabbitContextType = typeof defaultProtoRabbitContext
 export const ProtoRabbitContext = React.createContext<ProtoRabbitContextType>(defaultProtoRabbitContext)
@@ -78,8 +64,6 @@ message AwesomeMessage {
     }
   ])
   const [selectedSendableMessageTemplateId, setSelectedSendableMessageTemplateId] = useState<string>('')
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
-  const [currentSubscription, setCurrentSubscription] = useState<Subscription>()
 
   useEffect(() => {
     protoRabbitApi.addConnectionStatusChangeListener(setIsConnected)
@@ -146,34 +130,10 @@ message AwesomeMessage {
       setSelectedSendableMessageTemplateId: (id: string) => {
         protoRabbitApi.settings.sendSettings.setSelectedSendableMessageTemplateId(id)
         setSelectedSendableMessageTemplateId(id)
-      },
-
-      subscriptions,
-      addNewSubscription: async (
-        name: string,
-        exchange: string,
-        routingKey: string,
-        queueName: string,
-        protofileData: string
-      ): Promise<void> => {
-        const sub = await window.ProtoRabbit.addNewSubscription(name, exchange, routingKey, queueName, protofileData)
-        setSubscriptions([...subscriptions, sub])
-      },
-      currentSubscription,
-      setCurrentSubscription: setCurrentSubscription
+      }
     }),
-    [
-      currentSubscription,
-      host,
-      isConnected,
-      password,
-      port,
-      protoRabbitApi,
-      selectedSendableMessageTemplateId,
-      sendableMessageTemplates,
-      subscriptions,
-      username
-    ]
+    [host, isConnected, password, port, protoRabbitApi, selectedSendableMessageTemplateId, sendableMessageTemplates, username]
   )
+
   return <ProtoRabbitContext.Provider value={ctx}>{props.children}</ProtoRabbitContext.Provider>
 }

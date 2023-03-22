@@ -35,12 +35,9 @@ export const lookupMessageType = (root: protobuf.Root, messageName: string, pack
 export const getProtobufMessageType = (protoFileContent: string): protobuf.Type => {
   // Determine package and message name
   const { packageName, messageName } = getPackageAndMessage(protoFileContent)
-  console.log('Package name: ' + packageName)
   if (!messageName) throw new Error('cannot find message')
-  console.log('Message name: ' + messageName)
 
   const root = resolveRootNamespace(protoFileContent)
-
   const msgType = lookupMessageType(root, messageName, packageName)
 
   return msgType
