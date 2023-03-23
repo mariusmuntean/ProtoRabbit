@@ -1,49 +1,46 @@
-import { Divider, Layout, Space } from 'antd'
-import { Header } from 'antd/es/layout/layout'
+import { Divider } from 'antd'
 
 import { NewSubscription } from './message receiving/NewSubscription'
 import { SubscriptionList } from './message receiving/SubscriptionList'
 import { SubscriptionMessages } from './message receiving/SubscriptionMessages'
 
-const { Content } = Layout
-
 export const MessageReceiving = () => {
   return (
-    <Space direction="vertical" style={{ display: 'flex', height: 'auto' }}>
-      <div style={{ alignSelf: 'self-start' }}>Receive</div>
-      <Space
-        direction="horizontal"
-        style={{ background: 'none', margin: '0.5em', display: 'flex', alignItems: 'stretch', alignContent: 'stretch' }}
-      >
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        flex: '1',
+        overflow: 'auto',
+        backgroundColor: 'chocolate',
+        borderRadius: '0.3rem'
+      }}
+    >
+      <span style={{ alignSelf: 'self-start' }}>Receive</span>
+      <div style={{ margin: '0.5em', display: 'flex', flex: '1', overflow: 'auto' }}>
         {/* Subscriptions */}
-        <Layout>
-          <Header style={{ backgroundColor: 'transparent' }}>
-            <Space align="center" style={{ display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }}>
-              <div>Subscriptions</div>
-              <NewSubscription />
-            </Space>
-          </Header>
-          <Content>
-            <div style={{ overflow: 'auto' }}>
-              <SubscriptionList />
-            </div>
-          </Content>
-        </Layout>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
+            <div>Subscriptions</div>
+            <NewSubscription />
+          </div>
+          <div style={{ overflow: 'auto' }}>
+            <SubscriptionList />
+          </div>
+        </div>
 
         <Divider type="vertical" style={{ height: '100%' }} />
 
         {/* Subscription Messages */}
-        <Layout style={{}}>
-          <Header style={{ backgroundColor: 'transparent' }}>
-            <Space style={{ width: '100%', justifyContent: 'start', alignContent: 'center' }}>
-              <span>Messages</span>
-            </Space>
-          </Header>
-          <Content>
+        <div style={{ display: 'flex', flex: '1', flexDirection: 'column', overflow: 'auto' }}>
+          <div style={{}}>
+            <span>Messages</span>
+          </div>
+          <div style={{ flex: '1', backgroundColor: 'goldenrod', padding: '0.2em', overflow: 'auto' }}>
             <SubscriptionMessages />
-          </Content>
-        </Layout>
-      </Space>
-    </Space>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

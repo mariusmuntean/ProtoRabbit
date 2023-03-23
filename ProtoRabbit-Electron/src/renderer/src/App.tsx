@@ -18,36 +18,61 @@ function App(): JSX.Element {
   const { isConnected } = useContext(ProtoRabbitContext)
 
   return (
-    <Layout style={{ height: '100%' }}>
-      <Header style={{ backgroundColor: 'lightgray', padding: '0', height: 'auto' }}>
+    <div
+      style={{
+        height: '100vh',
+        maxHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '0.15rem',
+        backgroundColor: 'blueviolet',
+        overflow: 'overflow'
+      }}
+    >
+      <div style={{ padding: '0', height: '6rem', backgroundColor: 'darkslategray' }}>
         <AppHeader />
-      </Header>
-      <Content style={{ height: '100%' }}>
-        <Space direction="vertical" style={{ display: 'flex' }}>
-          <Divider type="horizontal" style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }} />
-          <ServerConnection />
-          {isConnected && (
-            <>
-              <Divider type="horizontal" style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }} />
-              <MessageSending />
-            </>
-          )}
-          {isConnected && (
-            <>
-              <Divider type="horizontal" style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }} />
-              <MessageReceiving />
-            </>
-          )}
-          <Divider type="horizontal" style={{ backgroundColor: 'lightgray', marginTop: '0.3em', marginBottom: '0.3em' }} />
-        </Space>
-      </Content>
-      <Footer style={{ height: 'auto', padding: '0.2em', backgroundColor: 'lightgray' }}>
-        <Space>
-          <AppVersion />
-          <AppInfo />
-        </Space>
-      </Footer>
-    </Layout>
+      </div>
+      <div
+        style={{
+          padding: '0.15em',
+          display: 'flex',
+          flexDirection: 'column',
+          flex: '1',
+          overflow: 'auto',
+          backgroundColor: 'palegreen'
+        }}
+      >
+        <Divider type="horizontal" style={{ marginTop: '0.3em', marginBottom: '0.3em' }} />
+        <ServerConnection />
+        {isConnected && (
+          <>
+            <Divider type="horizontal" style={{ marginTop: '0.3em', marginBottom: '0.3em' }} />
+            <MessageSending />
+          </>
+        )}
+        {isConnected && (
+          <>
+            <Divider type="horizontal" style={{ marginTop: '0.3em', marginBottom: '0.3em' }} />
+            <MessageReceiving />
+          </>
+        )}
+        <Divider type="horizontal" style={{ marginTop: '0.3em', marginBottom: '0.3em' }} />
+      </div>
+      <div
+        style={{
+          backgroundColor: 'darkslategray',
+          marginTop: 'auto',
+          height: '1rem',
+          padding: '0.4em',
+          display: 'flex',
+          gap: '0.2rem',
+          alignItems: 'center'
+        }}
+      >
+        <AppVersion />
+        <AppInfo />
+      </div>
+    </div>
   )
 }
 
