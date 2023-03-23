@@ -56,7 +56,7 @@ export class Subscription {
   }
 
   public addNewMessageHandler = (handler: HandleNewMessage) => {
-    if (!handler) {
+    if (!handler || this.messageHandlers.includes(handler)) {
       return
     }
     this.messageHandlers.push(handler)
