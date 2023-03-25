@@ -21,12 +21,9 @@ function App(): JSX.Element {
     <div
       style={{
         height: '100vh',
-        maxHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        padding: '0.15rem',
-        backgroundColor: 'blueviolet',
-        overflow: 'overflow'
+        overflow: 'hidden'
       }}
     >
       <div style={{ padding: '0', height: '6rem', backgroundColor: 'darkslategray' }}>
@@ -63,10 +60,11 @@ function App(): JSX.Element {
           backgroundColor: 'darkslategray',
           marginTop: 'auto',
           height: '1rem',
-          padding: '0.4em',
           display: 'flex',
           gap: '0.2rem',
-          alignItems: 'center'
+          padding: '0.2em',
+          alignItems: 'center',
+          margin: '0'
         }}
       >
         <AppVersion />

@@ -76,7 +76,7 @@ export const MessageSending = () => {
       {!sendableMessageTemplate && <Empty description={'Choose a sendable message template'}></Empty>}
       {sendableMessageTemplate && (
         <>
-          <Row gutter={5} style={{ margin: '0', height: '25vh' }}>
+          <Row gutter={5} style={{ margin: '0', overflowY: 'auto', minHeight: '12em' }}>
             <Col span={12}>
               <Editor
                 defaultLanguage="json"
