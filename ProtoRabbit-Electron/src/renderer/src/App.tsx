@@ -9,6 +9,7 @@ import { MessageSending } from './components/message sending/MessageSending'
 import { ServerConnection } from './components/ServerConnection'
 import { configMonacoEditor } from './MonacoConfig'
 import { AppInfo } from './components/AppInfo'
+import { SectionDivider } from './components/SectionDivider'
 
 // config monaco editor
 configMonacoEditor()
@@ -25,7 +26,7 @@ function App(): JSX.Element {
         overflow: 'hidden'
       }}
     >
-      <div style={{ padding: '0', height: '6rem', backgroundColor: 'darkslategray' }}>
+      <div style={{ padding: '0', height: '6rem', backgroundColor: 'darkslateblue' }}>
         <AppHeader />
       </div>
       <div
@@ -37,25 +38,25 @@ function App(): JSX.Element {
           overflow: 'auto'
         }}
       >
-        <Divider type="horizontal" style={{ marginTop: '0.3em', marginBottom: '0.3em' }} />
+        <SectionDivider type="horizontal" />
         <ServerConnection />
         {isConnected && (
           <>
-            <Divider type="horizontal" style={{ marginTop: '0.3em', marginBottom: '0.3em' }} />
+            <SectionDivider type="horizontal" />
             <MessageSending />
           </>
         )}
         {isConnected && (
           <>
-            <Divider type="horizontal" style={{ marginTop: '0.3em', marginBottom: '0.3em' }} />
+            <SectionDivider type="horizontal" />
             <MessageReceiving />
           </>
         )}
-        <Divider type="horizontal" style={{ marginTop: '0.3em', marginBottom: '0.3em' }} />
+        <SectionDivider type="horizontal" />
       </div>
       <div
         style={{
-          backgroundColor: 'darkslategray',
+          backgroundColor: 'darkslateblue',
           marginTop: 'auto',
           height: '1rem',
           display: 'flex',
