@@ -3,7 +3,7 @@ import { Table } from 'antd'
 import dayjs from 'dayjs'
 import dayjsutc from 'dayjs/plugin/utc'
 
-import { Message } from 'src/shared/Subscription'
+import { Message, Subscription } from 'src/shared/Subscription'
 import { ColumnType } from 'antd/es/table'
 
 dayjs.extend(dayjsutc)
@@ -13,7 +13,6 @@ const columns: ColumnType<Message>[] = [
     title: 'Received At',
     width: '11rem',
     render: (v, r, i) => {
-      console.log(r)
       return dayjs.utc(r.createdAt).local().format('YYYY-MM-DD[ ]HH:mm:ss') // escape content by putting it in []
     }
   },
@@ -25,22 +24,34 @@ const columns: ColumnType<Message>[] = [
 ]
 
 export const SubscriptionMessages = () => {
+  const [currentSub, setCurrentSub] = useState<Subscription>()
   const [currentSubMessages, setCurrentSubMessages] = useState<Message[]>()
-  const reloadCurrentSubMessages = useCallback(() => {
-    const currentSubscription = window.ProtoRabbit.getSubscriptionManager()?.currentSubscription
-    setCurrentSubMessages([...(currentSubscription?.messages ?? [])])
+
+  const onCurrentSubChanged = useCallback(() => {
+    const subManager = window.ProtoRabbit.getSubscriptionManager()
+    setCurrentSub(subManager?.currentSubscription)
+    setCurrentSubMessages([...(subManager?.currentSubscription?.messages ?? [])])
+  }, [])
+
+  const onNewMessage = useCallback(() => {
+    console.log('On new message. Length ', window.ProtoRabbit.getSubscriptionManager()?.currentSubscription?.messages?.length)
+    setCurrentSubMessages([...(window.ProtoRabbit.getSubscriptionManager()?.currentSubscription?.messages ?? [])])
   }, [])
 
   useEffect(() => {
-    const subManager = window.ProtoRabbit.getSubscriptionManager()
-    subManager?.registerForCurrentSubscriptionChanged(reloadCurrentSubMessages)
-    const currentSubscription = subManager?.currentSubscription
-    currentSubscription?.addNewMessageHandler(reloadCurrentSubMessages)
+    currentSub?.addNewMessageHandler(onNewMessage)
     return () => {
-      window.ProtoRabbit.getSubscriptionManager()?.unregisterForCurrentSubscriptionChanged(reloadCurrentSubMessages)
-      currentSubscription?.removeMessageHandler(reloadCurrentSubMessages)
+      currentSub?.removeMessageHandler(onNewMessage)
     }
-  }, [reloadCurrentSubMessages])
+  }, [currentSub, onNewMessage])
+
+  useEffect(() => {
+    const subManager = window.ProtoRabbit.getSubscriptionManager()
+    subManager?.registerForCurrentSubscriptionChanged(onCurrentSubChanged)
+    return () => {
+      subManager?.unregisterForCurrentSubscriptionChanged(onCurrentSubChanged)
+    }
+  }, [onCurrentSubChanged])
 
   return <Table dataSource={currentSubMessages} columns={columns} pagination={false} />
 }
