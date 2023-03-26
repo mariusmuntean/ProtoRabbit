@@ -7,9 +7,7 @@ import { AppContext } from './AppContext'
 import './assets/index.css'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <AppContext>
-      <App />
-    </AppContext>
-  </React.StrictMode>
+  <AppContext>
+    <App />
+  </AppContext>
 )
