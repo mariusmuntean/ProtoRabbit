@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react'
 import { SendableMessageTemplate } from '../../shared/SendableMessageTemplate'
 
 const defaultProtoRabbitContext = {
@@ -28,7 +28,7 @@ export const AppContext = (props: PropsWithChildren) => {
   const [port, setPort] = useState<number>(5672)
   const [username, setUsername] = useState<string>('guest')
   const [password, setPassword] = useState<string>('guest')
-  const [isConnected, setIsConnected] = useState<boolean>(false)
+  const [isConnected, setIsConnected] = useState<boolean>(protoRabbitApi.isConnected)
   const [sendableMessageTemplates, setSendableMessageTemplates] = useState<SendableMessageTemplate[]>([
     {
       id: '1',

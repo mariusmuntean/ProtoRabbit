@@ -44,6 +44,7 @@ export interface ConnectionOptions {
 }
 let conn: Connection
 let channel: Channel
+let isConnected = false
 
 let connectionStatusListener: (isConnected: boolean) => void
 type connectionStatusListenerType = typeof connectionStatusListener
@@ -72,13 +73,27 @@ const api = {
     conn = await connect(connectionOptions)
     channel = await conn.createChannel()
 
+    isConnected = true
     connectionStatusListeners.forEach((l) => l(true))
+
+    conn.on('connection', (args) => {
+      isConnected = true
+      connectionStatusListeners.forEach((l) => l(false))
+    })
     conn.on('close', (args) => {
-      return connectionStatusListeners.forEach((l) => l(false))
+      isConnected = false
+      connectionStatusListeners.forEach((l) => l(false))
     })
     conn.on('error', (args) => {
-      return connectionStatusListeners.forEach((l) => l(false))
+      connectionStatusListeners.forEach((l) => l(false))
     })
+
+    // It is important to disconnect when the window is reloaded. Otherwise the old connection lingers on and a new one cannot be established, i.e. calling await connect(...) never returns
+    window.onbeforeunload = async (e) => {
+      console.log('About to reload ', e)
+      await channel?.close()
+      await conn?.close()
+    }
 
     subscriptionManager = new SubscriptionManager(channel)
   },
@@ -87,6 +102,7 @@ const api = {
     (connectionStatusListeners = [...connectionStatusListeners.filter((l) => l != listener)]),
 
   disconnect: () => conn?.close(),
+  isConnected: isConnected,
 
   send: async (exchange: string, routingKey: string, protoFileContent: string, msg: string) => {
     try {
