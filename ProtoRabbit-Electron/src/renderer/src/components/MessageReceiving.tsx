@@ -19,7 +19,7 @@ export const MessageReceiving = () => {
       <span style={{ alignSelf: 'self-start' }}>Receive</span>
       <div style={{ margin: '0.5em', display: 'flex', flex: '1', overflow: 'auto' }}>
         {/* Subscriptions */}
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', minWidth: '16rem' }}>
           <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
             <div>Subscriptions</div>
             <NewSubscription />

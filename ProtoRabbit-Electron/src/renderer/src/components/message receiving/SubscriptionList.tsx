@@ -15,8 +15,11 @@ const getSubscriptionItemRenderFunc = (subscriptionManager: SubscriptionManager 
         className={sub?.id === window.ProtoRabbit.getSubscriptionManager()?.currentSubscription?.id ? style.selected : style.unselected}
       >
         <List.Item.Meta
-          avatar={<SyncOutlined spin />}
-          title={<a href="https://ant.design">{sub.name}</a>}
+          title={
+            <>
+              <SyncOutlined spin /> <span>sub.name</span>
+            </>
+          }
           description={
             <Space direction="vertical">
               {`Exchange: ${sub.exchange}`}
@@ -42,11 +45,12 @@ export const SubscriptionList = () => {
   }, [])
 
   useEffect(() => {
-    window.ProtoRabbit.getSubscriptionManager()?.registerForSubscriptionsChanged(reloadSubs)
-    window.ProtoRabbit.getSubscriptionManager()?.registerForCurrentSubscriptionChanged(reloadCurrentSubscription)
+    const currentSubManager = window.ProtoRabbit.getSubscriptionManager()
+    currentSubManager?.registerForSubscriptionsChanged(reloadSubs)
+    currentSubManager?.registerForCurrentSubscriptionChanged(reloadCurrentSubscription)
     return () => {
-      window.ProtoRabbit.getSubscriptionManager()?.unregisterForSubscriptionsChanged(reloadSubs)
-      window.ProtoRabbit.getSubscriptionManager()?.unregisterForCurrentSubscriptionChanged(reloadCurrentSubscription)
+      currentSubManager?.unregisterForSubscriptionsChanged(reloadSubs)
+      currentSubManager?.unregisterForCurrentSubscriptionChanged(reloadCurrentSubscription)
     }
   }, [window.ProtoRabbit.getSubscriptionManager(), reloadCurrentSubscription, reloadSubs])
 
