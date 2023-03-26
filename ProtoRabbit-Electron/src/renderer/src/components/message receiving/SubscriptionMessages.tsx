@@ -27,23 +27,20 @@ export const SubscriptionMessages = () => {
   const [currentSub, setCurrentSub] = useState<Subscription>()
   const [currentSubMessages, setCurrentSubMessages] = useState<Message[]>()
 
-  const onCurrentSubChanged = useCallback(() => {
-    const subManager = window.ProtoRabbit.getSubscriptionManager()
-    setCurrentSub(subManager?.currentSubscription)
-    setCurrentSubMessages([...(subManager?.currentSubscription?.messages ?? [])])
-  }, [])
-
   const onNewMessage = useCallback(() => {
     console.log('On new message. Length ', window.ProtoRabbit.getSubscriptionManager()?.currentSubscription?.messages?.length)
     setCurrentSubMessages([...(window.ProtoRabbit.getSubscriptionManager()?.currentSubscription?.messages ?? [])])
   }, [])
 
-  useEffect(() => {
-    currentSub?.addNewMessageHandler(onNewMessage)
-    return () => {
-      currentSub?.removeMessageHandler(onNewMessage)
-    }
-  }, [currentSub, onNewMessage])
+  const onCurrentSubChanged = useCallback(() => {
+    const subManager = window.ProtoRabbit.getSubscriptionManager()
+    setCurrentSub((prevCurrentSub) => {
+      prevCurrentSub?.removeMessageHandler(onNewMessage)
+      subManager?.currentSubscription?.addNewMessageHandler(onNewMessage)
+      return subManager?.currentSubscription
+    })
+    setCurrentSubMessages([...(subManager?.currentSubscription?.messages ?? [])])
+  }, [onNewMessage])
 
   useEffect(() => {
     const subManager = window.ProtoRabbit.getSubscriptionManager()
