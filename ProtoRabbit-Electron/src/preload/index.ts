@@ -61,7 +61,7 @@ const api = {
     password = 'guest'
   }: ConnectionOptions) => {
     if (conn) {
-      conn.close()
+      await conn.close()
     }
     const connectionOptions: ConnectionOptions = {
       protocol,
