@@ -11,6 +11,7 @@ dayjs.extend(dayjsutc)
 const columns: ColumnType<Message>[] = [
   {
     title: 'Received At',
+    width: '11rem',
     render: (v, r, i) => {
       console.log(r)
       return dayjs.utc(r.createdAt).local().format('YYYY-MM-DD[ ]HH:mm:ss') // escape content by putting it in []
@@ -18,6 +19,7 @@ const columns: ColumnType<Message>[] = [
   },
   {
     title: 'JSON Message',
+    width: 'auto',
     render: (v, r, i) => r.messageJson
   }
 ]
