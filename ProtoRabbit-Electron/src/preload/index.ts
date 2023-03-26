@@ -42,8 +42,8 @@ export interface ConnectionOptions {
    */
   password?: string | undefined
 }
-let conn: Connection
-let channel: Channel
+let conn: Connection | undefined
+let channel: Channel | undefined
 let isConnected = false
 
 let connectionStatusListener: (isConnected: boolean) => void
@@ -60,9 +60,6 @@ const api = {
     username = 'guest',
     password = 'guest'
   }: ConnectionOptions) => {
-    if (conn) {
-      await conn.close()
-    }
     const connectionOptions: ConnectionOptions = {
       protocol,
       hostname,
@@ -92,7 +89,9 @@ const api = {
     window.onbeforeunload = async (e) => {
       console.log('About to reload ', e)
       await channel?.close()
+      channel = undefined
       await conn?.close()
+      conn = undefined
     }
 
     subscriptionManager = new SubscriptionManager(channel)
