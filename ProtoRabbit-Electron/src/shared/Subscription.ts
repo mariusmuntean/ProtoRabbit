@@ -76,11 +76,13 @@ export class Subscription {
 
 export class Message {
   readonly rabbitMqMsg: ConsumeMessage
-  messageJson: string
+  readonly messageJson: string
+  readonly createdAt: Date
 
   constructor(rabbitMqMsg: ConsumeMessage, messageJson: string) {
     this.rabbitMqMsg = rabbitMqMsg
     this.messageJson = messageJson
+    this.createdAt = new Date()
   }
 }
 
