@@ -12,7 +12,6 @@ export const MessageReceiving = () => {
         flexDirection: 'column',
         flex: '1',
         overflow: 'auto',
-        backgroundColor: 'chocolate',
         borderRadius: '0.3rem'
       }}
     >
@@ -36,7 +35,7 @@ export const MessageReceiving = () => {
           <div style={{}}>
             <span>Messages</span>
           </div>
-          <div style={{ flex: '1', backgroundColor: 'goldenrod', padding: '0.2em', overflow: 'auto' }}>
+          <div style={{ flex: '1', padding: '0.2em', overflow: 'auto' }}>
             <SubscriptionMessages />
           </div>
         </div>
