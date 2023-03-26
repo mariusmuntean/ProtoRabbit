@@ -40,7 +40,7 @@ export class SubscriptionManager {
 
   public setCurrentSubscription = (subscription: Subscription): boolean => {
     if (this.subscriptions.some((s) => s.id === subscription.id)) {
-      this.currentSubscription = subscription
+      this.currentSubscription = this.subscriptions.find((s) => s.id === subscription.id)
       this.fireCurrentSubscriptionChanged()
       return true
     } else {
