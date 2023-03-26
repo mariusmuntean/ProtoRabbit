@@ -34,9 +34,9 @@ export const ServerConnection = () => {
 
   return (
     <div>
-      <Space direction="vertical">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2em' }}>
         <div>Connection</div>
-        <Space direction="horizontal" align="center">
+        <Space direction="horizontal" style={{ justifyContent: 'center' }}>
           <Row gutter={[5, 5]} justify={'center'}>
             <Col span={12}>
               <Input placeholder="Host" value={host} onChange={(e) => setHost(e.target.value)} />
@@ -62,7 +62,7 @@ export const ServerConnection = () => {
             </Button>
           )}
         </Space>
-      </Space>
+      </div>
     </div>
   )
 }
