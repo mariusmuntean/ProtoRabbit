@@ -11,6 +11,7 @@ export function AppHeader() {
   return (
     <div
       style={{
+        height: 'inherit',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -18,8 +19,8 @@ export function AppHeader() {
       }}
     >
       <Space direction="horizontal">
-        <Image src={protobuf} height={30} preview={false} />
-        <Image src={rabbitmq} height={60} preview={false} />
+        <Image src={protobuf} height={40} preview={false} />
+        <Image src={rabbitmq} height={30} preview={false} />
       </Space>
       <span style={{ lineHeight: '2em' }}>{appName}</span>
     </div>
