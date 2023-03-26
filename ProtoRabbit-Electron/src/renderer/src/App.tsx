@@ -1,5 +1,4 @@
-import { Divider, Layout, Space } from 'antd'
-import { Content, Footer, Header } from 'antd/es/layout/layout'
+import { Divider } from 'antd'
 import { useContext } from 'react'
 import { ProtoRabbitContext } from './AppContext'
 
@@ -35,8 +34,7 @@ function App(): JSX.Element {
           display: 'flex',
           flexDirection: 'column',
           flex: '1',
-          overflow: 'auto',
-          backgroundColor: 'palegreen'
+          overflow: 'auto'
         }}
       >
         <Divider type="horizontal" style={{ marginTop: '0.3em', marginBottom: '0.3em' }} />
