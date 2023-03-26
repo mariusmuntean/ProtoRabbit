@@ -29,7 +29,7 @@ export class SubscriptionManager {
 
     const msgType = getProtobufMessageType(protofileData)
     const sub = new Subscription(name, exchange, routingKey, queueName, msgType)
-    const consume = await this._channel.consume(queueName, sub.addRabbitMqMessage)
+    const consume = await this._channel.consume(queueName, sub.addRabbitMqMessage, { noAck: false })
     sub.consumerTag = consume.consumerTag
 
     this.subscriptions.push(sub)
