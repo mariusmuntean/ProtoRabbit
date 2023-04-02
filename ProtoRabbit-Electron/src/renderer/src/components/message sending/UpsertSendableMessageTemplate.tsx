@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { Button, Divider, Input, Modal, Space, Tooltip } from 'antd'
+import { Button, Checkbox, Divider, Input, Modal, Space, Tooltip } from 'antd'
 import { TooltipPlacement } from 'antd/es/tooltip'
 import { PlusCircleOutlined, EditOutlined } from '@ant-design/icons'
 import Editor from '@monaco-editor/react'
@@ -141,6 +141,7 @@ export const UpsertSendableMessageTemplate = ({ sendableMessageTemplateToUpdate,
             onChange={(v, _) => setJsonSample(v)}
             height="12em"
           />
+          <Checkbox>Autosubscribe</Checkbox>
         </Space>
       </Modal>
     </>
