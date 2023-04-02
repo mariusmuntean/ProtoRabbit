@@ -1,4 +1,3 @@
-import { Divider } from 'antd'
 import { useContext } from 'react'
 import { ProtoRabbitContext } from './AppContext'
 

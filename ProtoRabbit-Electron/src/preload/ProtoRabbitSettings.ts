@@ -1,5 +1,5 @@
 import { IpcRenderer } from 'electron'
-import { SendableMessageTemplate } from 'src/shared/SendableMessageTemplate'
+import { SendableMessageTemplate } from './../shared/SendableMessageTemplate'
 import { IpcChannels } from '../shared/IpcChannels'
 
 export class ProtoRabbitSettings {

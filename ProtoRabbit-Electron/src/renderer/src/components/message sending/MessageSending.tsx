@@ -46,7 +46,7 @@ export const MessageSending = () => {
           <Select
             options={selectionOptions}
             value={selectedOption}
-            onChange={(v, selection) => {
+            onChange={(_v, selection) => {
               if (Array.isArray(selection)) {
                 setSelectedSendableMessageTemplateId(selection[0].name)
               } else {

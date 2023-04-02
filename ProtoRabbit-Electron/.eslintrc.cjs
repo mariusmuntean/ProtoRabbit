@@ -32,7 +32,9 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
-    'react-hooks/exhaustive-deps': 'warn' // Checks effect dependencies
+    'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['warn', { varsIgnorePattern: '^_', argsIgnorePattern: '^_' }]
   },
   overrides: [
     {

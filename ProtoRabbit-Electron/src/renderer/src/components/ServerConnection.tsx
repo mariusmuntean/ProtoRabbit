@@ -42,7 +42,7 @@ export const ServerConnection = () => {
               <Input placeholder="Host" value={host} onChange={(e) => setHost(e.target.value)} />
             </Col>
             <Col span={12}>
-              <Input placeholder="Port" value={port} onChange={(e) => setPort(e.target.value)} />
+              <Input placeholder="Port" value={port} onChange={(e) => setPort(Number.parseInt(e.target.value, 10))} />
             </Col>
 
             <Col span={12}>

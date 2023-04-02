@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { List, Space } from 'antd'
 import { SyncOutlined } from '@ant-design/icons'
 
@@ -39,7 +39,7 @@ export const SubscriptionList = () => {
     return setSubscriptions(window.ProtoRabbit.getSubscriptionManager()?.subscriptions)
   }, [window.ProtoRabbit.getSubscriptionManager()?.subscriptions, window.ProtoRabbit.getSubscriptionManager()?.subscriptions?.length])
 
-  const [currentSubscription, setCurrentSubscription] = useState<Subscription | undefined>()
+  const [_currentSubscription, setCurrentSubscription] = useState<Subscription | undefined>()
   const reloadCurrentSubscription = useCallback(() => {
     return setCurrentSubscription(window.ProtoRabbit.getSubscriptionManager()?.currentSubscription)
   }, [])

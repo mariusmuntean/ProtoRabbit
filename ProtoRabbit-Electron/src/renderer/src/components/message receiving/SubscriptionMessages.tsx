@@ -12,19 +12,19 @@ const columns: ColumnType<Message>[] = [
   {
     title: 'Received At',
     width: '11rem',
-    render: (v, r, i) => {
+    render: (_v, r, _i) => {
       return dayjs.utc(r.createdAt).local().format('YYYY-MM-DD[ ]HH:mm:ss') // escape content by putting it in []
     }
   },
   {
     title: 'JSON Message',
     width: 'auto',
-    render: (v, r, i) => r.messageJson
+    render: (_v, r, _i) => r.messageJson
   }
 ]
 
 export const SubscriptionMessages = () => {
-  const [currentSub, setCurrentSub] = useState<Subscription>()
+  const [_currentSub, setCurrentSub] = useState<Subscription>()
   const [currentSubMessages, setCurrentSubMessages] = useState<Message[]>()
 
   const onNewMessage = useCallback(() => {

@@ -73,15 +73,15 @@ const api = {
     isConnected = true
     connectionStatusListeners.forEach((l) => l(true))
 
-    conn.on('connection', (args) => {
+    conn.on('connection', (_args) => {
       isConnected = true
       connectionStatusListeners.forEach((l) => l(false))
     })
-    conn.on('close', (args) => {
+    conn.on('close', (_args) => {
       isConnected = false
       connectionStatusListeners.forEach((l) => l(false))
     })
-    conn.on('error', (args) => {
+    conn.on('error', (_args) => {
       connectionStatusListeners.forEach((l) => l(false))
     })
 

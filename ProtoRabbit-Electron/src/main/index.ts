@@ -81,19 +81,19 @@ app.on('window-all-closed', () => {
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
 
-ipcMain.on(IpcChannels.AppVersionChannel, (e, args) => {
+ipcMain.on(IpcChannels.AppVersionChannel, (e, _args) => {
   e.returnValue = app.getVersion()
 })
-ipcMain.on(IpcChannels.AppNameChannel, (e, args) => {
+ipcMain.on(IpcChannels.AppNameChannel, (e, _args) => {
   e.returnValue = app.getName()
 })
 
-ipcMain.handle(IpcChannels.WriteToTempFile, (e, args) => {
+ipcMain.handle(IpcChannels.WriteToTempFile, (_e, args) => {
   const protoFileName = args[0]
   const protoFileContent = args[1]
   const protoFilePath = join(app.getPath('temp'), protoFileName)
 
-  fs.writeFile(protoFilePath, protoFileContent, { encoding: 'utf8', flag: 'w' }, (e) => {})
+  fs.writeFile(protoFilePath, protoFileContent, { encoding: 'utf8', flag: 'w' }, (_e) => {})
 
   return Promise.resolve(protoFilePath)
 })
@@ -116,22 +116,22 @@ const appStore = new Store({
     }
   }
 })
-ipcMain.handle(IpcChannels.WriteStoreKey, (e, args) => {
+ipcMain.handle(IpcChannels.WriteStoreKey, (_e, args) => {
   const key = args[0]
   const value = args[1]
   appStore.set(key, value)
   return Promise.resolve()
 })
-ipcMain.handle(IpcChannels.ReadStoreKey, (e, args) => {
+ipcMain.handle(IpcChannels.ReadStoreKey, (_e, args) => {
   const key = args
   return Promise.resolve(appStore.get(key))
 })
 
-ipcMain.handle(IpcChannels.GetDataStorePath, (e, args) => {
+ipcMain.handle(IpcChannels.GetDataStorePath, (_e, _args) => {
   return Promise.resolve(appStore.path)
 })
 
-ipcMain.handle(IpcChannels.GetDataStoreContent, (e, args) => {
+ipcMain.handle(IpcChannels.GetDataStoreContent, (_e, _args) => {
   return new Promise((resolve, reject) => {
     fs.readFile(appStore.path, 'utf-8', (error, data) => {
       if (error) {
@@ -143,7 +143,7 @@ ipcMain.handle(IpcChannels.GetDataStoreContent, (e, args) => {
   })
 })
 
-ipcMain.handle(IpcChannels.OpenDataStoreInUserEditor, (e, args) => {
+ipcMain.handle(IpcChannels.OpenDataStoreInUserEditor, (_e, _args) => {
   appStore.openInEditor()
   return Promise.resolve()
 })
