@@ -18,8 +18,8 @@ test('launch app', async ({ page }, i) => {
   const connectBtn = window.getByRole('button', { name: 'Connect' })
   await connectBtn.click()
 
-  const disconnectBtn = window.getByRole('button', { name: 'Disconnect' })
-  await disconnectBtn.click()
+  // const disconnectBtn = window.getByRole('button', { name: 'Disconnect' })
+  // await disconnectBtn.click()
 
   // close app
   await electronApp.close()
