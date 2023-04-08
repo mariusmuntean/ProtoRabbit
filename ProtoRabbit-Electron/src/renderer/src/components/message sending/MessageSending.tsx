@@ -11,7 +11,7 @@ export const MessageSending = () => {
     useContext(ProtoRabbitContext)
 
   const sendableMessageTemplate = useMemo(() => {
-    return sendableMessageTemplates.find((t) => t.id === selectedSendableMessageTemplateId)
+    return sendableMessageTemplates?.find((t) => t.id === selectedSendableMessageTemplateId)
   }, [selectedSendableMessageTemplateId, sendableMessageTemplates])
 
   const [message, setMessage] = useState<string>()
@@ -35,8 +35,8 @@ export const MessageSending = () => {
     }
   }, [ProtoRabbit, message, sendableMessageTemplate])
 
-  const selectionOptions = sendableMessageTemplates.map((s) => ({ name: s.id, value: s.name }))
-  const selectedOption = selectionOptions.find((o) => o.name === selectedSendableMessageTemplateId)
+  const selectionOptions = sendableMessageTemplates?.map((s) => ({ name: s.id, value: s.name }))
+  const selectedOption = selectionOptions?.find((o) => o.name === selectedSendableMessageTemplateId)
   return (
     <Space direction="vertical" style={{ display: 'flex' }}>
       <div style={{ alignSelf: 'self-start' }}>Send</div>
