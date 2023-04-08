@@ -67,37 +67,47 @@ const api = {
       username,
       password
     }
-    conn = await connect(connectionOptions)
+    conn = await connect(connectionOptions, { timeout: 2000 })
     channel = await conn.createChannel()
 
     isConnected = true
     connectionStatusListeners.forEach((l) => l(true))
 
     conn.on('connection', (_args) => {
+      console.log('Connection established')
       isConnected = true
       connectionStatusListeners.forEach((l) => l(false))
     })
     conn.on('close', (_args) => {
+      console.log('Connection closed')
       isConnected = false
       connectionStatusListeners.forEach((l) => l(false))
     })
     conn.on('error', (_args) => {
+      console.log('Connection error')
       connectionStatusListeners.forEach((l) => l(false))
     })
 
     // It is important to disconnect when the window is reloaded. Otherwise the old connection lingers on and a new one cannot be established, i.e. calling await connect(...) never returns
-    window.onbeforeunload = (e: BeforeUnloadEvent) => {
-      console.log('About to reload ', e)
+    window.onbeforeunload = async (e: BeforeUnloadEvent) => {
+      e.preventDefault()
+      console.log('About to unload.')
 
-      // This func cannot be async
-      const closeChannelPromise = channel?.close() ?? Promise.resolve()
-      closeChannelPromise.then(() => {
+      try {
+        await channel?.close()
         channel = undefined
-        const closeConnPromise = conn?.close() ?? Promise.resolve()
-        closeConnPromise.then(() => {
-          conn = undefined
-        })
-      })
+        console.log('Channel closed')
+      } catch (error) {
+        console.log(error)
+      }
+
+      try {
+        conn?.close()
+        conn = undefined
+        console.log('Connection closed')
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     subscriptionManager = new SubscriptionManager(channel)
