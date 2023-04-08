@@ -86,12 +86,18 @@ const api = {
     })
 
     // It is important to disconnect when the window is reloaded. Otherwise the old connection lingers on and a new one cannot be established, i.e. calling await connect(...) never returns
-    window.onbeforeunload = async (e) => {
+    window.onbeforeunload = (e: BeforeUnloadEvent) => {
       console.log('About to reload ', e)
-      await channel?.close()
-      channel = undefined
-      await conn?.close()
-      conn = undefined
+
+      // This func cannot be async
+      const closeChannelPromise = channel?.close() ?? Promise.resolve()
+      closeChannelPromise.then(() => {
+        channel = undefined
+        const closeConnPromise = conn?.close() ?? Promise.resolve()
+        closeConnPromise.then(() => {
+          conn = undefined
+        })
+      })
     }
 
     subscriptionManager = new SubscriptionManager(channel)
