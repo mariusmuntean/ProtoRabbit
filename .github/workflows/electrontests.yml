@@ -22,6 +22,10 @@ jobs:
       #   with:
       #     node-version: "14.x"
 
+      - name: Build ProtoRabbit
+        run: npm run build
+        working-directory: ProtoRabbit-Electron
+
       - name: Install dependencies
         run: npm install
         working-directory: ProtoRabbit-Electron
