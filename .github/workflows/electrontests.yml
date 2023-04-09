@@ -30,6 +30,13 @@ jobs:
         run: npm run build
         working-directory: ProtoRabbit-Electron
 
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: out-dir
+          path: |
+            out
+
       - name: Run Playwright tests
         run: npx playwright test
         working-directory: ProtoRabbit-Electron
