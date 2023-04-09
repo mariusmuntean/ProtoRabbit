@@ -17,13 +17,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # - name: Install Node.js
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: "14.x"
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.x"
 
       - name: Install dependencies
-        run: npm install
+        run: npm i
         working-directory: ProtoRabbit-Electron
 
       - name: Build ProtoRabbit
@@ -34,8 +34,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: out-dir
-          path: |
-            out
+          path: ProtoRabbit-Electron/out/
 
       - name: Run Playwright tests
         run: npx playwright test
