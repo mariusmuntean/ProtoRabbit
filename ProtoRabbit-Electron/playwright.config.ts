@@ -30,10 +30,8 @@ export default defineConfig({
   projects: [
     {
       name: 'ProtoRabbit',
-      use: {},
       metadata: {
         platform: process.platform,
-        headful: true,
         browserName: 'electron',
         channel: undefined,
         mode: 'default',

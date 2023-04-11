@@ -7,7 +7,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  # This job runs E2E tests. Note that it starts a RabbitMQ container.
+  Electron-app-tests:
     runs-on: ubuntu-latest
     services:
       rabbitmq:
@@ -20,8 +21,9 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "16.x"
+          node-version: "16.13.x"
 
+      # Otherwise the playwright CLI complains 😉
       - name: Install Plawright dependencies
         run: npx playwright install-deps
         working-directory: ProtoRabbit-Electron
@@ -40,6 +42,6 @@ jobs:
       #     name: out-dir
       #     path: ProtoRabbit-Electron/out/
 
-      - name: Run Playwright tests
+      - name: Run Playwright tests in a virtual X server env
         run: xvfb-run --auto-servernum npx playwright test
         working-directory: ProtoRabbit-Electron
