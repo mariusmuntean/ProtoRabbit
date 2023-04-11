@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     services:
       rabbitmq:
         image: rabbitmq
@@ -34,12 +34,12 @@ jobs:
         run: npm run build
         working-directory: ProtoRabbit-Electron
 
-      - name: Archive out directory
-        uses: actions/upload-artifact@v3
-        with:
-          name: out-dir
-          path: ProtoRabbit-Electron/out/
+      # - name: Archive out directory
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: out-dir
+      #     path: ProtoRabbit-Electron/out/
 
       - name: Run Playwright tests
-        run: DEBUG=pw:api npx playwright test
+        run: xvfb-run --auto-servernum npx playwright test
         working-directory: ProtoRabbit-Electron
