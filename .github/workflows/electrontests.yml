@@ -37,5 +37,5 @@ jobs:
           path: ProtoRabbit-Electron/out/
 
       - name: Run Playwright tests
-        run: npx playwright test
+        run: DEBUG=pw:api npx playwright test
         working-directory: ProtoRabbit-Electron

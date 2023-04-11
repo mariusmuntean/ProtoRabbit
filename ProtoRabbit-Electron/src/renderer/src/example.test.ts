@@ -2,7 +2,7 @@ import { _electron as electron } from 'playwright'
 import { test } from '@playwright/test'
 
 test('launch app', async ({ page }, i) => {
-  const electronApp = await electron.launch({ args: ['./../../../out/main/index.js'] })
+  const electronApp = await electron.launch({ args: ['./out/main/index.js'], executablePath: './node_modules/.bin/electron' })
   const window = await electronApp.firstWindow()
 
   const connectBtn = window.getByRole('button', { name: 'Connect' })
