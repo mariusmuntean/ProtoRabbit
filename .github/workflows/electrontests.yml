@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     services:
       rabbitmq:
         image: rabbitmq
@@ -21,6 +21,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "16.x"
+
+      - name: Install Plawright dependencies
+        run: npx playwright install-deps
+        working-directory: ProtoRabbit-Electron
 
       - name: Install dependencies
         run: npm i
