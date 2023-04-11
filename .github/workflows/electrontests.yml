@@ -33,8 +33,8 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: out-dir
-          path: ProtoRabbit-Electron/out/
+          name: ProtoRabbit-Electron-dir
+          path: ProtoRabbit-Electron/
 
       - name: Run Playwright tests
         run: DEBUG=pw:api npx playwright test
