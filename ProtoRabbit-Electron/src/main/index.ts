@@ -20,13 +20,12 @@ function createWindow(): void {
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
-      devTools: false
+      devTools: true
       // contextIsolation: true,
       // nodeIntegration: false
     }
   })
-
-  mainWindow.webContents.openDevTools()
+  mainWindow.webContents.closeDevTools()
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
