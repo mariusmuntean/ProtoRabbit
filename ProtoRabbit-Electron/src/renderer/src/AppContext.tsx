@@ -121,7 +121,7 @@ message AwesomeMessage {
         setSendableMessageTemplates(newSendableMessageTemplates)
       },
       upsertSendableMessageTemplate: (sendableMessageTemplate: SendableMessageTemplate) => {
-        const otherSendableMessageTemplates = sendableMessageTemplates.filter((t) => t.id !== sendableMessageTemplate.id)
+        const otherSendableMessageTemplates = sendableMessageTemplates?.filter((t) => t.id !== sendableMessageTemplate.id) ?? []
         const newSendableMessageTemplates = [...otherSendableMessageTemplates, sendableMessageTemplate]
         protoRabbitApi.settings.sendSettings.setSendableMessageTemplates(newSendableMessageTemplates)
         setSendableMessageTemplates(newSendableMessageTemplates)

@@ -103,6 +103,7 @@ export const UpsertSendableMessageTemplate = ({ sendableMessageTemplateToUpdate,
           size="small"
           type="link"
           onClick={onToggleModalClicked}
+          id={sendableMessageTemplateToUpdate ? 'updateSendableMessageBtn' : 'createSendableMessageBtn'}
         />
       </Tooltip>
       <Modal

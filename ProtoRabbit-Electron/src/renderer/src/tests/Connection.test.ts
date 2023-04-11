@@ -1,4 +1,4 @@
-import { Page, _electron as electron } from 'playwright'
+import { _electron as electron } from 'playwright'
 import { expect, test } from '@playwright/test'
 import { ConnectionSection } from './page objects/ConnectionSection'
 
