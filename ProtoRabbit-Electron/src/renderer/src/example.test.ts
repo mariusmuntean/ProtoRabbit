@@ -2,6 +2,8 @@ import { _electron as electron } from 'playwright'
 import { test } from '@playwright/test'
 
 test('launch app', async ({ page }, i) => {
+  console.log(process.env)
+  console.log(process.cwd())
   const electronApp = await electron.launch({ args: ['./out/main/index.js'], executablePath: './node_modules/.bin/electron' })
   const window = await electronApp.firstWindow()
 
