@@ -44,6 +44,7 @@ export const MessageSending = () => {
       <Row align={'middle'}>
         <Col span={8} style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
           <Select
+            id="sendableMessageTemplates"
             options={selectionOptions}
             value={selectedOption}
             onChange={(_v, selection) => {

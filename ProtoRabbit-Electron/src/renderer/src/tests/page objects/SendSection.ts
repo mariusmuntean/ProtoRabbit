@@ -37,6 +37,16 @@ export class SendSection {
     await this.clickCreate(modal)
   }
 
+  public async getSendableMessageTemplates(): Promise<string[]> {
+    const templateSelect = this._window.locator('#sendableMessageTemplates')
+    await expect(templateSelect).toBeVisible()
+
+    await templateSelect.click()
+
+    const templateNames = await this._window.locator('.ant-select-item-option').allInnerTexts()
+    return templateNames
+  }
+
   private async clickCreate(modal: Locator) {
     const createButton = modal.getByRole('button', { name: 'Create' })
     await expect(createButton).toBeVisible()

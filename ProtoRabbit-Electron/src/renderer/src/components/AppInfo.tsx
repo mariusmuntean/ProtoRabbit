@@ -28,7 +28,7 @@ export const AppInfo = () => {
 
   return (
     <>
-      <Button icon={<InfoCircleOutlined />} type="link" onClick={onModalToggle} />
+      <Button icon={<InfoCircleOutlined />} type="link" onClick={onModalToggle} id="appInfoBtn" />
       <Modal
         open={isModalOpen}
         closable
@@ -46,7 +46,9 @@ export const AppInfo = () => {
 
           <Space>
             <h3>Config Path</h3>
-            <span style={{ wordWrap: 'normal', lineBreak: 'anywhere' }}>{dataStorePath}</span>
+            <span style={{ wordWrap: 'normal', lineBreak: 'anywhere' }} id="appInfoConfigPath">
+              {dataStorePath}
+            </span>
           </Space>
 
           <Editor
