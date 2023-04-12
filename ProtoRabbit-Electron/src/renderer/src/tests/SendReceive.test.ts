@@ -4,7 +4,6 @@ import { ConnectionSection } from './page objects/ConnectionSection'
 import { SendSection } from './page objects/SendSection'
 import { ulid } from 'ulid'
 import { AppInfoPageObject } from './page objects/AppInfoPageObject'
-import fs from 'fs'
 
 test('Create new sendable message template', async ({ page }, i) => {
   // Given that ProtoRabbit is running ...
@@ -13,12 +12,7 @@ test('Create new sendable message template', async ({ page }, i) => {
 
   // ... without any configuration
   const appInfoPageObj = new AppInfoPageObject(window)
-  const appInfo = await appInfoPageObj.getInfo()
-  await fs.unlink(appInfo.configPath, (e) => {
-    if (e) {
-      throw e
-    }
-  })
+  await appInfoPageObj.deleteAppConfigFile()
 
   // When I try to connect to the default RabbitMQ server, then the connection is established
   const connectionSection = new ConnectionSection(window)

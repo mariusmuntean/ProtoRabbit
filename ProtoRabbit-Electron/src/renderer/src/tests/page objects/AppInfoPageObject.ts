@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test'
 import { Page } from 'playwright'
+import fs from 'fs'
 
 export class AppInfoPageObject {
   private readonly _window: Page
@@ -25,8 +26,16 @@ export class AppInfoPageObject {
 
     return info
   }
-}
 
+  public async deleteAppConfigFile(): Promise<void> {
+    const appInfo = await this.getInfo()
+    fs.unlink(appInfo.configPath, (e) => {
+      if (e) {
+        throw e
+      }
+    })
+  }
+}
 export interface Info {
   configPath: string
 }
