@@ -35,8 +35,8 @@ Look inside `package.json` to get a feeling, but basically you can start from th
 
 Enter the connection data to the RabbitMQ instance
 
-<img src="Images/Electron/connect.png" alt="Add a new sendable message type" width="70%" title="Add a new sendable message type"/>
-<img src="Images/Electron/connected.png" alt="Add a new sendable message type" width="70%" title="Add a new sendable message type"/>
+<img src="Images/Electron/connect.png" alt="Connect to RabbitMQ" width="70%" title="Connect to RabbitMQ"/>
+<img src="Images/Electron/connected.png" alt="Connected to RabbitMQ" width="70%" title="Connected to RabbitMQ"/>
 
 ### Define a Template for Sending Messages
 
@@ -55,7 +55,7 @@ Click the little `+` icon in the Send section and provide the following data:
 
 #### Note #3: Make sure that your JSON message is structurally compatible with the protofile that you defined. Also trailing commas after the last property of a JSON message is not allowed, the editor should inform you about this. You can always go and edit or delete message templates.
 
-<img src="Images/Electron/new sendable message template.png" alt="Add a new sendable message type" width="70%" title="Add a new sendable message type"/>
+<img src="Images/Electron/new sendable message template.png" alt="Add a template for a sendable message" width="70%" title="Add a template for a sendable message"/>
 
 ### Start a Message Subscription
 
@@ -69,9 +69,9 @@ Click the `+` button in the Receive section and provide the following data:
 
 #### Note: after creating the message subscription you might need to select it in the list.
 
-<img src="Images/Electron/new message subscription.png" alt="Add a new sendable message type" width="70%" title="Add a new sendable message type"/>
+<img src="Images/Electron/new message subscription.png" alt="Add a message subscription" width="70%" title="Add a message subscription"/>
 
 That's it!
 
 You are now set to send and receive messages.
-<img src="Images/Electron/messages.png" alt="Add a new sendable message type" width="70%" title="Add a new sendable message type"/>
+<img src="Images/Electron/messages.png" alt="Active subscription with messages" width="70%" title="Active subscription with messages"/>
