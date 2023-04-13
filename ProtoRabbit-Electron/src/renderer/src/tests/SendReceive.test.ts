@@ -42,4 +42,5 @@ test('Create new sendable message template', async ({ page }, i) => {
   expect(sendableMessageTemplates).toContain(newTemplateName)
 
   await window.close()
+  await electronApp.close()
 })

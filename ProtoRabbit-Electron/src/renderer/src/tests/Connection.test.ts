@@ -18,6 +18,7 @@ test('Connect and disconnect', async ({ page }, i) => {
   await expect(window.getByRole('button', { name: 'Disconnect' })).not.toBeVisible()
 
   await window.close()
+  await electronApp.close()
 })
 
 test('Connect to wrong host', async ({ page }, i) => {
@@ -41,4 +42,5 @@ test('Connect to wrong host', async ({ page }, i) => {
   await expect(errorNotification).toBeVisible()
 
   await window.close()
+  await electronApp.close()
 })
