@@ -53,7 +53,7 @@ export class ReceiveSection {
     const subscriptionList = this._window.locator('#subscriptionList')
     await expect(subscriptionList).toBeVisible()
 
-    await subscriptionList.locator('.ant-list-item').waitFor({ timeout: 500 })
+    await subscriptionList.locator('.ant-list-item').waitFor({ timeout: 1500 })
     const subscriptionListItems = await subscriptionList.locator('.ant-list-item').all()
     if (!subscriptionListItems || !subscriptionListItems.length) {
       return []
