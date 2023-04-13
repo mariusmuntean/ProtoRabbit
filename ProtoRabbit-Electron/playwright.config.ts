@@ -30,6 +30,9 @@ export default defineConfig({
   projects: [
     {
       name: 'ProtoRabbit',
+      use: {
+        permissions: ['clipboard-read', 'clipboard-write']
+      },
       metadata: {
         platform: process.platform,
         browserName: 'electron',

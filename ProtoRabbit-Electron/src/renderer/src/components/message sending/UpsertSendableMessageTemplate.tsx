@@ -126,7 +126,7 @@ export const UpsertSendableMessageTemplate = ({ sendableMessageTemplateToUpdate,
             defaultLanguage="proto"
             defaultValue={protofileContent}
             language="proto"
-            options={{ minimap: { enabled: false }, scrollBeyondLastLine: false }}
+            options={{ minimap: { enabled: false }, scrollBeyondLastLine: false, autoIndent: 'none' }}
             value={protofileContent}
             onChange={(v, _) => setProtofileContent(v)}
             height="12em"

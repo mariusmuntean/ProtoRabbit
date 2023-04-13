@@ -38,13 +38,13 @@ export const MessageSending = () => {
   const selectionOptions = sendableMessageTemplates?.map((s) => ({ name: s.id, value: s.name }))
   const selectedOption = selectionOptions?.find((o) => o.name === selectedSendableMessageTemplateId)
   return (
-    <Space direction="vertical" style={{ display: 'flex' }}>
+    <Space id="sendMessageContainer" direction="vertical" style={{ display: 'flex' }}>
       <div style={{ alignSelf: 'self-start' }}>Send</div>
 
       <Row align={'middle'}>
         <Col span={8} style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
           <Select
-            id="sendableMessageTemplates"
+            id="sendableMessageTemplatesSelect"
             options={selectionOptions}
             value={selectedOption}
             onChange={(_v, selection) => {
@@ -61,7 +61,7 @@ export const MessageSending = () => {
         </Col>
         <Col span={8} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           {sendableMessageTemplate && (
-            <span>
+            <span id="exchangeAndRoutingKey">
               Exchange: <b>{`${sendableMessageTemplate.exchange}`}</b> Routing key: <b>{`${sendableMessageTemplate.routingKey}`}</b>
             </span>
           )}

@@ -24,22 +24,29 @@ test('Create new sendable message template', async ({ page }, i) => {
 
   // And I enter all the data
   const newTemplateName = 'New user' + ulid()
-  await sendSection.createNewSendableMessageTemplate(
-    newTemplateName,
-    'proto.data',
-    'n',
-    `package ProtoRabbit;
-  syntax = "proto3";
+  const exchange = 'proto.data'
+  const routingKey = 'n'
+  const protofile = `package ProtoRabbit;
+syntax = "proto3";
 
-  message AwesomeMessage {
-      string user_id = 1; // becomes userId
-  }`,
-    `{ "userId": "123-xd-88" }`
-  )
+message AwesomeMessage {
+  string user_id = 1; // becomes userId
+}`
+  const messageJson = `{ "userId": "123-xd-88" }`
+  await sendSection.createNewSendableMessageTemplate(newTemplateName, exchange, routingKey, protofile, messageJson)
 
-  // Then a new sendable message template is created
+  // Then a new sendable message template is available in the dropdown ...
   const sendableMessageTemplates = await sendSection.getSendableMessageTemplates()
   expect(sendableMessageTemplates).toContain(newTemplateName)
+
+  // ... and can be selected
+  await sendSection.selectSendableMessageTemplateByName(newTemplateName)
+  const currentSendableMessageTemplate = await sendSection.getSelectedSendableMessageTemplate()
+  expect(currentSendableMessageTemplate?.name).toBe(newTemplateName)
+  expect(currentSendableMessageTemplate?.exchange).toBe(exchange)
+  expect(currentSendableMessageTemplate?.routingKey).toBe(routingKey)
+  expect(currentSendableMessageTemplate?.protofile).toBe(protofile)
+  expect(currentSendableMessageTemplate?.messageJson).toBe(messageJson)
 
   await window.close()
   await electronApp.close()
