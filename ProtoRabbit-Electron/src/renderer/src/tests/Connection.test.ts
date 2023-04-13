@@ -19,6 +19,7 @@ test('Connect and disconnect', async ({ page }, i) => {
 
   await window.close()
   await electronApp.close()
+  await page.close()
 })
 
 test('Connect to wrong host', async ({ page }, i) => {
@@ -43,4 +44,5 @@ test('Connect to wrong host', async ({ page }, i) => {
 
   await window.close()
   await electronApp.close()
+  await page.close()
 })
