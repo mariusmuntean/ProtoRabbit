@@ -17,7 +17,7 @@ const getSubscriptionItemRenderFunc = (subscriptionManager: SubscriptionManager 
         <List.Item.Meta
           title={
             <>
-              <SyncOutlined spin /> <span>sub.name</span>
+              <SyncOutlined spin /> <span>{sub.name}</span>
             </>
           }
           description={
