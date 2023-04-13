@@ -32,7 +32,7 @@ syntax = "proto3";
 message AwesomeMessage {
   string user_id = 1; // becomes userId
 }`
-  const messageJson = `{ "userId": "123-xd-88" }`
+  const messageJson = `{ "user_id": "123-xd-88" }`
   await sendSection.createNewSendableMessageTemplate(newTemplateName, exchange, routingKey, protofile, messageJson)
 
   // Then a new sendable message template is available in the dropdown ...
@@ -50,4 +50,5 @@ message AwesomeMessage {
 
   await window.close()
   await electronApp.close()
+  await page.close()
 })
