@@ -36,4 +36,4 @@ There's no metrics regarding how much time I invested into each app version, but
 Get in touch with me if you'd like to see new features or bugs fixed. PRs are always welcome 😁 but don't stress yourself about it.
 I don't have plans to extend the app much, except if there's real demand for it. I'll concentrate on refactoring the code and adding more E2E tests.
 
-As always, the code has a super permissive MIT license sou you're welcome to play with it as much as you want!
+As always, the code has a super permissive MIT license so you're welcome to play with it as much as you want!
