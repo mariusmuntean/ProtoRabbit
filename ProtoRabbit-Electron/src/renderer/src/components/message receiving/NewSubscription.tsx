@@ -43,7 +43,13 @@ export const NewSubscription = () => {
   return (
     <>
       <Tooltip title="Add a new subscription">
-        <Button type="link" icon={<FileAddOutlined />} size="small" onClick={onToggleModalVisibilityClicked}></Button>
+        <Button
+          id="newSubscriptionButton"
+          type="link"
+          icon={<FileAddOutlined />}
+          size="small"
+          onClick={onToggleModalVisibilityClicked}
+        ></Button>
       </Tooltip>
       <Modal
         title="New Subscription"
@@ -68,16 +74,16 @@ export const NewSubscription = () => {
           layout="horizontal"
         >
           <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Give your subscription a name' }]}>
-            <Input />
+            <Input id="newSubName" />
           </Form.Item>
           <Form.Item label="Exchange" name="exchange" rules={[{ required: true, message: 'The name of the source exchange' }]}>
-            <Input />
+            <Input id="newSubExchange" />
           </Form.Item>
           <Form.Item label="Routing Key" name="routingKey" rules={[{ required: true, message: 'The name of the source exchange' }]}>
-            <Input />
+            <Input id="newSubRoutingKey" />
           </Form.Item>
           <Form.Item label="Queue name" name="queueName" rules={[{ required: true, message: 'The name of the destination queue' }]}>
-            <Input />
+            <Input id="newSubQueue" />
           </Form.Item>
           <Form.Item
             label="Protobuf definition"
@@ -102,7 +108,7 @@ export const NewSubscription = () => {
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 0, span: 24 }} style={{ justifyContent: 'center', display: 'flex' }}>
-            <Button type="primary" htmlType="submit">
+            <Button id="newSubCreateBtn" type="primary" htmlType="submit">
               Create and Start
             </Button>
           </Form.Item>

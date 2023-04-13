@@ -17,13 +17,17 @@ const getSubscriptionItemRenderFunc = (subscriptionManager: SubscriptionManager 
         <List.Item.Meta
           title={
             <>
-              <SyncOutlined spin /> <span>{sub.name}</span>
+              <SyncOutlined spin /> <span id="subscriptionListItemName">{sub.name}</span>
             </>
           }
           description={
             <Space direction="vertical">
-              {`Exchange: ${sub.exchange}`}
-              {`Routing key: ${sub.routingKey}`}
+              <span>
+                Exchange: <span id="subscriptionListItemExchange">{sub.exchange}</span>
+              </span>
+              <span>
+                Routing key: <span id="subscriptionListItemRoutingKey">{sub.routingKey}</span>
+              </span>
             </Space>
           }
         />
@@ -54,5 +58,11 @@ export const SubscriptionList = () => {
     }
   }, [window.ProtoRabbit.getSubscriptionManager(), reloadCurrentSubscription, reloadSubs])
 
-  return <List dataSource={subscriptions} renderItem={getSubscriptionItemRenderFunc(window.ProtoRabbit.getSubscriptionManager())} />
+  return (
+    <List
+      id="subscriptionList"
+      dataSource={subscriptions}
+      renderItem={getSubscriptionItemRenderFunc(window.ProtoRabbit.getSubscriptionManager())}
+    />
+  )
 }

@@ -1,6 +1,7 @@
 import { expect } from '@playwright/test'
 import { Locator, Page } from 'playwright'
 import os from 'os'
+import { MonacoEditorPageObject } from './MonacoEditor'
 
 export class SendSection {
   private readonly _window: Page
@@ -159,26 +160,13 @@ export class SendSection {
   }
 
   private async setMonacoEditorValue(nth: number, modal: Locator, value: string | undefined) {
-    const monacoEditor = modal.locator('.monaco-editor').nth(nth)
-    await expect(monacoEditor).toBeVisible()
+    const monacoEditorLocator = modal.locator('.monaco-editor').nth(nth)
+    await expect(monacoEditorLocator).toBeVisible()
 
-    // Focus
-    await monacoEditor.click()
+    const monacoEditor = new MonacoEditorPageObject(this._window, monacoEditorLocator)
+    await monacoEditor.setMonacoEditorValue(value)
 
-    // Clear text
-    if (os.platform() === 'darwin') {
-      await this._window.keyboard.press('Meta+A')
-    } else {
-      await this._window.keyboard.press('Control+A')
-    }
-    await this._window.keyboard.press('Backspace')
-
-    // Type new text
-    if (value) {
-      await this._window.keyboard.insertText(value)
-    }
-
-    return monacoEditor
+    return monacoEditorLocator
   }
 
   private async setTemplateName(modal, templateName: string) {

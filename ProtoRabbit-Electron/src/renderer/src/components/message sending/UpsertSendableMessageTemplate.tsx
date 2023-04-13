@@ -142,7 +142,7 @@ export const UpsertSendableMessageTemplate = ({ sendableMessageTemplateToUpdate,
             onChange={(v, _) => setJsonSample(v)}
             height="12em"
           />
-          <Checkbox>Autosubscribe</Checkbox>
+          <Checkbox disabled>Autosubscribe</Checkbox>
         </Space>
       </Modal>
     </>
